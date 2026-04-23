@@ -36,6 +36,9 @@ def _is_railway_runtime() -> bool:
 
 default_env = "production" if _is_railway_runtime() else "local"
 DJANGO_ENV = os.getenv("DJANGO_ENV", default_env).lower()
+if _is_railway_runtime() and DJANGO_ENV != "production":
+    # Railway deploys should always use production settings.
+    DJANGO_ENV = "production"
 
 # Keep the Django settings entrypoint small and delegate to environment-specific modules.
 if DJANGO_ENV == "production":
