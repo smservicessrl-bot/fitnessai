@@ -15,6 +15,9 @@ ALLOWED_HOSTS = env_list("ALLOWED_HOSTS", default="")  # noqa: F405
 railway_public_domain = os.environ.get("RAILWAY_PUBLIC_DOMAIN", "").strip()  # noqa: F405
 if railway_public_domain and railway_public_domain not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append(railway_public_domain)
+for host in env_list("ADDITIONAL_ALLOWED_HOSTS", default="healthcheck.railway.app"):  # noqa: F405
+    if host not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(host)
 
 SECURE_SSL_REDIRECT = env_bool("SECURE_SSL_REDIRECT", default=True)  # noqa: F405
 SESSION_COOKIE_SECURE = True
