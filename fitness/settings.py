@@ -18,20 +18,24 @@ from dotenv import load_dotenv
 # Directory containing `manage.py` (project root)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Local-only convenience: load `.env` while running locally.
-# In production (Railway), env vars are already injected, so this does not override them.
-load_dotenv(BASE_DIR / ".env")
-
 def _is_railway_runtime() -> bool:
     return any(
         os.getenv(var)
         for var in (
-            "RAILWAY_ENVIRONMENT",
+            "RAILWAY_ENVIRONMENT_NAME",
+            "RAILWAY_ENVIRONMENT_ID",
             "RAILWAY_PROJECT_ID",
             "RAILWAY_SERVICE_ID",
+            "RAILWAY_SERVICE_NAME",
             "RAILWAY_PUBLIC_DOMAIN",
         )
     )
+
+
+# Local-only convenience: load `.env` while running locally.
+# In production (Railway), rely on Railway Variables only.
+if not _is_railway_runtime():
+    load_dotenv(BASE_DIR / ".env")
 
 
 default_env = "production" if _is_railway_runtime() else "local"

@@ -1,4 +1,5 @@
 from .base import *  # noqa: F403,F401
+from django.core.exceptions import ImproperlyConfigured
 
 
 # --------------------
@@ -7,6 +8,12 @@ from .base import *  # noqa: F403,F401
 
 # Production must run with DEBUG off.
 DEBUG = env_bool("DEBUG", default=False)  # noqa: F405
+
+# Prevent accidental deploys with placeholder/insecure keys.
+if SECRET_KEY in {"", "change-me", "dev-insecure-change-me"}:  # noqa: F405
+    raise ImproperlyConfigured(
+        "Production SECRET_KEY is missing or insecure. Set a strong SECRET_KEY env var."
+    )
 
 # Ensure hosts are provided via env in production.
 # Railway exposes the default domain via RAILWAY_PUBLIC_DOMAIN, so include it
