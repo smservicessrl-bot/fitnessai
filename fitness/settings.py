@@ -22,7 +22,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # In production (Railway), env vars are already injected, so this does not override them.
 load_dotenv(BASE_DIR / ".env")
 
-DJANGO_ENV = os.getenv("DJANGO_ENV", "local").lower()
+def _is_railway_runtime() -> bool:
+    return any(
+        os.getenv(var)
+        for var in (
+            "RAILWAY_ENVIRONMENT",
+            "RAILWAY_PROJECT_ID",
+            "RAILWAY_SERVICE_ID",
+            "RAILWAY_PUBLIC_DOMAIN",
+        )
+    )
+
+
+default_env = "production" if _is_railway_runtime() else "local"
+DJANGO_ENV = os.getenv("DJANGO_ENV", default_env).lower()
 
 # Keep the Django settings entrypoint small and delegate to environment-specific modules.
 if DJANGO_ENV == "production":
