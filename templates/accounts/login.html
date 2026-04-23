@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Bejelentkezés{% endblock %}
+
+{% block content %}
+  <div class="mx-auto" style="max-width: 480px;">
+    <h1 class="h2 mb-4">Bejelentkezés</h1>
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4">
+        <form method="post" novalidate>
+          {% csrf_token %}
+          {% for field in form %}
+            <div class="mb-3">
+              <label class="form-label fw-semibold" for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {{ field }}
+              {% if field.errors %}
+                <div class="text-danger small mt-1">{{ field.errors }}</div>
+              {% endif %}
+            </div>
+          {% endfor %}
+          <button type="submit" class="btn btn-primary btn-lg w-100">Belépés</button>
+        </form>
+        <p class="text-center text-muted mt-3 mb-0">
+          Nincs még fiókod?
+          <a href="{% url 'accounts:register' %}">Regisztráció</a>
+        </p>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,21 @@
+name,slug,category,primary_muscle,secondary_muscles,equipment,difficulty,contraindications,instructions,active
+Hátsó guggolás rúddal,barbell-back-squat,strength,quadriceps,glutes;core,barbell,intermediate,Térd: kerüld a túl mély hajlítást,Feszítsd a törzset; guggolj kényelmes mélységig; majd állj fel kontrolláltan,true
+Serlegguggolás,goblet-squat,strength,quadriceps,glutes;core,dumbbell,beginner,Derék: tarts semleges gerincet,Tartsd a súlyzót a mellkas előtt; guggolj kontrolláltan,true
+Lábtoló gép,leg-press-machine,hypertrophy,quadriceps,glutes,machine,beginner,Térd: csökkentsd a mozgástartományt,Toljad a platformot kontrollált tempóval,true
+Román felhúzás (rúd),romanian-deadlift-barbell,strength,hamstrings,glutes;core,barbell,intermediate,Comhajlító: csökkentsd a tartományt,Hajlíts csípőből; engedd a rudat közel a sípcsont közepéig; majd emelkedj fel kontrolláltan,true
+Román felhúzás (súlyzó),romanian-deadlift-dumbbell,strength,hamstrings,glutes;core,dumbbell,beginner,Derék: csökkentsd a terhelést,Hajlíts súlyzókkal; tartsd a hátat semlegesen,true
+Csípőemelés rúddal,barbell-hip-thrust,strength,glutes,hamstrings;core,barbell,intermediate,Derék: kerüld a túlzott hátrahajlást,Lökjen a sarkakból; fent szorítsd össze a farizmokat,true
+Bolgár kitörés (súlyzó),bulgarian-split-squat-dumbbell,hypertrophy,quadriceps,glutes;core,dumbbell,intermediate,Térd: rövidebb tartomány,Engedd kontrolláltan a hátsó térdet; majd nyomj fel,true
+Fekvenyomás (rúd),bench-press-barbell,strength,chest,triceps;shoulders,barbell,intermediate,Váll: kerüld a túl mély alsó pozíciót,Engedd a rudat a mell közepére; majd nyomd fel,true
+Vállnyomás súlyzóval,dumbbell-shoulder-press,strength,shoulders,triceps;core,dumbbell,beginner,Váll: korlátozd a fej fölötti tartományt,Nyomd a súlyzókat a fej fölé; a bordák maradjanak lent,true
+Melltűhúzás,lat-pulldown,hypertrophy,back,biceps;core,cable,beginner,Váll: használj semleges fogást,Húzd a rudat a felső mellkasig; majd lassan engedd vissza,true
+Ülő kábeles evezés,seated-cable-row,hypertrophy,back,biceps;core,cable,beginner,Derék: kerüld a törzs lendítését,Húzd a fogantyút a bordák felé; szorítsd össze a lapockákat,true
+Segített felhúzódzás (gumiszalag),assisted-pull-up-band,strength,back,biceps;core,band,beginner,Könyök: csökkentsd a tartományt,Használj gumsegítséget; húzd fel az állad a rúd fölé,true
+Kábeles arc húzás,cable-face-pull,rehab,shoulders,back;core,cable,beginner,Váll: könnyű terhelés,Húzd a kötelet az arc felé külső rotációval,true
+Tricepsz letolás,triceps-pushdown,hypertrophy,triceps,shoulders;core,cable,beginner,Könyök: csökkentsd a terhelést,Told le a kötelet; a könyökök maradjanak a közelben,true
+Bicepsz curl súlyzóval,dumbbell-biceps-curl,hypertrophy,biceps,core;other,dumbbell,beginner,Csukló: tarts semleges fogást,Emeld fel a súlyzókat; majd lassan engedd le,true
+Lábhajlítás gép,leg-curl-machine,hypertrophy,hamstrings,glutes,machine,beginner,Térd: rövidebb tartomány,Hajlítsd a párnát a farizmok felé; majd lassan engedd le,true
+Lábnyújtás gép,leg-extension-machine,hypertrophy,quadriceps,calves,machine,beginner,Térd: kerüld a teljes zárat,Nyújtsd a térdet kényelmes tartományban; majd engedd le,true
+Vádliemelés gép,machine-calf-raise,hypertrophy,calves,core,machine,beginner,Achilles: csökkentsd a tartományt,Emelkedj lábujjhegyre; tarts meg fent; majd lassan engedd le,true
+Deszka tartás,plank,core,core,full_body,bodyweight,beginner,,Tarts egyenes vonalat a vállaktól a sarkakig,true
+Futópadon gyaloglás,treadmill-walk,cardio,full_body,core,cardio_machine,beginner,,Mérsékelt tempóban sétálj egyenes tartással,true

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Profil szerkesztése{% endblock %}
+
+{% block content %}
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h2 mb-0">Profil szerkesztése</h1>
+    <a class="btn btn-outline-secondary btn-lg" href="{% url 'member_app:dashboard' %}">Vissza</a>
+  </div>
+
+  <div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+      {% endif %}
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        <div class="row g-3">
+          {% for field in form %}
+            <div class="col-12">
+              <div class="field-label">{{ field.label }}</div>
+              {{ field }}
+              {% if field.errors %}
+                <div class="text-danger mt-1">{{ field.errors }}</div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+
+        <div class="d-flex gap-2 mt-4 flex-wrap">
+          <button type="submit" class="btn btn-primary btn-lg">Mentés</button>
+          <a class="btn btn-outline-danger btn-lg" href="{% url 'member_app:dashboard' %}">Mégse</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

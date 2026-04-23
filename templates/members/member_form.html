@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Tag{% endblock %}
+
+{% block content %}
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h2 mb-0">{% if member %}Tag szerkesztése{% else %}Új tag{% endif %}</h1>
+    <a class="btn btn-outline-secondary btn-lg" href="{% url 'members:member_list' %}">Vissza</a>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+          {{ form.non_field_errors }}
+        </div>
+      {% endif %}
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        <div class="row g-3">
+          {% for field in form %}
+            <div class="col-12">
+              <div class="field-label">{{ field.label }}</div>
+              {{ field }}
+              {% if field.errors %}
+                <div class="text-danger mt-1">{{ field.errors }}</div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+
+        <hr class="my-4" />
+
+        <h2 class="h4 mb-3">Korlátozások</h2>
+
+        {{ restrictions_formset.management_form }}
+        {% if restrictions_formset.non_form_errors %}
+          <div class="alert alert-danger">{{ restrictions_formset.non_form_errors }}</div>
+        {% endif %}
+
+        <div class="row g-3">
+          {% for rform in restrictions_formset.forms %}
+            <div class="col-12">
+              <div class="card border-light bg-light">
+                <div class="card-body">
+                  {% if rform.instance.pk %}
+                    <div class="text-muted small mb-2">Meglévő korlátozás</div>
+                  {% endif %}
+
+                  {% for rf in rform.visible_fields %}
+                    <div class="mb-2">
+                      <div class="field-label">{{ rf.label }}</div>
+                      {{ rf }}
+                      {% if rf.errors %}
+                        <div class="text-danger mt-1">{{ rf.errors }}</div>
+                      {% endif %}
+                    </div>
+                  {% endfor %}
+
+                  {% if restrictions_formset.can_delete %}
+                    {% if rform.fields.DELETE %}
+                      <div class="form-check mt-2">
+                        {{ rform.DELETE }}
+                        <label class="form-check-label" for="{{ rform.DELETE.id_for_label }}">Törlés</label>
+                      </div>
+                    {% endif %}
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <div class="d-flex gap-2 mt-4 flex-wrap">
+          <button type="submit" class="btn btn-primary btn-lg">Tag mentése</button>
+          {% if member %}
+            <a class="btn btn-outline-danger btn-lg" href="{% url 'members:member_list' %}">Mégse</a>
+          {% endif %}
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

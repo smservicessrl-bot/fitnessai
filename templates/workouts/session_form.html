@@ -1,0 +1,330 @@
+{% extends "base.html" %}
+{% block title %}Edzés{% endblock %}
+
+{% block content %}
+  <style>
+    /* Full-page "gym progress" overlay shown during workout generation. */
+    .gym-loading-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      background: rgba(8, 10, 14, 0.62);
+      backdrop-filter: blur(6px);
+    }
+    .gym-loading-overlay.is-visible {
+      display: flex;
+    }
+    .gym-loading-card {
+      width: min(620px, 100%);
+      border-radius: 1.1rem;
+      padding: 1.25rem 1.25rem 1.1rem;
+      background: linear-gradient(180deg, rgba(12, 18, 30, 0.96), rgba(8, 12, 20, 0.96));
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      color: #eaf0ff;
+    }
+    .gym-loading-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.85rem;
+      flex-wrap: wrap;
+    }
+    .gym-loading-title {
+      font-weight: 800;
+      letter-spacing: 0.2px;
+      font-size: 1.2rem;
+    }
+    .gym-loading-badge {
+      font-weight: 700;
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      border: 1px solid rgba(34, 197, 94, 0.45);
+      background: rgba(34, 197, 94, 0.10);
+      color: #a7f3d0;
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+
+    .gym-loading-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.95rem;
+    }
+
+    .gym-spinner {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 3px solid rgba(255, 255, 255, 0.14);
+      border-top-color: rgba(34, 197, 94, 0.95);
+      border-right-color: rgba(59, 130, 246, 0.75);
+      animation: gymSpin 1s linear infinite;
+      flex: 0 0 auto;
+    }
+    @keyframes gymSpin {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .gym-progress {
+      height: 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+    }
+    .gym-progress-inner {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #22c55e, #a3e635, #f59e0b, #ef4444);
+      background-size: 200% 100%;
+      animation: gymShimmer 1.1s linear infinite;
+      transition: width 0.18s ease;
+    }
+    @keyframes gymShimmer {
+      0% {
+        background-position: 0% 0%;
+      }
+      100% {
+        background-position: 200% 0%;
+      }
+    }
+
+    .gym-loading-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .gym-loading-message {
+      font-weight: 650;
+      color: rgba(234, 240, 255, 0.95);
+      min-height: 1.2em;
+    }
+    .gym-loading-percent {
+      font-weight: 800;
+      color: #dbeafe;
+      font-variant-numeric: tabular-nums;
+    }
+  </style>
+
+  <div
+    id="gym-loading-overlay"
+    class="gym-loading-overlay"
+    role="status"
+    aria-live="polite"
+    aria-busy="false"
+  >
+    <div class="gym-loading-card">
+      <div class="gym-loading-top">
+        <div class="gym-loading-title">Edzésterv készül</div>
+        <div class="gym-loading-badge">Folyamatban</div>
+      </div>
+
+      <div class="gym-loading-row">
+        <div style="display:flex; align-items:center; gap:0.9rem;">
+          <div class="gym-spinner" aria-hidden="true"></div>
+          <div class="gym-loading-message" id="gym-loading-message">Állvány előkészítése…</div>
+        </div>
+      </div>
+
+      <div class="gym-progress" aria-hidden="true">
+        <div class="gym-progress-inner" id="gym-progress-inner"></div>
+      </div>
+
+      <div class="gym-loading-meta">
+        <div class="text-muted" id="gym-loading-subtext" style="color: rgba(234, 240, 255, 0.75) !important;">
+          Eszközök és sorrend előkészítése
+        </div>
+        <div class="gym-loading-percent" id="gym-loading-percent">0%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h2 mb-0">Edzés indítása</h1>
+    {% if request.resolver_match.namespace == 'app_workouts' %}
+      <a class="btn btn-outline-secondary btn-lg" href="{% url 'app_workouts:workout_history' %}">Vissza</a>
+    {% else %}
+      <a class="btn btn-outline-secondary btn-lg" href="{% url 'workouts:workout_history' member_id=member.id %}">Vissza</a>
+    {% endif %}
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <div class="mb-3">
+        <div class="fs-4 fw-bold">{{ member.full_name }}</div>
+        <div class="text-muted">Rendelkezésre álló idő: {{ member.preferred_session_duration }} perc (alapértelmezés)</div>
+      </div>
+
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+          {{ form.non_field_errors }}
+        </div>
+      {% endif %}
+
+      <form id="workout-session-form" method="post" novalidate>
+        {% csrf_token %}
+
+        {# session_type is hidden in the form for MVP #}
+        {{ form.session_type }}
+
+        <div class="row g-3">
+          {% for field in form.visible_fields %}
+            <div class="col-12">
+              <div class="field-label">{{ field.label }}</div>
+              {{ field }}
+              {% if field.errors %}
+                <div class="text-danger mt-1">{{ field.errors }}</div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+
+        <div class="d-flex gap-2 mt-4 flex-wrap">
+          <button type="submit" class="btn btn-success btn-lg">Edzésterv generálása</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var form = document.getElementById("workout-session-form");
+      var overlay = document.getElementById("gym-loading-overlay");
+      var progressInner = document.getElementById("gym-progress-inner");
+      var percentEl = document.getElementById("gym-loading-percent");
+      var messageEl = document.getElementById("gym-loading-message");
+      var subtextEl = document.getElementById("gym-loading-subtext");
+
+      if (!form || !overlay || !progressInner || !percentEl || !messageEl || !subtextEl) {
+        return;
+      }
+
+      var isGenerating = false;
+
+      function getCookie(name) {
+        // Minimal cookie parser for CSRF token.
+        // Django usually stores this as `csrftoken`.
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+          var cookies = document.cookie.split(";");
+          for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Cookie format: key=value
+            if (cookie.substring(0, name.length + 1) === name + "=") {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+
+      function setLockUI(lock) {
+        // Prevent changes during generation; generation is synchronous, so redirect will replace the page.
+        // IMPORTANT: Do not disable form controls here.
+        // Disabled form fields are not submitted, which can break CSRF and/or missing POST data.
+        if (lock) {
+          document.body.style.pointerEvents = "none";
+          document.body.setAttribute("aria-busy", "true");
+          // Stop keyboard input into any focused field.
+          if (document.activeElement && typeof document.activeElement.blur === "function") {
+            document.activeElement.blur();
+          }
+        } else {
+          document.body.style.pointerEvents = "";
+          document.body.removeAttribute("aria-busy");
+        }
+      }
+
+      function showOverlay() {
+        overlay.classList.add("is-visible");
+        overlay.setAttribute("aria-busy", "true");
+      }
+
+      function updateProgress(p, message, subtext) {
+        var clamped = Math.max(0, Math.min(100, p));
+        progressInner.style.width = clamped.toFixed(0) + "%";
+        percentEl.textContent = clamped.toFixed(0) + "%";
+        if (message) messageEl.textContent = message;
+        if (subtext) subtextEl.textContent = subtext;
+      }
+
+      form.addEventListener("submit", function () {
+        if (isGenerating) return;
+        isGenerating = true;
+
+        // Robust CSRF guard:
+        // Ensure the token input exists and is populated from `csrftoken` cookie.
+        var csrfInput = form.querySelector('input[name="csrfmiddlewaretoken"]');
+        var csrfFromCookie = getCookie("csrftoken");
+        if (!csrfInput) {
+          csrfInput = document.createElement("input");
+          csrfInput.type = "hidden";
+          csrfInput.name = "csrfmiddlewaretoken";
+          form.appendChild(csrfInput);
+        }
+        csrfInput.disabled = false;
+        if (csrfFromCookie && (!csrfInput.value || csrfInput.value.length < 1)) {
+          csrfInput.value = csrfFromCookie;
+        }
+
+        showOverlay();
+        setLockUI(true);
+
+        // Simulated progress for the "feel" of generation (backend is synchronous).
+        // The redirect will stop everything once the response arrives.
+        var progress = 2;
+        updateProgress(progress, "Állvány előkészítése…", "Eszközök és sorrend előkészítése");
+
+        var phases = [
+          { t: 18, msg: "Motor bemelegítése…", sub: "Edzés felépítésének kiszámítása" },
+          { t: 40, msg: "Mozgások kiválasztása…", sub: "Izomcsoportok és cél összhangja" },
+          { t: 63, msg: "Blokkok építése…", sub: "Bemelegítés, fő sorozat, levezetés" },
+          { t: 82, msg: "Sorozatok és ismétlések hangolása…", sub: "Pihenő és tempó beállítása" },
+          { t: 95, msg: "Terv véglegesítése…", sub: "Mentés — hamarosan kész" }
+        ];
+
+        var phaseIndex = 0;
+        var interval = window.setInterval(function () {
+          // Slow down as we approach the final stretch.
+          var remaining = 95 - progress;
+          var step = remaining > 40 ? 2.2 : remaining > 20 ? 1.6 : remaining > 8 ? 1.1 : 0.7;
+          var jitter = Math.random() * 0.9;
+          progress = Math.min(95, progress + step + jitter);
+
+          var currentPhase = phases[phaseIndex] || phases[phases.length - 1];
+          while (phaseIndex < phases.length - 1 && progress >= phases[phaseIndex].t) {
+            phaseIndex += 1;
+            currentPhase = phases[phaseIndex] || currentPhase;
+          }
+          updateProgress(progress, currentPhase.msg, currentPhase.sub);
+
+          if (progress >= 95) {
+            window.clearInterval(interval);
+            updateProgress(95, "Terv véglegesítése…", "Mentés — hamarosan kész");
+          }
+        }, 120);
+      });
+    })();
+  </script>
+{% endblock %}
+

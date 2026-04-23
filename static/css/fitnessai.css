@@ -1,0 +1,204 @@
+/* Gym-themed clean modern styling layer.
+ * We override Bootstrap CSS variables so existing templates (btn/card/badge/etc.)
+ * automatically pick up the new palette. */
+
+:root {
+  /* Palette */
+  --fitness-bg: #f6f7fb;
+  --fitness-surface: #ffffff;
+  --fitness-text: #0f172a;
+  --fitness-muted: rgba(15, 23, 42, 0.65);
+
+  --fitness-primary: #22c55e; /* green */
+  --fitness-primary-rgb: 34, 197, 94;
+  --fitness-secondary: #0ea5e9; /* blue */
+  --fitness-secondary-rgb: 14, 165, 233;
+  --fitness-accent: #f59e0b; /* orange */
+  --fitness-accent-rgb: 245, 158, 11;
+  --fitness-danger: #ef4444; /* red */
+  --fitness-danger-rgb: 239, 68, 68;
+  --fitness-dark: #0b1220;
+  --fitness-dark-rgb: 11, 18, 32;
+
+  /* Make Bootstrap use the gym palette */
+  --bs-primary: var(--fitness-primary);
+  --bs-primary-rgb: var(--fitness-primary-rgb);
+  --bs-success: var(--fitness-primary);
+  --bs-success-rgb: var(--fitness-primary-rgb);
+
+  --bs-secondary: var(--fitness-secondary);
+  --bs-secondary-rgb: var(--fitness-secondary-rgb);
+
+  --bs-info: var(--fitness-secondary);
+  --bs-info-rgb: var(--fitness-secondary-rgb);
+
+  --bs-warning: var(--fitness-accent);
+  --bs-warning-rgb: var(--fitness-accent-rgb);
+
+  --bs-danger: var(--fitness-danger);
+  --bs-danger-rgb: var(--fitness-danger-rgb);
+
+  --bs-dark: var(--fitness-dark);
+  --bs-dark-rgb: var(--fitness-dark-rgb);
+
+  --bs-link-color: var(--fitness-secondary);
+  --bs-link-hover-color: var(--fitness-primary);
+}
+
+body {
+  background: var(--fitness-bg);
+  color: var(--fitness-text);
+}
+
+/* Layout */
+.container.py-3 {
+  padding-top: 1rem !important;
+  padding-bottom: 1.25rem !important;
+}
+
+/* Navbar */
+.fitnessai-navbar {
+  background: linear-gradient(90deg, #070c14 0%, #0b1220 50%, #07131f 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.fitnessai-navbar .navbar-brand {
+  color: #ffffff;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+}
+
+/* Buttons: keep Bootstrap behavior, but make the focus ring gym-like. */
+.btn:focus-visible {
+  box-shadow: 0 0 0 0.2rem rgba(34, 197, 94, 0.25) !important;
+}
+
+/* Form fields */
+.btn-lg {
+  padding: 0.75rem 1rem;
+  font-size: 1.1rem;
+}
+
+.form-control,
+.form-select {
+  font-size: 1.05rem;
+  border-radius: 0.95rem;
+  border-color: rgba(15, 23, 42, 0.12);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: rgba(34, 197, 94, 0.65);
+  box-shadow: 0 0 0 0.2rem rgba(34, 197, 94, 0.14);
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  transform: scale(1.15);
+  margin-right: 0.5rem;
+}
+
+/* Cards */
+.card {
+  border-radius: 1rem;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.card.shadow-sm {
+  box-shadow: 0 10px 28px rgba(2, 6, 23, 0.06) !important;
+}
+
+.field-label {
+  font-weight: 650;
+  margin-bottom: 0.25rem;
+}
+
+/* Bootstrap helper classes used in your templates */
+.card-header.bg-light {
+  background: linear-gradient(
+    180deg,
+    rgba(34, 197, 94, 0.18) 0%,
+    rgba(34, 197, 94, 0.06) 100%
+  ) !important;
+  border-bottom: 1px solid rgba(34, 197, 94, 0.22);
+}
+
+/* Tables */
+.table {
+  --bs-table-bg: transparent;
+}
+
+.table thead th {
+  background: rgba(14, 165, 233, 0.06);
+  border-bottom-color: rgba(14, 165, 233, 0.18);
+}
+
+/* QR images */
+img[alt*="QR code"] {
+  border-radius: 0.75rem;
+  background: #ffffff;
+  padding: 6px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+  }
+}
+
+/* Landing: two-card tablet layout */
+.fitness-landing-hero {
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.fitness-landing-cards {
+  max-width: 920px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.fitness-landing-card {
+  border-radius: 1.25rem;
+  background: linear-gradient(145deg, var(--fitness-surface) 0%, #f8fafc 100%);
+  border: 1px solid rgba(15, 23, 42, 0.06) !important;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+@media (hover: hover) {
+  .fitness-landing-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px rgba(2, 6, 23, 0.12) !important;
+  }
+}
+
+.fitness-landing-card-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--fitness-primary);
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.workout-tts-btn {
+  min-width: 2.1rem;
+  font-weight: 700;
+}
+
+.tts-control-panel .btn {
+  min-width: 9rem;
+}
+

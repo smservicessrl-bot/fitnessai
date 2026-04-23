@@ -1,0 +1,519 @@
+{% extends "base.html" %}
+{% block title %}Edzésterv részletei{% endblock %}
+
+{% block content %}
+  <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+    <div>
+      <h1 class="h2 mb-0">Edzésterv részletei</h1>
+      <div class="text-muted">
+        Tag: <span class="fw-semibold">{{ member.full_name }}</span>
+        &bull; Dátum: {{ plan.created_at|date:"Y-m-d" }}
+      </div>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+      {% if request.resolver_match.namespace == 'app_workouts' %}
+        <a class="btn btn-outline-primary btn-lg" href="{% url 'app_workouts:workout_plan_print' plan_id=plan.id %}">Nyomtatóbarát</a>
+        <a class="btn btn-outline-success btn-lg" href="{% url 'app_workouts:workout_plan_download_pdf' plan_id=plan.id %}">PDF letöltése</a>
+        <a class="btn btn-outline-secondary btn-lg" href="{% url 'app_workouts:workout_history' %}">Vissza az előzményekhez</a>
+      {% else %}
+        <a class="btn btn-outline-primary btn-lg" href="{% url 'workouts:workout_plan_print' member_id=member.id plan_id=plan.id %}">
+          Nyomtatóbarát
+        </a>
+        <a class="btn btn-outline-success btn-lg" href="{% url 'workouts:workout_plan_download_pdf' member_id=member.id plan_id=plan.id %}">
+          PDF letöltése
+        </a>
+        <a class="btn btn-outline-secondary btn-lg" href="{% url 'workouts:workout_history' member_id=member.id %}">
+          Vissza az előzményekhez
+        </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="card shadow-sm mb-3">
+    <div class="card-body">
+      <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap">
+        <div>
+          <div class="field-label">Megnyitás telefonon</div>
+          <div class="text-muted">
+            Olvasd be a QR-kódot, hogy megnyisd ezt az edzéstervet a telefonodon.
+          </div>
+        </div>
+        <div class="text-center">
+          <img
+            id="workout-qr-img"
+            width="132"
+            height="132"
+            alt="QR-kód az edzés PDF-hez"
+            aria-label="QR-kód az edzés PDF-hez"
+            src="{% if request.resolver_match.namespace == 'app_workouts' %}{% url 'app_workouts:workout_plan_qr_png' plan_id=plan.id %}{% else %}{% url 'workouts:workout_plan_qr_png' member_id=member.id plan_id=plan.id %}{% endif %}"
+          />
+          <div class="text-muted" style="font-size: 0.9rem; margin-top: 0.35rem;">PDF megnyitása</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm mb-3">
+    <div class="card-body">
+      <div class="row g-2">
+        <div class="col-12 col-md-4"><strong>Cél:</strong> {{ plan.get_goal_display }}</div>
+        <div class="col-12 col-md-4"><strong>Időtartam:</strong> {{ plan.available_time }} perc</div>
+        <div class="col-12 col-md-4"><strong>Energia:</strong> {{ plan.get_energy_level_display }}</div>
+        <div class="col-12 col-md-4"><strong>Izomláz:</strong> {{ plan.get_soreness_level_display }}</div>
+        <div class="col-12 col-md-4"><strong>MI segítség:</strong> {% if plan.ai_generated %}Igen{% else %}Nem{% endif %}</div>
+        <div class="col-12 col-md-4"><strong>Gyakorlatok:</strong> {{ plan.exercise_count }}</div>
+      </div>
+      {% if plan.notes %}
+        <hr />
+        <div><strong>Edzői megjegyzések:</strong> {{ plan.notes }}</div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="card shadow-sm mb-3" id="plan-qa">
+    <div class="card-header bg-light"><strong>Kérdezz az edzéstervről</strong></div>
+    <div class="card-body">
+      <form
+        method="post"
+        action="{% if request.resolver_match.namespace == 'app_workouts' %}{% url 'app_workouts:workout_plan_ask' plan_id=plan.id %}{% else %}{% url 'workouts:workout_plan_ask' member_id=member.id plan_id=plan.id %}{% endif %}"
+      >
+        {% csrf_token %}
+        <div class="mb-2">
+          {{ question_form.question.label_tag }}
+          <div class="d-flex gap-2 align-items-start flex-wrap">
+            <div class="flex-grow-1" style="min-width: 200px;">
+              {{ question_form.question }}
+            </div>
+            <div class="d-flex flex-column gap-1">
+              <button
+                type="button"
+                class="btn btn-outline-secondary btn-lg workout-qa-mic-btn"
+                id="workout-qa-mic-btn"
+                title="Kérdés diktálása (mikrofon)"
+                aria-label="Kérdés diktálása mikrofonnal"
+              >
+                🎤 Diktálás
+              </button>
+              <span class="text-muted small d-none" id="workout-qa-mic-status" role="status"></span>
+            </div>
+          </div>
+          {% if question_form.question.errors %}
+            <div class="text-danger mt-1">{{ question_form.question.errors }}</div>
+          {% endif %}
+          <p class="text-muted small mb-0 mt-1 d-none" id="workout-qa-mic-unsupported">
+            A böngésző nem támogatja a beszédfelismerést ezen az oldalon. Próbáld <strong>Chrome</strong> vagy <strong>Edge</strong> böngészőt (asztali vagy Android), engedélyezd a mikrofont, és használj <strong>https</strong> vagy <strong>localhost</strong> címet. Addig írd be a kérdést billentyűzettel.
+          </p>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg">Kérdés küldése</button>
+      </form>
+      <div class="text-muted mt-2" style="font-size: 0.92rem;">
+        Biztonsági figyelmeztetés: sérüléssel kapcsolatos kérdésnél mindig egyeztess edzővel vagy orvossal.
+      </div>
+    </div>
+  </div>
+
+  {% if qa_history %}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-light"><strong>Kérdés-válasz előzmények</strong></div>
+      <div class="card-body">
+        {% for qa in qa_history %}
+          <div class="mb-3 {% if not forloop.last %}border-bottom pb-3{% endif %}">
+            <div class="fw-semibold">K: {{ qa.question_text }}</div>
+            <div class="mt-2">V: {{ qa.answer_text }}</div>
+            <div class="text-muted mt-1" style="font-size: 0.85rem;">
+              {{ qa.created_at|date:"Y-m-d H:i" }} • forrás: {{ qa.answer_source|default:"ismeretlen" }}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="card shadow-sm mb-3 tts-control-panel">
+    <div class="card-body d-flex align-items-center justify-content-between gap-3 flex-wrap">
+      <div>
+        <div class="field-label mb-0">Felolvasás vezérlés</div>
+        <div class="text-muted" style="font-size: 0.95rem;">Előző / Lejátszás / Következő gyakorlat.</div>
+      </div>
+      <div class="d-flex gap-2">
+        <button type="button" class="btn btn-outline-secondary btn-lg" id="tts-prev-btn" aria-label="Előző gyakorlat">
+          ◀ Előző
+        </button>
+        <button type="button" class="btn btn-primary btn-lg" id="tts-play-btn" aria-label="Lejátszás vagy megállítás">
+          ▶ Lejátszás
+        </button>
+        <button type="button" class="btn btn-outline-secondary btn-lg" id="tts-next-btn" aria-label="Következő gyakorlat">
+          Következő ▶
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {% if warmup %}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-light"><strong>Bemelegítés</strong></div>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover mb-0 align-middle">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Gyakorlat</th>
+              <th>Sorozatok</th>
+              <th>Ismétlések</th>
+              <th>Pihenő</th>
+              <th>Tempó</th>
+              <th>Hang</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in warmup %}
+              <tr>
+                <td>{{ item.order }}</td>
+                <td>{{ item.exercise.name }}</td>
+                <td>{{ item.sets }}</td>
+                <td>{{ item.reps }}</td>
+                <td>{{ item.rest_seconds }} mp</td>
+                <td>{{ item.tempo|default:"—" }}</td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary btn-sm workout-tts-btn"
+                    data-tts-text="Bemelegítés. {{ item.exercise.name }}. {{ item.sets }} sorozat, {{ item.reps }} ismétlés, {{ item.rest_seconds }} másodperc pihenő. Tempó: {{ item.tempo|default:'nincs megadva' }}."
+                    aria-label="Sor felolvasása"
+                  >
+                    ▶
+                  </button>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if main_work %}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-light"><strong>Fő blokk + kiegészítő</strong></div>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover mb-0 align-middle">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Gyakorlat</th>
+              <th>Sorozatok</th>
+              <th>Ismétlések</th>
+              <th>Pihenő</th>
+              <th>Tempó</th>
+              <th>Megjegyzés</th>
+              <th>Hang</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in main_work %}
+              <tr>
+                <td>{{ item.order }}</td>
+                <td>{{ item.exercise.name }}</td>
+                <td>{{ item.sets }}</td>
+                <td>{{ item.reps }}</td>
+                <td>{{ item.rest_seconds }} mp</td>
+                <td>{{ item.tempo|default:"—" }}</td>
+                <td>{{ item.notes|default:"—" }}</td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary btn-sm workout-tts-btn"
+                    data-tts-text="Fő blokk. {{ item.exercise.name }}. {{ item.sets }} sorozat, {{ item.reps }} ismétlés, {{ item.rest_seconds }} másodperc pihenő. Tempó: {{ item.tempo|default:'nincs megadva' }}. Megjegyzés: {{ item.notes|default:'nincs' }}."
+                    aria-label="Sor felolvasása"
+                  >
+                    ▶
+                  </button>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if cooldown %}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-light"><strong>Levezetés</strong></div>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover mb-0 align-middle">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Gyakorlat</th>
+              <th>Sorozatok</th>
+              <th>Ismétlések</th>
+              <th>Pihenő</th>
+              <th>Tempó</th>
+              <th>Hang</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in cooldown %}
+              <tr>
+                <td>{{ item.order }}</td>
+                <td>{{ item.exercise.name }}</td>
+                <td>{{ item.sets }}</td>
+                <td>{{ item.reps }}</td>
+                <td>{{ item.rest_seconds }} mp</td>
+                <td>{{ item.tempo|default:"—" }}</td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary btn-sm workout-tts-btn"
+                    data-tts-text="Levezetés. {{ item.exercise.name }}. {{ item.sets }} sorozat, {{ item.reps }} ismétlés, {{ item.rest_seconds }} másodperc pihenő. Tempó: {{ item.tempo|default:'nincs megadva' }}."
+                    aria-label="Sor felolvasása"
+                  >
+                    ▶
+                  </button>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if not plan.exercise_count %}
+    <div class="alert alert-warning">
+      Ehhez a tervhez nincsenek mentett gyakorlatok.
+    </div>
+  {% endif %}
+
+  <script>
+    (function () {
+      if (!("speechSynthesis" in window)) {
+        return;
+      }
+
+      let activeButton = null;
+      const rowButtons = Array.from(document.querySelectorAll(".workout-tts-btn"));
+      const prevBtn = document.getElementById("tts-prev-btn");
+      const playBtn = document.getElementById("tts-play-btn");
+      const nextBtn = document.getElementById("tts-next-btn");
+      let currentIndex = rowButtons.length ? 0 : -1;
+
+      function setButtonState(btn, isPlaying) {
+        if (!btn) return;
+        btn.textContent = isPlaying ? "■" : "▶";
+        btn.classList.toggle("btn-primary", isPlaying);
+        btn.classList.toggle("btn-outline-secondary", !isPlaying);
+      }
+
+      function setMainPlayState(isPlaying) {
+        if (!playBtn) return;
+        playBtn.textContent = isPlaying ? "■ Megállítás" : "▶ Lejátszás";
+      }
+
+      function setControlAvailability() {
+        const hasRows = rowButtons.length > 0;
+        if (prevBtn) prevBtn.disabled = !hasRows;
+        if (playBtn) playBtn.disabled = !hasRows;
+        if (nextBtn) nextBtn.disabled = !hasRows;
+      }
+
+      function pickVoice(voices) {
+        return (
+          voices.find((v) => v.lang && v.lang.toLowerCase().startsWith("hu")) ||
+          voices.find((v) => v.default) ||
+          null
+        );
+      }
+
+      function speak(text, btn) {
+        window.speechSynthesis.cancel();
+        setButtonState(activeButton, false);
+        activeButton = btn;
+        setButtonState(activeButton, true);
+        currentIndex = rowButtons.indexOf(btn);
+        setMainPlayState(true);
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = "hu-HU";
+        utterance.rate = 0.95;
+
+        const voice = pickVoice(window.speechSynthesis.getVoices());
+        if (voice) {
+          utterance.voice = voice;
+        }
+
+        utterance.onend = function () {
+          setButtonState(activeButton, false);
+          activeButton = null;
+          setMainPlayState(false);
+        };
+        utterance.onerror = function () {
+          setButtonState(activeButton, false);
+          activeButton = null;
+          setMainPlayState(false);
+        };
+
+        window.speechSynthesis.speak(utterance);
+      }
+
+      document.querySelectorAll(".workout-tts-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          if (activeButton === btn && window.speechSynthesis.speaking) {
+            window.speechSynthesis.cancel();
+            setButtonState(activeButton, false);
+            activeButton = null;
+            setMainPlayState(false);
+            return;
+          }
+          const text = (btn.getAttribute("data-tts-text") || "").trim();
+          if (!text) return;
+          speak(text, btn);
+        });
+      });
+
+      function playByIndex(index) {
+        if (!rowButtons.length) return;
+        let safeIndex = index;
+        if (safeIndex < 0) safeIndex = rowButtons.length - 1;
+        if (safeIndex >= rowButtons.length) safeIndex = 0;
+        const btn = rowButtons[safeIndex];
+        const text = (btn.getAttribute("data-tts-text") || "").trim();
+        if (!text) return;
+        speak(text, btn);
+      }
+
+      if (prevBtn) {
+        prevBtn.addEventListener("click", function () {
+          if (!rowButtons.length) return;
+          const base = currentIndex >= 0 ? currentIndex : 0;
+          playByIndex(base - 1);
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener("click", function () {
+          if (!rowButtons.length) return;
+          const base = currentIndex >= 0 ? currentIndex : -1;
+          playByIndex(base + 1);
+        });
+      }
+
+      if (playBtn) {
+        playBtn.addEventListener("click", function () {
+          if (!rowButtons.length) return;
+          if (window.speechSynthesis.speaking) {
+            window.speechSynthesis.cancel();
+            setButtonState(activeButton, false);
+            activeButton = null;
+            setMainPlayState(false);
+            return;
+          }
+          const startIndex = currentIndex >= 0 ? currentIndex : 0;
+          playByIndex(startIndex);
+        });
+      }
+
+      setControlAvailability();
+      setMainPlayState(false);
+
+      if (typeof window.speechSynthesis.onvoiceschanged !== "undefined") {
+        window.speechSynthesis.onvoiceschanged = function () {
+          // Warm up voice list on some browsers.
+          window.speechSynthesis.getVoices();
+        };
+      }
+    })();
+  </script>
+
+  <script>
+    (function () {
+      function getSpeechRecognition() {
+        return window.SpeechRecognition || window.webkitSpeechRecognition || null;
+      }
+
+      const micBtn = document.getElementById("workout-qa-mic-btn");
+      const ta = document.getElementById("workout-qa-question");
+      const statusEl = document.getElementById("workout-qa-mic-status");
+      const unsupportedEl = document.getElementById("workout-qa-mic-unsupported");
+      if (!micBtn || !ta) return;
+
+      const SpeechRecognitionCtor = getSpeechRecognition();
+      if (!SpeechRecognitionCtor) {
+        micBtn.addEventListener("click", function () {
+          if (unsupportedEl) unsupportedEl.classList.remove("d-none");
+          if (statusEl) {
+            statusEl.textContent =
+              "Ez a böngésző nem ad beszédfelismerést. Használj Chrome-ot vagy Edge-et, vagy írj gépeléssel.";
+            statusEl.classList.remove("d-none");
+          }
+        });
+        return;
+      }
+
+      const recognition = new SpeechRecognitionCtor();
+      recognition.lang = "hu-HU";
+      recognition.interimResults = false;
+      recognition.continuous = false;
+
+      let listening = false;
+
+      function setStatus(msg) {
+        if (!statusEl) return;
+        if (msg) {
+          statusEl.textContent = msg;
+          statusEl.classList.remove("d-none");
+        } else {
+          statusEl.textContent = "";
+          statusEl.classList.add("d-none");
+        }
+      }
+
+      micBtn.addEventListener("click", function () {
+        if (listening) {
+          try {
+            recognition.stop();
+          } catch (e) {}
+          listening = false;
+          micBtn.classList.remove("btn-danger");
+          micBtn.classList.add("btn-outline-secondary");
+          setStatus("");
+          return;
+        }
+        try {
+          recognition.start();
+          listening = true;
+          micBtn.classList.remove("btn-outline-secondary");
+          micBtn.classList.add("btn-danger");
+          setStatus("Hallgatlak… beszélj most.");
+        } catch (e) {
+          setStatus("Nem sikerült elindítani a mikrofont.");
+        }
+      });
+
+      recognition.onresult = function (event) {
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          if (!event.results[i].isFinal) continue;
+          const chunk = event.results[i][0].transcript.trim();
+          if (!chunk) continue;
+          const cur = ta.value.trim();
+          ta.value = cur ? cur + " " + chunk : chunk;
+        }
+      };
+
+      recognition.onerror = function (event) {
+        setStatus("Hiba: " + (event.error || "ismeretlen"));
+        listening = false;
+        micBtn.classList.remove("btn-danger");
+        micBtn.classList.add("btn-outline-secondary");
+      };
+
+      recognition.onend = function () {
+        listening = false;
+        micBtn.classList.remove("btn-danger");
+        micBtn.classList.add("btn-outline-secondary");
+        setStatus("");
+      };
+    })();
+  </script>
+{% endblock %}

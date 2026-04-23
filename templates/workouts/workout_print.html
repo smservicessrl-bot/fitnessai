@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Edzésterv nyomtatás — {{ member.full_name }}</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --fitness-primary: #22c55e;
+        --fitness-secondary: #0ea5e9;
+        --fitness-text: #0f172a;
+        --fitness-border: rgba(34, 197, 94, 0.25);
+        --fitness-muted: #4b5563;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        margin: 16px;
+        color: var(--fitness-text);
+        background: #ffffff;
+      }
+      h1, h2 {
+        margin: 0;
+      }
+      .meta {
+        margin-top: 8px;
+        margin-bottom: 14px;
+        font-size: 14px;
+      }
+      .section {
+        margin-top: 18px;
+      }
+      .section-title {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: var(--fitness-primary);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      th,
+      td {
+        border: 1px solid rgba(15, 23, 42, 0.12);
+        padding: 6px 8px;
+        text-align: left;
+        vertical-align: top;
+      }
+      th {
+        background: rgba(34, 197, 94, 0.10);
+        font-weight: 700;
+      }
+      .toolbar {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+      .btn {
+        display: inline-block;
+        border: 1px solid var(--fitness-primary);
+        padding: 8px 10px;
+        text-decoration: none;
+        color: var(--fitness-text);
+        border-radius: 6px;
+        font-size: 14px;
+      }
+      .small {
+        font-size: 12px;
+        color: var(--fitness-muted);
+      }
+      .notes {
+        margin-top: 4px;
+      }
+      @media print {
+        body {
+          margin: 0;
+          padding: 0;
+        }
+        .toolbar {
+          display: none;
+        }
+        .section {
+          break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="toolbar">
+      <button class="btn" onclick="window.print()">Nyomtatás</button>
+      {% if request.resolver_match.namespace == 'app_workouts' %}
+        <a class="btn" href="{% url 'app_workouts:workout_plan_detail' plan_id=plan.id %}">Vissza a részletekhez</a>
+      {% else %}
+        <a class="btn" href="{% url 'workouts:workout_plan_detail' member_id=member.id plan_id=plan.id %}">Vissza a részletekhez</a>
+      {% endif %}
+    </div>
+
+    <h1>Edzésterv</h1>
+    <div class="meta">
+      <div><strong>Tag:</strong> {{ member.full_name }}</div>
+      <div><strong>Dátum:</strong> {{ plan.created_at|date:"Y-m-d H:i" }}</div>
+      <div>
+        <strong>Cél:</strong> {{ plan.get_goal_display }} |
+        <strong>Idő:</strong> {{ plan.available_time }} perc |
+        <strong>Energia:</strong> {{ plan.get_energy_level_display }} |
+        <strong>Izomláz:</strong> {{ plan.get_soreness_level_display }}
+      </div>
+      <div><strong>MI segítség:</strong> {% if plan.ai_generated %}Igen{% else %}Nem{% endif %}</div>
+    </div>
+
+    {% if warmup %}
+      <div class="section">
+        <div class="section-title">Bemelegítés</div>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Gyakorlat</th>
+              <th>Sorozatok</th>
+              <th>Ismétlések</th>
+              <th>Pihenő</th>
+              <th>Tempó</th>
+              <th>Megjegyzés</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in warmup %}
+              <tr>
+                <td>{{ item.order }}</td>
+                <td>{{ item.exercise.name }}</td>
+                <td>{{ item.sets }}</td>
+                <td>{{ item.reps }}</td>
+                <td>{{ item.rest_seconds }} mp</td>
+                <td>{{ item.tempo|default:"—" }}</td>
+                <td>{{ item.notes|default:"—" }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+
+    {% if main_work %}
+      <div class="section">
+        <div class="section-title">Fő blokk + kiegészítő</div>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Gyakorlat</th>
+              <th>Sorozatok</th>
+              <th>Ismétlések</th>
+              <th>Pihenő</th>
+              <th>Tempó</th>
+              <th>Megjegyzés</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in main_work %}
+              <tr>
+                <td>{{ item.order }}</td>
+                <td>{{ item.exercise.name }}</td>
+                <td>{{ item.sets }}</td>
+                <td>{{ item.reps }}</td>
+                <td>{{ item.rest_seconds }} mp</td>
+                <td>{{ item.tempo|default:"—" }}</td>
+                <td>{{ item.notes|default:"—" }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+
+    {% if cooldown %}
+      <div class="section">
+        <div class="section-title">Levezetés</div>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Gyakorlat</th>
+              <th>Sorozatok</th>
+              <th>Ismétlések</th>
+              <th>Pihenő</th>
+              <th>Tempó</th>
+              <th>Megjegyzés</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in cooldown %}
+              <tr>
+                <td>{{ item.order }}</td>
+                <td>{{ item.exercise.name }}</td>
+                <td>{{ item.sets }}</td>
+                <td>{{ item.reps }}</td>
+                <td>{{ item.rest_seconds }} mp</td>
+                <td>{{ item.tempo|default:"—" }}</td>
+                <td>{{ item.notes|default:"—" }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+
+    {% if plan.notes %}
+      <div class="section">
+        <div class="section-title">Edzői megjegyzések</div>
+        <div class="notes">{{ plan.notes }}</div>
+      </div>
+    {% endif %}
+
+    <div class="section small">
+      FitnessAI MVP • Terv azonosító {{ plan.id }}
+    </div>
+
+    {% if auto_print %}
+      <script>
+        // Nyomtatási párbeszédablak — PDF mentéshez a böngészőben.
+        window.addEventListener("load", function () {
+          window.print();
+        });
+      </script>
+    {% endif %}
+  </body>
+</html>

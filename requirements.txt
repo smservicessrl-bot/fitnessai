@@ -1,0 +1,19 @@
+Django>=6.0,<7.0
+
+# Postgres driver
+psycopg[binary]>=3.1,<4.0
+
+# Production server
+gunicorn>=21,<22
+
+# Production static files
+whitenoise>=6.6,<7.0
+
+# AI (used by `ai_engine`)
+openai>=1.30,<2.0
+
+# htmx support for tablet UI
+django-htmx>=1.18,<2.0
+
+# Load `.env` locally (Railway provides env vars directly)
+python-dotenv>=1.0,<2.0
