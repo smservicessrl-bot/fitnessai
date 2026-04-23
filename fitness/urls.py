@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.http import HttpResponse
-from django.urls import include, path
+from django.urls import include, path, re_path
 
 from accounts import views as account_views
 
@@ -25,8 +25,14 @@ admin.site.site_title = "FitnessAI"
 admin.site.index_title = "Kezdőlap"
 
 
+def health_check(_request):
+    return HttpResponse("ok", content_type="text/plain")
+
+
 urlpatterns = [
-    path("healthz", lambda request: HttpResponse("ok", content_type="text/plain"), name="healthz"),
+    path("health/", health_check, name="health"),
+    # Backward compatibility for previously configured health check path.
+    re_path(r"^healthz/?$", health_check, name="healthz"),
     path("", account_views.landing, name="home"),
     path("accounts/", include("accounts.urls")),
     path("app/", include("members.app_urls")),

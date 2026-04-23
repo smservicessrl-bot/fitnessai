@@ -16,9 +16,12 @@ if SECRET_KEY in {"", "change-me", "dev-insecure-change-me"}:  # noqa: F405
     )
 
 # Ensure hosts are provided via env in production.
-# Railway exposes the default domain via RAILWAY_PUBLIC_DOMAIN, so include it
-# as a safe fallback when ALLOWED_HOSTS is not explicitly set.
-ALLOWED_HOSTS = env_list("ALLOWED_HOSTS", default="")  # noqa: F405
+# Railway health checks use `healthcheck.railway.app`; Railway app domains
+# are typically under `.up.railway.app`.
+ALLOWED_HOSTS = env_list(
+    "ALLOWED_HOSTS",
+    default=".up.railway.app,healthcheck.railway.app,localhost,127.0.0.1,testserver",
+)  # noqa: F405
 railway_public_domain = os.environ.get("RAILWAY_PUBLIC_DOMAIN", "").strip()  # noqa: F405
 if railway_public_domain and railway_public_domain not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append(railway_public_domain)
@@ -27,6 +30,9 @@ for host in env_list("ADDITIONAL_ALLOWED_HOSTS", default="healthcheck.railway.ap
         ALLOWED_HOSTS.append(host)
 
 SECURE_SSL_REDIRECT = env_bool("SECURE_SSL_REDIRECT", default=True)  # noqa: F405
+# Railway health checks can arrive as plain HTTP before proxy headers settle.
+# Exempt the health endpoint so it always returns 200 without redirect loops.
+SECURE_REDIRECT_EXEMPT = [r"^health/?$", r"^healthz/?$"]
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
