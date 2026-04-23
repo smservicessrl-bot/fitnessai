@@ -15,6 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.http import HttpResponse
 from django.urls import include, path
 
 from accounts import views as account_views
@@ -25,6 +26,7 @@ admin.site.index_title = "Kezdőlap"
 
 
 urlpatterns = [
+    path("healthz", lambda request: HttpResponse("ok", content_type="text/plain"), name="healthz"),
     path("", account_views.landing, name="home"),
     path("accounts/", include("accounts.urls")),
     path("app/", include("members.app_urls")),
