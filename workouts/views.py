@@ -7,11 +7,12 @@ from django.contrib import messages
 from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.html import strip_tags
 from django.urls import reverse
 
 from ai_engine.services import answer_workout_plan_question, refine_workout_or_fallback_to_deterministic
 from exercises.models import Exercise
-from members.models import MemberProfile, MemberRestriction
+from members.models import MemberProfile, MemberRestriction, UploadedWorkoutPlan
 from members.permissions import assert_member_access, get_member_for_app
 
 _EQUIPMENT_LABEL = dict(Exercise.Equipment.choices)
@@ -54,6 +55,7 @@ def workout_session_input(request, member_id: int):
         if form.is_valid():
             with transaction.atomic():
                 plan: WorkoutPlan = form.save(commit=False)
+                reference_plan: UploadedWorkoutPlan | None = form.cleaned_data.get("reference_workout_plan")
                 plan.member = member
                 plan.created_by = request.user
                 # Session params for deterministic engine.
@@ -115,12 +117,24 @@ def workout_session_input(request, member_id: int):
                     recent_workout_history=recent_plans,
                     available_exercises_context=available_exercises_context,
                     deterministic_proposal=deterministic,
+                    reference_workout_plan_context=(
+                        {
+                            "id": reference_plan.id,
+                            "title": reference_plan.title,
+                            "source": reference_plan.source,
+                            "file_name": reference_plan.file.name.split("/")[-1] if reference_plan.file else "",
+                        }
+                        if reference_plan
+                        else None
+                    ),
                 )
 
                 plan.ai_generated = ai_used
                 plan.generated_context_json = {
                     "deterministic_title": deterministic.get("title"),
                     "deterministic_duration": deterministic.get("estimated_duration_minutes"),
+                    "reference_template_title": reference_plan.title if reference_plan else "",
+                    "reference_template_source": reference_plan.source if reference_plan else "",
                     "ai_used": ai_used,
                     "ai_error": ai_reason if not ai_used else "",
                     "llm_provider": os.environ.get("LLM_PROVIDER", "openai"),
@@ -448,6 +462,45 @@ def workout_plan_download_csv(request, member_id: int, plan_id: int):
     return response
 
 
+@login_required
+def workout_plan_download_word(request, member_id: int, plan_id: int):
+    assert_member_access(request, member_id)
+    plan = get_object_or_404(WorkoutPlan.objects.select_related("member"), pk=plan_id, member_id=member_id)
+    rows = list(iter_plan_rows_ordered(plan))
+
+    safe_member_name = (plan.member.full_name or "tag").replace(" ", "_")
+    filename = f'edzesterv_{plan.id}_{safe_member_name}.doc'
+
+    response = HttpResponse(content_type="application/msword; charset=utf-8")
+    response["Content-Disposition"] = f'attachment; filename="{filename}"'
+
+    lines = [
+        "<html><head><meta charset='utf-8'></head><body>",
+        f"<h1>Edzésterv #{plan.id}</h1>",
+        f"<p><strong>Tag:</strong> {strip_tags(plan.member.full_name)}</p>",
+        f"<p><strong>Létrehozva:</strong> {plan.created_at.strftime('%Y-%m-%d %H:%M')}</p>",
+        f"<p><strong>Cél:</strong> {strip_tags(plan.get_goal_display())}</p>",
+        "<hr/>",
+        "<table border='1' cellspacing='0' cellpadding='5'>",
+        "<tr><th>Sorrend</th><th>Blokk</th><th>Gyakorlat</th><th>Sorozat</th><th>Ismétlés</th><th>Pihenő</th><th>Megjegyzés</th></tr>",
+    ]
+    for item in rows:
+        lines.append(
+            "<tr>"
+            f"<td>{item.order}</td>"
+            f"<td>{strip_tags(_BLOCK_TYPE_LABEL.get(item.block_type or '', item.block_type or ''))}</td>"
+            f"<td>{strip_tags(item.exercise.name)}</td>"
+            f"<td>{item.sets}</td>"
+            f"<td>{strip_tags(item.reps or '')}</td>"
+            f"<td>{item.rest_seconds} mp</td>"
+            f"<td>{strip_tags(item.notes or '')}</td>"
+            "</tr>"
+        )
+    lines.extend(["</table>", "</body></html>"])
+    response.write("".join(lines))
+    return response
+
+
 # --- Member self-service (/app/workouts/...): same views, member_id from session user ---
 
 
@@ -497,3 +550,9 @@ def app_workout_plan_qr_png(request, plan_id: int):
 def app_workout_plan_download_csv(request, plan_id: int):
     m = get_member_for_app(request)
     return workout_plan_download_csv(request, m.pk, plan_id)
+
+
+@login_required
+def app_workout_plan_download_word(request, plan_id: int):
+    m = get_member_for_app(request)
+    return workout_plan_download_word(request, m.pk, plan_id)

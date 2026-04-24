@@ -56,6 +56,7 @@
                   {% if request.resolver_match.namespace == 'app_workouts' %}
                     <a class="btn btn-outline-primary btn-lg" href="{% url 'app_workouts:workout_plan_detail' plan_id=plan.id %}">Részletek</a>
                     <a class="btn btn-outline-success btn-lg" href="{% url 'app_workouts:workout_plan_download_pdf' plan_id=plan.id %}">PDF letöltése</a>
+                    <a class="btn btn-outline-dark btn-lg" href="{% url 'app_workouts:workout_plan_download_word' plan_id=plan.id %}">Word letöltése</a>
                     <a class="btn btn-outline-secondary btn-lg" href="{% url 'app_workouts:workout_session_input' %}">Új terv</a>
                   {% else %}
                     <a
@@ -69,6 +70,12 @@
                       href="{% url 'workouts:workout_plan_download_pdf' member_id=member.id plan_id=plan.id %}"
                     >
                       PDF letöltése
+                    </a>
+                    <a
+                      class="btn btn-outline-dark btn-lg"
+                      href="{% url 'workouts:workout_plan_download_word' member_id=member.id plan_id=plan.id %}"
+                    >
+                      Word letöltése
                     </a>
                     <a
                       class="btn btn-outline-secondary btn-lg"

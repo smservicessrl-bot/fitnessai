@@ -1,5 +1,6 @@
 from django import forms
 
+from members.models import UploadedWorkoutPlan
 from workouts.models import WorkoutFeedback, WorkoutPlan
 
 
@@ -10,6 +11,19 @@ class WorkoutSessionInputForm(forms.ModelForm):
     Business logic (AI generation, rule constraints, etc.) must live in services/views,
     not in this form.
     """
+
+    reference_workout_plan = forms.ModelChoiceField(
+        label="Inspirációs külső terv (opcionális)",
+        queryset=UploadedWorkoutPlan.objects.none(),
+        required=False,
+        empty_label="Nincs kiválasztva",
+        widget=forms.Select(attrs={"class": "form-select"}),
+        help_text="A rendszer ezt mint stílus-inspirációt használja, de a tervet a profilodhoz és mai paramétereidhez igazítja.",
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["reference_workout_plan"].queryset = UploadedWorkoutPlan.objects.all().order_by("-created_at")
 
     class Meta:
         model = WorkoutPlan

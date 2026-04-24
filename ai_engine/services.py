@@ -42,6 +42,7 @@ def build_openai_context(
     recent_workout_history: Optional[Iterable[Any]],
     available_exercises_context: Iterable[dict[str, Any]],
     deterministic_proposal: dict[str, Any],
+    reference_workout_plan_context: Optional[dict[str, Any]] = None,
 ) -> dict[str, Any]:
     """
     Build a compact context object suitable for prompt + validation.
@@ -132,6 +133,7 @@ def build_openai_context(
         "member": member_context,
         "restrictions": restrictions,
         "session": session,
+        "reference_workout_plan": reference_workout_plan_context or {},
         "recent_history": history,
         "approved_exercises": approved_exercises,
         "deterministic_proposal": deterministic,
@@ -599,6 +601,7 @@ def refine_workout_or_fallback_to_deterministic(
     recent_workout_history: Optional[Iterable[Any]],
     available_exercises_context: Iterable[dict[str, Any]],
     deterministic_proposal: dict[str, Any],
+    reference_workout_plan_context: Optional[dict[str, Any]] = None,
 ) -> tuple[dict[str, Any], bool, str]:
     """
     Fallback strategy wrapper.
@@ -651,6 +654,7 @@ def refine_workout_or_fallback_to_deterministic(
         recent_workout_history=recent_workout_history,
         available_exercises_context=available_exercises_context,
         deterministic_proposal=normalized_deterministic,
+        reference_workout_plan_context=reference_workout_plan_context,
     )
 
     try:

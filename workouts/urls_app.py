@@ -11,6 +11,7 @@ urlpatterns = [
     path("plans/<int:plan_id>/ask/", views.app_workout_plan_ask, name="workout_plan_ask"),
     path("plans/<int:plan_id>/print/", views.app_workout_plan_print, name="workout_plan_print"),
     path("plans/<int:plan_id>/download/pdf/", views.app_workout_plan_download_pdf, name="workout_plan_download_pdf"),
+    path("plans/<int:plan_id>/download/word/", views.app_workout_plan_download_word, name="workout_plan_download_word"),
     path("plans/<int:plan_id>/qr.png/", views.app_workout_plan_qr_png, name="workout_plan_qr_png"),
     path("plans/<int:plan_id>/download/csv/", views.app_workout_plan_download_csv, name="workout_plan_download_csv"),
 ]

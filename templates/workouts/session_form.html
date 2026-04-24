@@ -191,6 +191,9 @@
             <div class="col-12">
               <div class="field-label">{{ field.label }}</div>
               {{ field }}
+              {% if field.help_text %}
+                <div class="form-text">{{ field.help_text }}</div>
+              {% endif %}
               {% if field.errors %}
                 <div class="text-danger mt-1">{{ field.errors }}</div>
               {% endif %}

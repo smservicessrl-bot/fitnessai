@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Új gyakorlat{% endblock %}
+
+{% block content %}
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h2 mb-0">Gyakorlat hozzáadása</h1>
+    <a class="btn btn-outline-secondary btn-lg" href="{% url 'members:member_list' %}">Vissza a tagokhoz</a>
+  </div>
+
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+        <div class="row g-3">
+          {% for field in form %}
+            <div class="col-12 {% if field.name == 'name' or field.name == 'category' or field.name == 'primary_muscle' or field.name == 'equipment' or field.name == 'difficulty' %}col-md-6{% endif %}">
+              <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {{ field }}
+              {% if field.errors %}
+                <div class="text-danger small mt-1">{{ field.errors|join:", " }}</div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+        <div class="mt-4">
+          <button class="btn btn-primary btn-lg" type="submit">Mentés</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+      <h2 class="h5 mb-3">Legutóbb hozzáadott gyakorlatok</h2>
+      {% if recent_exercises %}
+        <ul class="list-group">
+          {% for exercise in recent_exercises %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>{{ exercise.name }}</span>
+              <span class="text-muted small">{{ exercise.get_equipment_display }} &bull; {{ exercise.get_difficulty_display }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <div class="alert alert-info mb-0">Még nincs rögzített gyakorlat.</div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

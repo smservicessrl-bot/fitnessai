@@ -145,3 +145,42 @@ class MemberRestriction(models.Model):
         member_name = self.member.full_name if self.member_id else "Ismeretlen tag"
         return f"{member_name}: {self.restriction_type} ({self.body_area})"
 
+
+class GymEquipment(models.Model):
+    equipment = models.CharField(
+        max_length=100,
+        unique=True,
+        db_index=True,
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["equipment"]
+        verbose_name = "Edzőtermi eszköz"
+        verbose_name_plural = "Edzőtermi eszközök"
+
+    def __str__(self) -> str:
+        return self.equipment
+
+
+class UploadedWorkoutPlan(models.Model):
+    title = models.CharField(max_length=200)
+    source = models.CharField(max_length=200, blank=True, default="")
+    file = models.FileField(upload_to="uploaded_workout_plans/")
+    uploaded_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="uploaded_workout_plans",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        verbose_name = "Feltöltött edzésterv"
+        verbose_name_plural = "Feltöltött edzéstervek"
+
+    def __str__(self) -> str:
+        return self.title
+
