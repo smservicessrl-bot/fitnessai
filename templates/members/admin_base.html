@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <style>
+    .members-admin-wrap {
+      min-height: calc(100vh - 130px);
+    }
+    .members-admin-sidebar {
+      height: 100%;
+      border-radius: 1rem;
+      border: 1px solid #e8edf4;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      box-shadow: 0 8px 26px rgba(16, 24, 40, 0.07);
+      overflow: hidden;
+    }
+    .members-admin-sidebar-header {
+      padding: 1rem 1rem 0.85rem;
+      border-bottom: 1px solid #edf2f7;
+      background: #f8fafc;
+    }
+    .members-admin-nav {
+      padding: 0.65rem;
+    }
+    .members-admin-link {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      width: 100%;
+      padding: 0.75rem 0.8rem;
+      border-radius: 0.7rem;
+      color: #334155;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.16s ease;
+    }
+    .members-admin-link:hover {
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+    .members-admin-link.active {
+      background: #0d6efd;
+      color: #fff;
+      box-shadow: 0 6px 16px rgba(13, 110, 253, 0.32);
+    }
+    .members-admin-link svg {
+      width: 1.05rem;
+      height: 1.05rem;
+      flex: 0 0 auto;
+    }
+    .members-admin-main {
+      min-height: 100%;
+    }
+    @media (min-width: 992px) {
+      .members-admin-sidebar-sticky {
+        position: sticky;
+        top: 1rem;
+      }
+    }
+  </style>
+
+  <div class="mb-3 d-flex align-items-center justify-content-between flex-wrap gap-2">
+    <h1 class="h4 mb-0">Admin felulet</h1>
+    <button
+      class="btn btn-outline-primary d-lg-none d-inline-flex align-items-center gap-2"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#members-admin-sidebar"
+      aria-expanded="false"
+      aria-controls="members-admin-sidebar"
+    >
+      <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+        <path d="M1.75 3.25h12.5a.75.75 0 0 0 0-1.5H1.75a.75.75 0 0 0 0 1.5Zm0 5.5h12.5a.75.75 0 0 0 0-1.5H1.75a.75.75 0 0 0 0 1.5Zm12.5 4H1.75a.75.75 0 0 0 0 1.5h12.5a.75.75 0 0 0 0-1.5Z"/>
+      </svg>
+      Menu
+    </button>
+  </div>
+
+  <div class="row g-3 members-admin-wrap">
+    <div class="col-12 col-lg-3">
+      <div id="members-admin-sidebar" class="collapse d-lg-block members-admin-sidebar-sticky">
+        <div class="members-admin-sidebar">
+          <div class="members-admin-sidebar-header">
+            <div class="text-uppercase small text-muted fw-semibold">Navigacio</div>
+            <div class="fw-bold">Members Admin</div>
+          </div>
+          <nav class="members-admin-nav">
+            <a class="members-admin-link {% if active_nav == 'dashboard' %}active{% endif %}" href="{% url 'members:dashboard' %}">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2.5 2A1.5 1.5 0 0 0 1 3.5v9A1.5 1.5 0 0 0 2.5 14h11a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 13.5 2h-11Zm.5 3h4v7H3V5Zm5 0h5v2H8V5Zm0 3h5v4H8V8Z"/></svg>
+              <span>Dashboard</span>
+            </a>
+            <a class="members-admin-link {% if active_nav == 'members' %}active{% endif %}" href="{% url 'members:members_list' %}">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 8a3 3 0 1 0-3-3 3 3 0 0 0 3 3Zm-5.5 5.5A3.5 3.5 0 0 1 6 10h4a3.5 3.5 0 0 1 3.5 3.5.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5Z"/></svg>
+              <span>Tagok</span>
+            </a>
+            <a class="members-admin-link {% if active_nav == 'uploaded_plans' %}active{% endif %}" href="{% url 'members:uploaded_workout_plan_list' %}">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M9.5 1.5H4A1.5 1.5 0 0 0 2.5 3v10A1.5 1.5 0 0 0 4 14.5h8A1.5 1.5 0 0 0 13.5 13V5.5L9.5 1.5Zm0 1.4 2.6 2.6H9.5V2.9ZM5 8h6v1.2H5V8Zm0 2.3h6v1.2H5v-1.2Z"/></svg>
+              <span>Feltoltott tervek (PDF)</span>
+            </a>
+            <a class="members-admin-link {% if active_nav == 'equipment' %}active{% endif %}" href="{% url 'members:equipment_list' %}">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M10.7 1.7a1 1 0 0 1 1.4 0l2.2 2.2a1 1 0 0 1 0 1.4l-1.1 1.1-3.6-3.6 1.1-1.1ZM8.9 3.5 1.7 10.7a1 1 0 0 0-.3.7V14h2.6a1 1 0 0 0 .7-.3l7.2-7.2-3-3Z"/></svg>
+              <span>Eszkozok</span>
+            </a>
+            <a class="members-admin-link {% if active_nav == 'exercises' %}active{% endif %}" href="{% url 'members:exercise_create' %}">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1.5 6.5h13v3h-13v-3Zm1-3h2v9h-2v-9Zm9 0h2v9h-2v-9Z"/></svg>
+              <span>Gyakorlatok</span>
+            </a>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-9 members-admin-main">
+      {% block admin_content %}{% endblock %}
+    </div>
+  </div>
+{% endblock %}

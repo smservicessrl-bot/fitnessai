@@ -1,0 +1,93 @@
+{% extends "members/admin_base.html" %}
+{% block title %}Admin dashboard{% endblock %}
+
+{% block admin_content %}
+  <h2 class="h3 mb-3">Dashboard</h2>
+
+  <div class="row g-3 mb-4">
+    <div class="col-12 col-md-6 col-xl-4">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <div class="text-muted small">Osszes tag</div>
+          <div class="display-6 fw-bold">{{ total_members }}</div>
+          <div class="small text-success">+{{ members_last_30d }} az elmult 30 napban</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-xl-4">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <div class="text-muted small">Osszes edzesterv</div>
+          <div class="display-6 fw-bold">{{ total_plans }}</div>
+          <div class="small text-success">+{{ plans_last_7d }} az elmult 7 napban</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-xl-4">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <div class="text-muted small">Aktiv gyakorlatok</div>
+          <div class="display-6 fw-bold">{{ total_exercises }}</div>
+          <div class="small text-muted">Konyvtar meret</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-xl-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <div class="text-muted small">Rogzitett eszkozok</div>
+          <div class="display-6 fw-bold">{{ total_equipments }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-xl-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <div class="text-muted small">Feltoltott PDF tervek</div>
+          <div class="display-6 fw-bold">{{ total_uploaded_templates }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-12 col-xl-6">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body">
+          <h3 class="h5 mb-3">Legujabb tagok</h3>
+          {% if recent_members %}
+            <div class="list-group">
+              {% for member in recent_members %}
+                <a class="list-group-item list-group-item-action" href="{% url 'members:member_edit' member.pk %}">
+                  <div class="fw-semibold">{{ member.full_name }}</div>
+                  <div class="small text-muted">{{ member.created_at|date:"Y-m-d H:i" }}</div>
+                </a>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="alert alert-info mb-0">Nincs meg tag.</div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-xl-6">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body">
+          <h3 class="h5 mb-3">Legujabb tervek</h3>
+          {% if recent_plans %}
+            <div class="list-group">
+              {% for plan in recent_plans %}
+                <a class="list-group-item list-group-item-action" href="{% url 'workouts:workout_plan_detail' member_id=plan.member_id plan_id=plan.id %}">
+                  <div class="fw-semibold">{{ plan.member.full_name }} - {{ plan.get_goal_display }}</div>
+                  <div class="small text-muted">{{ plan.created_at|date:"Y-m-d H:i" }}</div>
+                </a>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="alert alert-info mb-0">Nincs meg terv.</div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -16,7 +16,7 @@ ONBOARDING_SESSION_KEY = "require_profile_setup"
 def landing(request):
     if request.user.is_authenticated:
         if request.user.is_staff:
-            return redirect(reverse("members:member_list"))
+            return redirect(reverse("members:dashboard"))
         if member_profile_for_user(request.user):
             return redirect(reverse("member_app:dashboard"))
     return render(request, "accounts/landing.html")

@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db import transaction
 from django.db.models import OuterRef, Subquery
+from django.utils import timezone
 from django.forms import inlineformset_factory
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -19,30 +20,50 @@ staff_required = user_passes_test(lambda u: u.is_authenticated and u.is_staff)
 
 @login_required
 @staff_required
-def member_list(request):
-    if request.method == "POST":
-        upload_form = UploadedWorkoutPlanForm(request.POST, request.FILES)
-        if upload_form.is_valid():
-            item = upload_form.save(commit=False)
-            item.uploaded_by = request.user
-            item.save()
-            messages.success(request, "PDF edzésterv feltöltve.")
-            return redirect(reverse("members:member_list"))
-    else:
-        upload_form = UploadedWorkoutPlanForm()
+def admin_dashboard(request):
+    now = timezone.now()
+    cutoff_7d = now - timezone.timedelta(days=7)
+    cutoff_30d = now - timezone.timedelta(days=30)
+    total_members = MemberProfile.objects.count()
+    total_plans = WorkoutPlan.objects.count()
+    total_exercises = Exercise.objects.filter(active=True).count()
+    total_equipments = GymEquipment.objects.count()
+    total_uploaded_templates = UploadedWorkoutPlan.objects.count()
+    members_last_30d = MemberProfile.objects.filter(created_at__gte=cutoff_30d).count()
+    plans_last_7d = WorkoutPlan.objects.filter(created_at__gte=cutoff_7d).count()
+    recent_members = MemberProfile.objects.order_by("-created_at")[:5]
+    recent_plans = WorkoutPlan.objects.select_related("member").order_by("-created_at")[:5]
+    return render(
+        request,
+        "members/admin_dashboard.html",
+        {
+            "active_nav": "dashboard",
+            "total_members": total_members,
+            "total_plans": total_plans,
+            "total_exercises": total_exercises,
+            "total_equipments": total_equipments,
+            "total_uploaded_templates": total_uploaded_templates,
+            "members_last_30d": members_last_30d,
+            "plans_last_7d": plans_last_7d,
+            "recent_members": recent_members,
+            "recent_plans": recent_plans,
+        },
+    )
 
+
+@login_required
+@staff_required
+def member_list(request):
     latest_plan_id = Subquery(
         WorkoutPlan.objects.filter(member_id=OuterRef("pk")).order_by("-created_at").values("id")[:1]
     )
     members = MemberProfile.objects.all().annotate(latest_plan_id=latest_plan_id).order_by("-created_at")
-    uploaded_plans = UploadedWorkoutPlan.objects.select_related("uploaded_by").all()
     return render(
         request,
         "members/member_list.html",
         {
+            "active_nav": "members",
             "members": members,
-            "uploaded_plans": uploaded_plans,
-            "upload_form": upload_form,
         },
     )
 
@@ -82,7 +103,7 @@ def member_create(request):
     return render(
         request,
         "members/member_form.html",
-        {"form": form, "restrictions_formset": restrictions_formset, "member": None},
+        {"active_nav": "members", "form": form, "restrictions_formset": restrictions_formset, "member": None},
     )
 
 
@@ -99,7 +120,7 @@ def member_edit(request, pk: int):
             with transaction.atomic():
                 form.save()
                 restrictions_formset.save()
-            return redirect(reverse("members:member_list"))
+            return redirect(reverse("members:members_list"))
     else:
         form = MemberProfileForm(instance=member)
         restrictions_formset = _get_restrictions_formset(data=None, instance=member)
@@ -107,14 +128,14 @@ def member_edit(request, pk: int):
     return render(
         request,
         "members/member_form.html",
-        {"form": form, "restrictions_formset": restrictions_formset, "member": member},
+        {"active_nav": "members", "form": form, "restrictions_formset": restrictions_formset, "member": member},
     )
 
 
 @login_required
 def member_dashboard(request):
     if request.user.is_staff:
-        return redirect(reverse("members:member_list"))
+        return redirect(reverse("members:dashboard"))
     member = member_profile_for_user(request.user)
     if member is None:
         messages.info(request, "Nincs tagprofil ehhez a fiókhoz.")
@@ -183,6 +204,7 @@ def equipment_list(request):
         request,
         "members/equipment_list.html",
         {
+            "active_nav": "equipment",
             "form": form,
             "equipments": equipments,
         },
@@ -216,8 +238,35 @@ def exercise_create(request):
         request,
         "members/exercise_form.html",
         {
+            "active_nav": "exercises",
             "form": form,
             "recent_exercises": recent_exercises,
+        },
+    )
+
+
+@login_required
+@staff_required
+def uploaded_workout_plan_list(request):
+    if request.method == "POST":
+        upload_form = UploadedWorkoutPlanForm(request.POST, request.FILES)
+        if upload_form.is_valid():
+            item = upload_form.save(commit=False)
+            item.uploaded_by = request.user
+            item.save()
+            messages.success(request, "PDF edzésterv feltöltve.")
+            return redirect(reverse("members:uploaded_workout_plan_list"))
+    else:
+        upload_form = UploadedWorkoutPlanForm()
+
+    uploaded_plans = UploadedWorkoutPlan.objects.select_related("uploaded_by").all()
+    return render(
+        request,
+        "members/uploaded_workout_plan_list.html",
+        {
+            "active_nav": "uploaded_plans",
+            "upload_form": upload_form,
+            "uploaded_plans": uploaded_plans,
         },
     )
 
@@ -231,4 +280,4 @@ def uploaded_workout_plan_delete(request, pk: int):
             item.file.delete(save=False)
         item.delete()
         messages.success(request, "Feltöltött PDF törölve.")
-    return redirect(reverse("members:member_list"))
+    return redirect(reverse("members:uploaded_workout_plan_list"))

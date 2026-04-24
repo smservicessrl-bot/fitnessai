@@ -1,75 +1,10 @@
-{% extends "base.html" %}
+{% extends "members/admin_base.html" %}
 {% block title %}Tagok{% endblock %}
 
-{% block content %}
+{% block admin_content %}
   <div class="d-flex align-items-center justify-content-between mb-3">
-    <h1 class="h2 mb-0">Tagok</h1>
-    <div class="d-flex gap-2 flex-wrap">
-      <a class="btn btn-outline-secondary btn-lg" href="{% url 'members:equipment_list' %}">Eszközök</a>
-      <a class="btn btn-outline-secondary btn-lg" href="{% url 'members:exercise_create' %}">+ Gyakorlat</a>
-      <a class="btn btn-primary btn-lg" href="{% url 'members:member_create' %}">+ Új tag</a>
-    </div>
-  </div>
-
-  <div class="card shadow-sm border-0 mb-4">
-    <div class="card-body">
-      <h2 class="h5 mb-3">Külső edzéstervek feltöltése (PDF)</h2>
-      <form method="post" enctype="multipart/form-data" class="row g-3">
-        {% csrf_token %}
-        <div class="col-12 col-md-4">
-          <label class="form-label" for="{{ upload_form.title.id_for_label }}">{{ upload_form.title.label }}</label>
-          {{ upload_form.title }}
-          {% if upload_form.title.errors %}
-            <div class="text-danger small mt-1">{{ upload_form.title.errors|join:", " }}</div>
-          {% endif %}
-        </div>
-        <div class="col-12 col-md-4">
-          <label class="form-label" for="{{ upload_form.source.id_for_label }}">{{ upload_form.source.label }}</label>
-          {{ upload_form.source }}
-          {% if upload_form.source.errors %}
-            <div class="text-danger small mt-1">{{ upload_form.source.errors|join:", " }}</div>
-          {% endif %}
-        </div>
-        <div class="col-12 col-md-4">
-          <label class="form-label" for="{{ upload_form.file.id_for_label }}">{{ upload_form.file.label }}</label>
-          {{ upload_form.file }}
-          {% if upload_form.file.errors %}
-            <div class="text-danger small mt-1">{{ upload_form.file.errors|join:", " }}</div>
-          {% endif %}
-        </div>
-        <div class="col-12">
-          <button class="btn btn-primary btn-lg" type="submit">PDF feltöltése</button>
-        </div>
-      </form>
-
-      <hr />
-
-      <h3 class="h6 mb-3">Feltöltött külső tervek</h3>
-      {% if uploaded_plans %}
-        <div class="list-group">
-          {% for item in uploaded_plans %}
-            <div class="list-group-item d-flex justify-content-between align-items-center gap-2 flex-wrap">
-              <div>
-                <div class="fw-semibold">{{ item.title }}</div>
-                <div class="small text-muted">
-                  {% if item.source %}Forrás: {{ item.source }} &bull; {% endif %}
-                  Feltöltve: {{ item.created_at|date:"Y-m-d H:i" }}
-                </div>
-              </div>
-              <div class="d-flex gap-2">
-                <a class="btn btn-outline-primary btn-sm" href="{{ item.file.url }}" target="_blank" rel="noopener">Megnyitás</a>
-                <form method="post" action="{% url 'members:uploaded_workout_plan_delete' pk=item.pk %}">
-                  {% csrf_token %}
-                  <button type="submit" class="btn btn-outline-danger btn-sm">Törlés</button>
-                </form>
-              </div>
-            </div>
-          {% endfor %}
-        </div>
-      {% else %}
-        <div class="alert alert-info mb-0">Még nincs feltöltött külső PDF edzésterv.</div>
-      {% endif %}
-    </div>
+    <h1 class="h3 mb-0">Tagok</h1>
+    <a class="btn btn-primary btn-lg" href="{% url 'members:member_create' %}">+ Új tag</a>
   </div>
 
   {% if members %}

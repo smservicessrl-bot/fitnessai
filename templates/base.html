@@ -26,7 +26,7 @@
         <div class="d-flex gap-2 align-items-center flex-wrap">
           {% if user.is_authenticated %}
             {% if user.is_staff %}
-              <a class="btn btn-outline-light btn-lg" href="{% url 'members:member_list' %}">Tagok</a>
+              <a class="btn btn-outline-light btn-lg" href="{% url 'members:dashboard' %}">Admin</a>
               <a class="btn btn-outline-light btn-lg" href="{% url 'admin:index' %}">Adminisztráció</a>
             {% else %}
               <a class="btn btn-outline-light btn-lg" href="{% url 'member_app:dashboard' %}">Profilom</a>
