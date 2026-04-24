@@ -10,6 +10,8 @@ from members.models import MemberProfile, MemberRestriction
 from members.permissions import get_member_for_app, member_profile_for_user
 from workouts.models import WorkoutPlan
 
+ONBOARDING_SESSION_KEY = "require_profile_setup"
+
 staff_required = user_passes_test(lambda u: u.is_authenticated and u.is_staff)
 
 
@@ -109,11 +111,16 @@ def member_dashboard(request):
 @login_required
 def member_profile_edit(request):
     member = get_member_for_app(request)
+    onboarding_required = bool(request.session.get(ONBOARDING_SESSION_KEY))
     if request.method == "POST":
         form = MemberProfileForm(request.POST, instance=member)
         if form.is_valid():
             form.save()
+            if onboarding_required:
+                request.session.pop(ONBOARDING_SESSION_KEY, None)
             messages.success(request, "Profil mentve.")
+            if onboarding_required:
+                return redirect(reverse("app_workouts:workout_session_input"))
             return redirect(reverse("member_app:dashboard"))
     else:
         form = MemberProfileForm(instance=member)

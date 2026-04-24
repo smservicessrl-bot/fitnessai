@@ -32,6 +32,8 @@ from workouts.plan_display import (
     iter_plan_rows_ordered,
 )
 
+ONBOARDING_SESSION_KEY = "require_profile_setup"
+
 
 @login_required
 def workout_session_input(request, member_id: int):
@@ -42,6 +44,9 @@ def workout_session_input(request, member_id: int):
     3) persistence to WorkoutPlan (generated_plan_json + exercise_slugs; no per-exercise rows)
     """
     assert_member_access(request, member_id)
+    if request.session.get(ONBOARDING_SESSION_KEY):
+        messages.info(request, "Először töltsd ki a profilodat az első edzésterv előtt.")
+        return redirect(reverse("member_app:profile_edit"))
     member = get_object_or_404(MemberProfile, pk=member_id)
 
     if request.method == "POST":

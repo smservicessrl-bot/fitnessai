@@ -10,6 +10,8 @@ from accounts.forms import LoginForm, RegistrationForm
 from accounts.rate_limit import clear_login_failures, is_login_blocked, record_login_failure
 from members.permissions import member_profile_for_user
 
+ONBOARDING_SESSION_KEY = "require_profile_setup"
+
 
 def landing(request):
     if request.user.is_authenticated:
@@ -29,8 +31,9 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user, backend=settings.AUTHENTICATION_BACKENDS[0])
+            request.session[ONBOARDING_SESSION_KEY] = True
             messages.success(request, "Sikeres regisztráció.")
-            return redirect(reverse("member_app:dashboard"))
+            return redirect(reverse("member_app:profile_edit"))
     else:
         form = RegistrationForm()
     return render(request, "accounts/register.html", {"form": form})
@@ -56,9 +59,13 @@ def login_view(request):
                     password=form.cleaned_data["password"],
                 )
                 if user is not None:
+                    is_first_login = user.last_login is None
                     clear_login_failures(request, identifier)
                     login(request, user, backend=settings.AUTHENTICATION_BACKENDS[0])
                     messages.success(request, "Sikeres bejelentkezés.")
+                    if not user.is_staff and is_first_login and member_profile_for_user(user):
+                        request.session[ONBOARDING_SESSION_KEY] = True
+                        return redirect(reverse("member_app:profile_edit"))
                     next_url = request.GET.get("next") or reverse("home")
                     return redirect(next_url)
                 record_login_failure(request, identifier)

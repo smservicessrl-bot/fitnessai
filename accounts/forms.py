@@ -20,8 +20,8 @@ class RegistrationForm(forms.Form):
         widget=forms.TextInput(attrs={"class": "form-control form-control-lg", "autocomplete": "name"}),
     )
     email = forms.EmailField(
-        label="E-mail (opcionális)",
-        required=False,
+        label="E-mail",
+        required=True,
         widget=forms.EmailInput(attrs={"class": "form-control form-control-lg", "autocomplete": "email"}),
     )
     phone = forms.CharField(
@@ -73,8 +73,6 @@ class RegistrationForm(forms.Form):
         email = (cleaned.get("email") or "").strip()
         phone_raw = (cleaned.get("phone") or "").strip()
         phone_n = normalize_phone(phone_raw)
-        if not email and not phone_n:
-            raise forms.ValidationError("Adj meg e-mail címet vagy telefonszámot.")
         pin = cleaned.get("pin")
         pin_confirm = cleaned.get("pin_confirm")
         if pin and pin_confirm and pin != pin_confirm:
