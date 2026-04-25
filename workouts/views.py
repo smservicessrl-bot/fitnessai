@@ -36,6 +36,16 @@ from workouts.plan_display import (
 ONBOARDING_SESSION_KEY = "require_profile_setup"
 
 
+def _humanize_ai_reason(reason: str) -> str:
+    raw = (reason or "").strip()
+    if not raw:
+        return ""
+    low = raw.lower()
+    if "openai_api_key is not set" in low or "openai_auth" in low:
+        return "Az OpenAI API kulcs nincs beallitva a production kornyezetben, ezert szabalyalapu terv keszult."
+    return raw
+
+
 @login_required
 def workout_session_input(request, member_id: int):
     """
@@ -136,7 +146,7 @@ def workout_session_input(request, member_id: int):
                     "reference_template_title": reference_plan.title if reference_plan else "",
                     "reference_template_source": reference_plan.source if reference_plan else "",
                     "ai_used": ai_used,
-                    "ai_error": ai_reason if not ai_used else "",
+                    "ai_error": _humanize_ai_reason(ai_reason) if not ai_used else "",
                     "llm_provider": os.environ.get("LLM_PROVIDER", "openai"),
                 }
                 plan.generated_plan_json = refined_or_fallback

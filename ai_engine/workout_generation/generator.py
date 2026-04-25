@@ -11,6 +11,18 @@ from .schema import workout_plan_json_schema
 from .validator import WorkoutPlanValidator
 
 
+def _summarize_generation_errors(last_errors: List[str]) -> str:
+    """
+    Convert low-level provider errors into a compact, user-safe fallback reason.
+    """
+    if not last_errors:
+        return "AI generation failed."
+    joined = "; ".join(last_errors[:8])
+    if "openai_auth" in joined.lower() or "openai_api_key is not set" in joined.lower():
+        return "OPENAI_API_KEY is not set."
+    return joined[:500]
+
+
 def _expected_slug_plan_from_deterministic_proposal(deterministic_proposal: Dict[str, Any]) -> Dict[str, List[str]]:
     def block_slugs(block_key: str) -> List[str]:
         items = deterministic_proposal.get(block_key) or []
@@ -295,5 +307,5 @@ def generate_validated_one_session_workout_plan_openai(
     # Ensure fallback is in the internal shape expected by persistence.
     if not isinstance(internal_fallback, dict):
         internal_fallback = {}
-    return internal_fallback, False, "; ".join(last_errors[:8])
+    return internal_fallback, False, _summarize_generation_errors(last_errors)
 
