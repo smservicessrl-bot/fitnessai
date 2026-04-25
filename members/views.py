@@ -160,21 +160,25 @@ def member_profile_edit(request):
     onboarding_required = bool(request.session.get(ONBOARDING_SESSION_KEY))
     if request.method == "POST":
         form = MemberProfileForm(request.POST, instance=member)
-        if form.is_valid():
-            form.save()
-            if onboarding_required:
-                request.session.pop(ONBOARDING_SESSION_KEY, None)
+        restrictions_formset = _get_restrictions_formset(data=request.POST, instance=member)
+        if form.is_valid() and restrictions_formset.is_valid():
+            with transaction.atomic():
+                form.save()
+                restrictions_formset.save()
+                if onboarding_required:
+                    request.session.pop(ONBOARDING_SESSION_KEY, None)
             messages.success(request, "Profil mentve.")
             if onboarding_required:
                 return redirect(reverse("app_workouts:workout_session_input"))
             return redirect(reverse("member_app:dashboard"))
     else:
         form = MemberProfileForm(instance=member)
+        restrictions_formset = _get_restrictions_formset(data=None, instance=member)
 
     return render(
         request,
         "members/member_profile_self.html",
-        {"form": form, "member": member},
+        {"form": form, "member": member, "restrictions_formset": restrictions_formset},
     )
 
 

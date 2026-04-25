@@ -32,7 +32,15 @@
 
         <hr class="my-4" />
 
-        <h2 class="h4 mb-3">Korlátozások</h2>
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+          <div>
+            <h2 class="h4 mb-1">Korlátozások</h2>
+            <p class="text-muted mb-0">
+              Add meg azokat az állapotokat, amelyeket az edzésterv készítésekor figyelembe kell venni.
+            </p>
+          </div>
+          <span class="badge text-bg-light border">Opcionális</span>
+        </div>
 
         {{ restrictions_formset.management_form }}
         {% if restrictions_formset.non_form_errors %}
@@ -42,14 +50,16 @@
         <div class="row g-3">
           {% for rform in restrictions_formset.forms %}
             <div class="col-12">
-              <div class="card border-light bg-light">
+              <div class="card border-0 shadow-sm bg-body-tertiary">
                 <div class="card-body">
                   {% if rform.instance.pk %}
-                    <div class="text-muted small mb-2">Meglévő korlátozás</div>
+                    <div class="text-muted small mb-2">Mentett korlátozás</div>
+                  {% else %}
+                    <div class="text-muted small mb-2">Új korlátozás</div>
                   {% endif %}
 
                   {% for rf in rform.visible_fields %}
-                    <div class="mb-2">
+                    <div class="mb-3">
                       <div class="field-label">{{ rf.label }}</div>
                       {{ rf }}
                       {% if rf.errors %}
@@ -62,7 +72,7 @@
                     {% if rform.fields.DELETE %}
                       <div class="form-check mt-2">
                         {{ rform.DELETE }}
-                        <label class="form-check-label" for="{{ rform.DELETE.id_for_label }}">Törlés</label>
+                        <label class="form-check-label" for="{{ rform.DELETE.id_for_label }}">Korlátozás törlése</label>
                       </div>
                     {% endif %}
                   {% endif %}
