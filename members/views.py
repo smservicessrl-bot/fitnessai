@@ -178,7 +178,12 @@ def member_profile_edit(request):
     return render(
         request,
         "members/member_profile_self.html",
-        {"form": form, "member": member, "restrictions_formset": restrictions_formset},
+        {
+            "form": form,
+            "member": member,
+            "restrictions_formset": restrictions_formset,
+            "onboarding_required": onboarding_required,
+        },
     )
 
 

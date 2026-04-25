@@ -45,28 +45,53 @@
           <div class="alert alert-danger">{{ restrictions_formset.non_form_errors }}</div>
         {% endif %}
 
-        <div class="row g-3">
+        <div id="restrictions-list" class="row g-3">
           {% for rform in restrictions_formset.forms %}
             <div class="col-12">
               <div class="card border-0 shadow-sm bg-body-tertiary">
                 <div class="card-body">
+                  {% for hidden_field in rform.hidden_fields %}
+                    {{ hidden_field }}
+                  {% endfor %}
                   {% if rform.instance.pk %}
                     <div class="text-muted small mb-2">Mentett korlátozás</div>
                   {% else %}
                     <div class="text-muted small mb-2">Új korlátozás</div>
                   {% endif %}
 
-                  {% for rf in rform.visible_fields %}
-                    <div class="mb-3">
-                      <div class="field-label">{{ rf.label }}</div>
-                      {{ rf }}
-                      {% if rf.errors %}
-                        <div class="text-danger mt-1">{{ rf.errors }}</div>
-                      {% endif %}
-                    </div>
-                  {% endfor %}
+                  <div class="mb-3">
+                    <div class="field-label">{{ rform.restriction_type.label }}</div>
+                    {{ rform.restriction_type }}
+                    {% if rform.restriction_type.errors %}
+                      <div class="text-danger mt-1">{{ rform.restriction_type.errors }}</div>
+                    {% endif %}
+                  </div>
 
-                  {% if restrictions_formset.can_delete and rform.fields.DELETE %}
+                  <div class="mb-3">
+                    <div class="field-label">{{ rform.body_area.label }}</div>
+                    {{ rform.body_area }}
+                    {% if rform.body_area.errors %}
+                      <div class="text-danger mt-1">{{ rform.body_area.errors }}</div>
+                    {% endif %}
+                  </div>
+
+                  <div class="mb-3">
+                    <div class="field-label">{{ rform.description.label }}</div>
+                    {{ rform.description }}
+                    {% if rform.description.errors %}
+                      <div class="text-danger mt-1">{{ rform.description.errors }}</div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-check mt-2">
+                    {{ rform.active }}
+                    <label class="form-check-label" for="{{ rform.active.id_for_label }}">{{ rform.active.label }}</label>
+                    {% if rform.active.errors %}
+                      <div class="text-danger mt-1">{{ rform.active.errors }}</div>
+                    {% endif %}
+                  </div>
+
+                  {% if restrictions_formset.can_delete and rform.fields.DELETE and not onboarding_required %}
                     <div class="form-check mt-2">
                       {{ rform.DELETE }}
                       <label class="form-check-label" for="{{ rform.DELETE.id_for_label }}">Korlátozás törlése</label>
@@ -78,6 +103,54 @@
           {% endfor %}
         </div>
 
+        <template id="restriction-empty-form-template">
+          <div class="col-12">
+            <div class="card border-0 shadow-sm bg-body-tertiary">
+              <div class="card-body">
+                {% for hidden_field in restrictions_formset.empty_form.hidden_fields %}
+                  {{ hidden_field }}
+                {% endfor %}
+                <div class="text-muted small mb-2">Új korlátozás</div>
+
+                <div class="mb-3">
+                  <div class="field-label">{{ restrictions_formset.empty_form.restriction_type.label }}</div>
+                  {{ restrictions_formset.empty_form.restriction_type }}
+                </div>
+
+                <div class="mb-3">
+                  <div class="field-label">{{ restrictions_formset.empty_form.body_area.label }}</div>
+                  {{ restrictions_formset.empty_form.body_area }}
+                </div>
+
+                <div class="mb-3">
+                  <div class="field-label">{{ restrictions_formset.empty_form.description.label }}</div>
+                  {{ restrictions_formset.empty_form.description }}
+                </div>
+
+                <div class="form-check mt-2">
+                  {{ restrictions_formset.empty_form.active }}
+                  <label class="form-check-label" for="{{ restrictions_formset.empty_form.active.id_for_label }}">
+                    {{ restrictions_formset.empty_form.active.label }}
+                  </label>
+                </div>
+
+                {% if restrictions_formset.can_delete and restrictions_formset.empty_form.fields.DELETE and not onboarding_required %}
+                  <div class="form-check mt-2">
+                    {{ restrictions_formset.empty_form.DELETE }}
+                    <label class="form-check-label" for="{{ restrictions_formset.empty_form.DELETE.id_for_label }}">Korlátozás törlése</label>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </template>
+
+        <div class="mt-3">
+          <button id="add-restriction-btn" type="button" class="btn btn-outline-primary">
+            + Új korlátozás hozzáadása
+          </button>
+        </div>
+
         <div class="d-flex gap-2 mt-4 flex-wrap">
           <button type="submit" class="btn btn-primary btn-lg">Mentés</button>
           <a class="btn btn-outline-danger btn-lg" href="{% url 'member_app:dashboard' %}">Mégse</a>
@@ -85,4 +158,21 @@
       </form>
     </div>
   </div>
+
+  <script>
+    (function () {
+      const addBtn = document.getElementById("add-restriction-btn");
+      const list = document.getElementById("restrictions-list");
+      const template = document.getElementById("restriction-empty-form-template");
+      const totalForms = document.getElementById("id_restrictions-TOTAL_FORMS");
+      if (!addBtn || !list || !template || !totalForms) return;
+
+      addBtn.addEventListener("click", function () {
+        const formIndex = Number(totalForms.value || "0");
+        const html = template.innerHTML.replace(/__prefix__/g, String(formIndex));
+        list.insertAdjacentHTML("beforeend", html);
+        totalForms.value = String(formIndex + 1);
+      });
+    })();
+  </script>
 {% endblock %}
