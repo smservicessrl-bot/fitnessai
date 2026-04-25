@@ -5,7 +5,7 @@
     "buildCommand": "pip install -r requirements.txt && python manage.py collectstatic --noinput"
   },
   "deploy": {
-    "startCommand": "python manage.py migrate --noinput && python manage.py create_default_superuser && gunicorn fitness.wsgi:application --bind 0.0.0.0:$PORT",
+    "startCommand": "python manage.py migrate --noinput && python manage.py seed_basic_data && python manage.py create_default_superuser && gunicorn fitness.wsgi:application --bind 0.0.0.0:$PORT",
     "healthcheckPath": "/health/",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
