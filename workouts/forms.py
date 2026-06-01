@@ -1,7 +1,22 @@
 from django import forms
+from django.utils.translation import gettext_lazy as _
 
-from members.models import UploadedWorkoutPlan
+from members.models import MemberRestriction, UploadedWorkoutPlan
 from workouts.models import WorkoutFeedback, WorkoutPlan
+
+SESSION_DURATION_CHOICES = [
+    (30, _("30 min")),
+    (45, _("45 min")),
+    (60, _("60 min")),
+    (75, _("75 min")),
+    (90, _("90 min")),
+]
+
+SESSION_INJURY_AREA_CHOICES = [
+    (value, label)
+    for value, label in MemberRestriction.BodyArea.choices
+    if value not in {MemberRestriction.BodyArea.FULL_BODY}
+]
 
 
 class WorkoutSessionInputForm(forms.ModelForm):
@@ -12,18 +27,41 @@ class WorkoutSessionInputForm(forms.ModelForm):
     not in this form.
     """
 
-    reference_workout_plan = forms.ModelChoiceField(
-        label="Inspirációs külső terv (opcionális)",
-        queryset=UploadedWorkoutPlan.objects.none(),
+    available_time = forms.TypedChoiceField(
+        label=_("Workout duration"),
+        coerce=int,
+        choices=SESSION_DURATION_CHOICES,
+        widget=forms.RadioSelect(),
+    )
+    session_injuries = forms.MultipleChoiceField(
+        label=_("Today's injuries / painful areas"),
         required=False,
-        empty_label="Nincs kiválasztva",
-        widget=forms.Select(attrs={"class": "form-select"}),
-        help_text="A rendszer ezt mint stílus-inspirációt használja, de a tervet a profilodhoz és mai paramétereidhez igazítja.",
+        choices=SESSION_INJURY_AREA_CHOICES,
+        widget=forms.CheckboxSelectMultiple(),
+        help_text=_("Applies to today's session only. Restrictions saved on your profile are pre-selected by default."),
     )
 
-    def __init__(self, *args, **kwargs):
+    reference_workout_plan = forms.ModelChoiceField(
+        label=_("External plan inspiration (optional)"),
+        queryset=UploadedWorkoutPlan.objects.none(),
+        required=False,
+        empty_label=_("None selected"),
+        widget=forms.Select(attrs={"class": "form-select"}),
+        help_text=_("The system uses this as style inspiration but tailors the plan to your profile and today's parameters."),
+    )
+
+    def __init__(self, *args, member=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["reference_workout_plan"].queryset = UploadedWorkoutPlan.objects.all().order_by("-created_at")
+        if member is not None and not self.data:
+            profile_areas = list(
+                MemberRestriction.objects.filter(member=member, active=True)
+                .values_list("body_area", flat=True)
+                .distinct()
+            )
+            self.fields["session_injuries"].initial = [
+                area for area in profile_areas if area in dict(SESSION_INJURY_AREA_CHOICES)
+            ]
 
     class Meta:
         model = WorkoutPlan
@@ -45,19 +83,17 @@ class WorkoutSessionInputForm(forms.ModelForm):
             "notes",
         ]
         labels = {
-            "session_type": "Edzés típusa",
-            "goal": "Edzés célja",
-            "available_time": "Rendelkezésre álló idő (perc)",
-            "energy_level": "Energiaszint",
-            "soreness_level": "Izomláz / fáradtság",
-            "notes": "Megjegyzések az edzéshez",
+            "session_type": _("Workout type"),
+            "goal": _("Workout goal"),
+            "energy_level": _("Intensity"),
+            "soreness_level": _("Soreness / fatigue"),
+            "notes": _("Workout notes"),
         }
         widgets = {
             "session_type": forms.HiddenInput(),  # for MVP: implied; only one choice supported
-            "goal": forms.Select(attrs={"class": "form-control"}),
-            "available_time": forms.NumberInput(attrs={"class": "form-control", "min": 10, "max": 240, "step": 5}),
+            "goal": forms.RadioSelect(),
             "energy_level": forms.RadioSelect(),
-            "soreness_level": forms.RadioSelect(),
+            "soreness_level": forms.HiddenInput(),
             "notes": forms.Textarea(attrs={"class": "form-control", "rows": 3}),
         }
 
@@ -78,11 +114,11 @@ class WorkoutFeedbackForm(forms.ModelForm):
             "feedback_notes",
         ]
         labels = {
-            "completed": "Elvégezve?",
-            "difficulty_rating": "Nehézség (1–10)",
-            "energy_after": "Energia edzés után",
-            "pain_flag": "Fájdalom ma?",
-            "feedback_notes": "Visszajelzés megjegyzések",
+            "completed": _("Completed?"),
+            "difficulty_rating": _("Difficulty (1–10)"),
+            "energy_after": _("Energy after the workout"),
+            "pain_flag": _("Any pain today?"),
+            "feedback_notes": _("Feedback notes"),
         }
         widgets = {
             "completed": forms.CheckboxInput(attrs={"class": "form-check-input"}),
@@ -95,15 +131,14 @@ class WorkoutFeedbackForm(forms.ModelForm):
 
 class WorkoutPlanQuestionForm(forms.Form):
     question = forms.CharField(
-        label="Kérdés az edzéstervről",
+        label=_("Question about the workout plan"),
         max_length=1000,
         widget=forms.Textarea(
             attrs={
                 "class": "form-control",
                 "rows": 3,
                 "id": "workout-qa-question",
-                "placeholder": "Pl.: Csinálhatom a második gyakorlatot, ha 2 hete lábsérülésem volt?",
+                "placeholder": _("E.g.: Can I do the second exercise if I had a leg injury 2 weeks ago?"),
             }
         ),
     )
-

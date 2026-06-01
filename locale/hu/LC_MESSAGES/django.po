@@ -1,0 +1,1234 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: fitnessai\n"
+"Report-Msgid-Bugs-To: \n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# ---- Navbar / auth ----
+msgid "Admin"
+msgstr "Admin"
+
+msgid "Administration"
+msgstr "Adminisztráció"
+
+msgid "My profile"
+msgstr "Profilom"
+
+msgid "Sign out"
+msgstr "Kijelentkezés"
+
+msgid "Sign in"
+msgstr "Bejelentkezés"
+
+msgid "Register"
+msgstr "Regisztráció"
+
+msgid "Close"
+msgstr "Bezárás"
+
+msgid "Language selector"
+msgstr "Nyelv kiválasztása"
+
+msgid "FitnessAI — Home"
+msgstr "FitnessAI — Kezdőlap"
+
+msgid "Workout planning and member profile — choose how you'd like to continue."
+msgstr "Edzéstervezés és tagprofil — válassz, hogyan szeretnél továbblépni."
+
+msgid "Email or phone and the 4-digit PIN — access your profile and workout plans."
+msgstr "E-mail vagy telefon, és a 4 számjegyű PIN — hozzáférés a saját profilodhoz és edzésterveidhez."
+
+msgid "Name, email or phone, and create a PIN — new member account in seconds."
+msgstr "Név, e-mail vagy telefon, és PIN létrehozása — új tagfiók pillanatok alatt."
+
+msgid "Coaches: access the member list from the admin panel or via a direct URL after signing in."
+msgstr "Edzőként a taglistát az adminisztrációból vagy közvetlen URL-lel érheted el bejelentkezés után."
+
+msgid "Don't have an account yet?"
+msgstr "Nincs még fiókod?"
+
+msgid "Already have an account?"
+msgstr "Már van fiókod?"
+
+msgid "Create account"
+msgstr "Fiók létrehozása"
+
+# ---- Workout history / detail / print / session ----
+msgid "Workout history"
+msgstr "Edzések előzményei"
+
+msgid "Member:"
+msgstr "Tag:"
+
+msgid "Back to profile"
+msgstr "Vissza a profilhoz"
+
+msgid "Start new workout"
+msgstr "Új edzés indítása"
+
+msgid "Back to member"
+msgstr "Vissza a taghoz"
+
+msgid "Plan:"
+msgstr "Terv:"
+
+msgid "Goal:"
+msgstr "Cél:"
+
+msgid "Time:"
+msgstr "Idő:"
+
+msgid "Date:"
+msgstr "Dátum:"
+
+msgid "Energy:"
+msgstr "Energia:"
+
+msgid "Soreness:"
+msgstr "Izomláz:"
+
+msgid "min"
+msgstr "perc"
+
+msgid "AI assisted"
+msgstr "MI segítséggel"
+
+msgid "Rule-based only"
+msgstr "Csak szabályalapú"
+
+msgid "AI error:"
+msgstr "MI hiba:"
+
+msgid "Details"
+msgstr "Részletek"
+
+msgid "Download PDF"
+msgstr "PDF letöltése"
+
+msgid "Download Word"
+msgstr "Word letöltése"
+
+msgid "New plan"
+msgstr "Új terv"
+
+msgid "Open PDF via QR code"
+msgstr "PDF megnyitása QR-kóddal"
+
+msgid "Scan with your camera, then choose “Save as PDF”."
+msgstr "Olvasd be a kamerával, majd válaszd a „Mentés PDF-ként” lehetőséget."
+
+msgid "QR code to the workout PDF"
+msgstr "QR-kód az edzés PDF-hez"
+
+msgid "Coach notes"
+msgstr "Edzői megjegyzések"
+
+msgid "Selected exercises: %(count)s"
+msgid_plural "Selected exercises: %(count)s"
+msgstr[0] "Kiválasztott gyakorlatok: %(count)s"
+msgstr[1] "Kiválasztott gyakorlatok: %(count)s"
+
+msgid "No exercises were saved for this plan."
+msgstr "Ehhez a tervhez nem kerültek gyakorlatok mentésre."
+
+msgid "No workout plans yet. Start a workout to create your first plan."
+msgstr "Még nincs edzésterv. Indíts egy edzést az első terv létrehozásához."
+
+msgid "Workout plan details"
+msgstr "Edzésterv részletei"
+
+msgid "Printer friendly"
+msgstr "Nyomtatóbarát"
+
+msgid "Back to history"
+msgstr "Vissza az előzményekhez"
+
+msgid "Open on your phone"
+msgstr "Megnyitás telefonon"
+
+msgid "Scan the QR code to open this workout plan on your phone."
+msgstr "Olvasd be a QR-kódot, hogy megnyisd ezt az edzéstervet a telefonodon."
+
+msgid "Open PDF"
+msgstr "PDF megnyitása"
+
+msgid "Duration:"
+msgstr "Időtartam:"
+
+msgid "AI assist:"
+msgstr "MI segítség:"
+
+msgid "Yes"
+msgstr "Igen"
+
+msgid "No"
+msgstr "Nem"
+
+msgid "Exercises:"
+msgstr "Gyakorlatok:"
+
+msgid "Coach notes:"
+msgstr "Edzői megjegyzések:"
+
+msgid "Ask about the workout plan"
+msgstr "Kérdezz az edzéstervről"
+
+msgid "Dictate question (microphone)"
+msgstr "Kérdés diktálása (mikrofon)"
+
+msgid "Dictate question using the microphone"
+msgstr "Kérdés diktálása mikrofonnal"
+
+msgid "Dictate"
+msgstr "Diktálás"
+
+msgid "Your browser does not support speech recognition on this page. Try <strong>Chrome</strong> or <strong>Edge</strong> (desktop or Android), allow microphone access, and use <strong>https</strong> or <strong>localhost</strong>. In the meantime, type your question with the keyboard."
+msgstr "A böngésző nem támogatja a beszédfelismerést ezen az oldalon. Próbáld <strong>Chrome</strong> vagy <strong>Edge</strong> böngészőt (asztali vagy Android), engedélyezd a mikrofont, és használj <strong>https</strong> vagy <strong>localhost</strong> címet. Addig írd be a kérdést billentyűzettel."
+
+msgid "Submit question"
+msgstr "Kérdés küldése"
+
+msgid "Safety notice: for injury-related questions, always consult a trainer or a doctor."
+msgstr "Biztonsági figyelmeztetés: sérüléssel kapcsolatos kérdésnél mindig egyeztess edzővel vagy orvossal."
+
+msgid "Question and answer history"
+msgstr "Kérdés-válasz előzmények"
+
+msgid "Q:"
+msgstr "K:"
+
+msgid "A:"
+msgstr "V:"
+
+msgid "source:"
+msgstr "forrás:"
+
+msgid "unknown"
+msgstr "ismeretlen"
+
+msgid "Read-aloud controls"
+msgstr "Felolvasás vezérlés"
+
+msgid "Previous / Play / Next exercise."
+msgstr "Előző / Lejátszás / Következő gyakorlat."
+
+msgid "Previous exercise"
+msgstr "Előző gyakorlat"
+
+msgid "Play or stop"
+msgstr "Lejátszás vagy megállítás"
+
+msgid "Play"
+msgstr "Lejátszás"
+
+msgid "Stop"
+msgstr "Megállítás"
+
+msgid "Next exercise"
+msgstr "Következő gyakorlat"
+
+msgid "Previous"
+msgstr "Előző"
+
+msgid "Next"
+msgstr "Következő"
+
+msgid "Warm-up"
+msgstr "Bemelegítés"
+
+msgid "Exercise"
+msgstr "Gyakorlat"
+
+msgid "Sets"
+msgstr "Sorozatok"
+
+msgid "Reps"
+msgstr "Ismétlések"
+
+msgid "Rest"
+msgstr "Pihenő"
+
+msgid "Tempo"
+msgstr "Tempó"
+
+msgid "Audio"
+msgstr "Hang"
+
+msgid "s"
+msgstr "mp"
+
+msgid "Warm-up."
+msgstr "Bemelegítés."
+
+msgid "sets,"
+msgstr "sorozat,"
+
+msgid "reps,"
+msgstr "ismétlés,"
+
+msgid "seconds of rest."
+msgstr "másodperc pihenő."
+
+msgid "Tempo:"
+msgstr "Tempó:"
+
+msgid "not set"
+msgstr "nincs megadva"
+
+msgid "Read this row aloud"
+msgstr "Sor felolvasása"
+
+msgid "Main block + accessory"
+msgstr "Fő blokk + kiegészítő"
+
+msgid "Notes"
+msgstr "Megjegyzések"
+
+msgid "Main block."
+msgstr "Fő blokk."
+
+msgid "Note:"
+msgstr "Megjegyzés:"
+
+msgid "none"
+msgstr "nincs"
+
+msgid "Cool-down"
+msgstr "Levezetés"
+
+msgid "Cool-down."
+msgstr "Levezetés."
+
+msgid "There are no saved exercises for this plan."
+msgstr "Ehhez a tervhez nincsenek mentett gyakorlatok."
+
+msgid "Listening… speak now."
+msgstr "Hallgatlak… beszélj most."
+
+msgid "Could not start the microphone."
+msgstr "Nem sikerült elindítani a mikrofont."
+
+msgid "This browser does not support speech recognition. Use Chrome or Edge, or type your question."
+msgstr "Ez a böngésző nem ad beszédfelismerést. Használj Chrome-ot vagy Edge-et, vagy írj gépeléssel."
+
+msgid "Error:"
+msgstr "Hiba:"
+
+msgid "Workout"
+msgstr "Edzés"
+
+msgid "Generating workout plan"
+msgstr "Edzésterv készül"
+
+msgid "In progress"
+msgstr "Folyamatban"
+
+msgid "Setting up the rack…"
+msgstr "Állvány előkészítése…"
+
+msgid "Preparing equipment and order"
+msgstr "Eszközök és sorrend előkészítése"
+
+msgid "New workout"
+msgstr "Új edzés"
+
+msgid "Back"
+msgstr "Vissza"
+
+msgid "Let's plan today's workout"
+msgstr "Tervezzük meg a mai edzést"
+
+msgid "Set the focus, time, and intensity — leave the rest to us."
+msgstr "Állítsd be a fókuszt, az időt és az intenzitást — a többit ránk bízhatod."
+
+msgid "Default workout time: <strong>%(minutes)s min</strong>"
+msgstr "Alapértelmezett edzésidő: <strong>%(minutes)s perc</strong>"
+
+msgid "Workout goal"
+msgstr "Edzés célja"
+
+msgid "What is the main focus of today's workout?"
+msgstr "Mi a mai edzés fő fókusza?"
+
+msgid "Heavy compound lifts, longer rest"
+msgstr "Nehéz alapgyakorlatok, hosszabb pihenő"
+
+msgid "Volume, muscle mass growth"
+msgstr "Térfogat, izomtömeg növelése"
+
+msgid "Flow, short rests, high heart rate"
+msgstr "Áramlás, rövid pihenők, magas pulzus"
+
+msgid "Mobility, stability, safety"
+msgstr "Mobilitás, stabilitás, biztonság"
+
+msgid "Balanced general progression"
+msgstr "Kiegyensúlyozott, általános fejlődés"
+
+msgid "Strength"
+msgstr "Erő"
+
+msgid "Compounds"
+msgstr "Alapgyak."
+
+msgid "Volume"
+msgstr "Volumen"
+
+msgid "Form"
+msgstr "Forma"
+
+msgid "Cardio"
+msgstr "Kondi"
+
+msgid "Burn"
+msgstr "Égetés"
+
+msgid "Mobility"
+msgstr "Mobilitás"
+
+msgid "Stability"
+msgstr "Stabilitás"
+
+msgid "Mixed"
+msgstr "Vegyes"
+
+msgid "Balanced"
+msgstr "Kiegyensúlyozott"
+
+msgid "Duration"
+msgstr "Időtartam"
+
+msgid "How much time do you have for the workout today?"
+msgstr "Mennyi időd van ma az edzésre?"
+
+msgid "Quick, focused"
+msgstr "Gyors, fókuszált"
+
+msgid "Efficient"
+msgstr "Hatékony"
+
+msgid "Classic"
+msgstr "Klasszikus"
+
+msgid "Detailed"
+msgstr "Részletes"
+
+msgid "Full program"
+msgstr "Teljes program"
+
+msgid "Intensity"
+msgstr "Intenzitás"
+
+msgid "How fresh do you feel today?"
+msgstr "Mennyire érzed magad frissnek ma?"
+
+msgid "Lighter load, smaller volume"
+msgstr "Könnyebb terhelés, kisebb volumen"
+
+msgid "Full effort, high volume"
+msgstr "Teljes erőbedobás, magas volumen"
+
+msgid "Balanced, moderate load"
+msgstr "Kiegyensúlyozott, közepes terhelés"
+
+msgid "Injuries, pain"
+msgstr "Sérülések, fájdalom"
+
+msgid "Restrictions that apply to today's session only."
+msgstr "Mai napra szóló korlátozások."
+
+msgid "More settings"
+msgstr "További beállítások"
+
+msgid "Optional context for the planner."
+msgstr "Opcionális kontextus a tervezéshez."
+
+msgid "Generation takes a few seconds; you'll see live status."
+msgstr "A generálás pár másodperc, közben élő státusz jelenik meg."
+
+msgid "Generate workout plan"
+msgstr "Edzésterv generálása"
+
+msgid "Warming up the engine…"
+msgstr "Motor bemelegítése…"
+
+msgid "Calculating workout structure"
+msgstr "Edzés felépítésének kiszámítása"
+
+msgid "Selecting movements…"
+msgstr "Mozgások kiválasztása…"
+
+msgid "Matching muscle groups to your goal"
+msgstr "Izomcsoportok és cél összhangja"
+
+msgid "Building blocks…"
+msgstr "Blokkok építése…"
+
+msgid "Warm-up, main work, cool-down"
+msgstr "Bemelegítés, fő sorozat, levezetés"
+
+msgid "Tuning sets and reps…"
+msgstr "Sorozatok és ismétlések hangolása…"
+
+msgid "Adjusting rest and tempo"
+msgstr "Pihenő és tempó beállítása"
+
+msgid "Finalizing the plan…"
+msgstr "Terv véglegesítése…"
+
+msgid "Saving — almost done"
+msgstr "Mentés — hamarosan kész"
+
+msgid "Workout plan print — %(name)s"
+msgstr "Edzésterv nyomtatás — %(name)s"
+
+msgid "Print"
+msgstr "Nyomtatás"
+
+msgid "Back to details"
+msgstr "Vissza a részletekhez"
+
+msgid "Workout plan"
+msgstr "Edzésterv"
+
+msgid "Plan ID"
+msgstr "Terv azonosító"
+
+# ---- Member dashboard ----
+msgid "Welcome, %(name)s!"
+msgstr "Üdv, %(name)s!"
+
+msgid "Phone:"
+msgstr "Telefon:"
+
+msgid "Email:"
+msgstr "E-mail:"
+
+msgid "Edit profile"
+msgstr "Profil szerkesztése"
+
+msgid "New workout plan"
+msgstr "Új edzésterv"
+
+msgid "Profile summary"
+msgstr "Profil röviden"
+
+msgid "Age:"
+msgstr "Életkor:"
+
+msgid "years"
+msgstr "év"
+
+msgid "Level:"
+msgstr "Szint:"
+
+msgid "Workouts per week:"
+msgstr "Hetente edzés:"
+
+msgid "Preferred time:"
+msgstr "Preferált idő:"
+
+msgid "Workout plans"
+msgstr "Edzéstervek"
+
+msgid "AI"
+msgstr "MI"
+
+msgid "All history and PDFs"
+msgstr "Összes előzmény és PDF"
+
+msgid "No workout plans yet. Click the “New workout plan” button to get started."
+msgstr "Még nincs edzésterv. Kattints az „Új edzésterv” gombra a kezdéshez."
+
+# ---- Member list ----
+msgid "Members"
+msgstr "Tagok"
+
+msgid "New member"
+msgstr "Új tag"
+
+msgid "Sex:"
+msgstr "Nem:"
+
+msgid "Preferred:"
+msgstr "Preferált:"
+
+msgid "Edit"
+msgstr "Szerkesztés"
+
+msgid "History"
+msgstr "Előzmények"
+
+msgid "Export PDF"
+msgstr "PDF export"
+
+msgid "Export Word"
+msgstr "Word export"
+
+msgid "Start workout"
+msgstr "Edzés indítása"
+
+msgid "Created:"
+msgstr "Létrehozva:"
+
+msgid "No members yet. Create one to start workouts."
+msgstr "Még nincs tag. Hozz létre egyet az edzések indításához."
+
+# ---- Equipment list ----
+msgid "Equipment"
+msgstr "Eszközök"
+
+msgid "Gym equipment"
+msgstr "Edzőtermi eszközök"
+
+msgid "Add new equipment"
+msgstr "Új eszköz hozzáadása"
+
+msgid "Any new equipment name can be added — not only those from the predefined list."
+msgstr "Bármilyen új eszköz nevet felvehetsz, nem csak az előre definiált listából."
+
+msgid "Add"
+msgstr "Hozzáadás"
+
+msgid "Available equipment"
+msgstr "Elérhető eszközök"
+
+msgid "Delete"
+msgstr "Törlés"
+
+msgid "No equipment added yet."
+msgstr "Még nincs rögzített eszköz."
+
+# ---- Uploaded plans ----
+msgid "Uploaded plans"
+msgstr "Feltöltött tervek"
+
+msgid "External workout plans (PDF)"
+msgstr "Külső edzéstervek (PDF)"
+
+msgid "Upload new PDF"
+msgstr "Új PDF feltöltése"
+
+msgid "Upload PDF"
+msgstr "PDF feltöltése"
+
+msgid "Uploaded files"
+msgstr "Feltöltött fájlok"
+
+msgid "Source:"
+msgstr "Forrás:"
+
+msgid "Uploaded:"
+msgstr "Feltöltve:"
+
+msgid "Open"
+msgstr "Megnyitás"
+
+msgid "No uploaded PDFs yet."
+msgstr "Nincs még feltöltött PDF."
+
+# ---- Admin dashboard ----
+msgid "Admin dashboard"
+msgstr "Admin felület"
+
+msgid "Dashboard"
+msgstr "Dashboard"
+
+msgid "Total members"
+msgstr "Összes tag"
+
+msgid "+%(n)s in the last 30 days"
+msgstr "+%(n)s az elmúlt 30 napban"
+
+msgid "Total workout plans"
+msgstr "Összes edzésterv"
+
+msgid "+%(n)s in the last 7 days"
+msgstr "+%(n)s az elmúlt 7 napban"
+
+msgid "Active exercises"
+msgstr "Aktív gyakorlatok"
+
+msgid "Library size"
+msgstr "Könyvtár méret"
+
+msgid "Registered equipment"
+msgstr "Rögzített eszközök"
+
+msgid "Uploaded PDF plans"
+msgstr "Feltöltött PDF tervek"
+
+msgid "Recent members"
+msgstr "Legújabb tagok"
+
+msgid "No members yet."
+msgstr "Még nincs tag."
+
+msgid "Recent plans"
+msgstr "Legújabb tervek"
+
+msgid "No plans yet."
+msgstr "Még nincs terv."
+
+# ---- Exercise form ----
+msgid "New exercise"
+msgstr "Új gyakorlat"
+
+msgid "Add exercise"
+msgstr "Gyakorlat hozzáadása"
+
+msgid "Save"
+msgstr "Mentés"
+
+msgid "Recently added exercises"
+msgstr "Legutóbb hozzáadott gyakorlatok"
+
+msgid "No exercises recorded yet."
+msgstr "Még nincs rögzített gyakorlat."
+
+# ---- Member form ----
+msgid "Member"
+msgstr "Tag"
+
+msgid "Edit member"
+msgstr "Tag szerkesztése"
+
+msgid "Restrictions"
+msgstr "Korlátozások"
+
+msgid "Add conditions that should be taken into account when generating workout plans."
+msgstr "Add meg azokat az állapotokat, amelyeket az edzésterv készítésekor figyelembe kell venni."
+
+msgid "Optional"
+msgstr "Opcionális"
+
+msgid "Saved restriction"
+msgstr "Mentett korlátozás"
+
+msgid "New restriction"
+msgstr "Új korlátozás"
+
+msgid "Delete restriction"
+msgstr "Korlátozás törlése"
+
+msgid "Save member"
+msgstr "Tag mentése"
+
+msgid "Cancel"
+msgstr "Mégse"
+
+msgid "Add medical or movement-related factors to consider when generating workouts."
+msgstr "Add meg azokat az egészségügyi vagy mozgásbeli tényezőket, amelyeket az edzéstervezésnél figyelembe kell venni."
+
+msgid "Add new restriction"
+msgstr "Új korlátozás hozzáadása"
+
+# ---- Forms (labels / help_text) ----
+msgid "Workout duration"
+msgstr "Edzés időtartama"
+
+msgid "Today's injuries / painful areas"
+msgstr "Mai sérülések / fájdalmas területek"
+
+msgid "Applies to today's session only. Restrictions saved on your profile are pre-selected by default."
+msgstr "Csak a mai edzésre vonatkozik. A profilodban mentett korlátozások alapértelmezetten be vannak jelölve."
+
+msgid "External plan inspiration (optional)"
+msgstr "Inspirációs külső terv (opcionális)"
+
+msgid "None selected"
+msgstr "Nincs kiválasztva"
+
+msgid "The system uses this as style inspiration but tailors the plan to your profile and today's parameters."
+msgstr "A rendszer ezt mint stílus-inspirációt használja, de a tervet a profilodhoz és mai paramétereidhez igazítja."
+
+msgid "Workout type"
+msgstr "Edzés típusa"
+
+msgid "Soreness / fatigue"
+msgstr "Izomláz / fáradtság"
+
+msgid "Workout notes"
+msgstr "Megjegyzések az edzéshez"
+
+msgid "Completed?"
+msgstr "Elvégezve?"
+
+msgid "Difficulty (1–10)"
+msgstr "Nehézség (1–10)"
+
+msgid "Energy after the workout"
+msgstr "Energia edzés után"
+
+msgid "Any pain today?"
+msgstr "Fájdalom ma?"
+
+msgid "Feedback notes"
+msgstr "Visszajelzés megjegyzések"
+
+msgid "Question about the workout plan"
+msgstr "Kérdés az edzéstervről"
+
+msgid "E.g.: Can I do the second exercise if I had a leg injury 2 weeks ago?"
+msgstr "Pl.: Csinálhatom a második gyakorlatot, ha 2 hete lábsérülésem volt?"
+
+msgid "Full name"
+msgstr "Teljes név"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Age (years)"
+msgstr "Életkor (év)"
+
+msgid "Sex"
+msgstr "Nem"
+
+msgid "Height (cm)"
+msgstr "Magasság (cm)"
+
+msgid "Weight (kg)"
+msgstr "Testsúly (kg)"
+
+msgid "Training level"
+msgstr "Edzettségi szint"
+
+msgid "Primary goal"
+msgstr "Elsődleges cél"
+
+msgid "Preferred workout duration (min)"
+msgstr "Preferált edzés hossza (perc)"
+
+msgid "How often do you train per week?"
+msgstr "Hetente hányszor edzel?"
+
+msgid "This phone number already belongs to another profile."
+msgstr "Ez a telefonszám már egy másik profilhoz tartozik."
+
+msgid "Restriction type"
+msgstr "Korlátozás típusa"
+
+msgid "Body area"
+msgstr "Testtáj"
+
+msgid "Description / note"
+msgstr "Leírás / megjegyzés"
+
+msgid "Active"
+msgstr "Aktív"
+
+msgid "New equipment name"
+msgstr "Új eszköz neve"
+
+msgid "E.g.: TRX, battle rope, sled"
+msgstr "Pl.: TRX, battle rope, sled"
+
+msgid "Please provide an equipment name."
+msgstr "Adj meg egy eszköznevet."
+
+msgid "Exercise name"
+msgstr "Gyakorlat neve"
+
+msgid "Category"
+msgstr "Kategória"
+
+msgid "Primary muscle group"
+msgstr "Elsődleges izomcsoport"
+
+msgid "Secondary muscle groups (comma-separated)"
+msgstr "Másodlagos izomcsoportok (vesszővel elválasztva)"
+
+msgid "Difficulty"
+msgstr "Nehézség"
+
+msgid "Contraindications"
+msgstr "Ellenjavallatok"
+
+msgid "Execution instructions"
+msgstr "Végrehajtási instrukciók"
+
+msgid "Invalid muscle group(s): %(items)s"
+msgstr "Érvénytelen izomcsoport(ok): %(items)s"
+
+msgid "Plan title"
+msgstr "Terv címe"
+
+msgid "Source (e.g. athlete's name)"
+msgstr "Forrás (pl. sportoló neve)"
+
+msgid "PDF file"
+msgstr "PDF fájl"
+
+msgid "E.g.: Arnold chest day"
+msgstr "Pl.: Arnold chest day"
+
+msgid "E.g.: Arnold Schwarzenegger"
+msgstr "Pl.: Arnold Schwarzenegger"
+
+msgid "Please select a PDF file."
+msgstr "Válassz ki egy PDF fájlt."
+
+msgid "Only PDF files can be uploaded."
+msgstr "Csak PDF formátum tölthető fel."
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Phone (optional)"
+msgstr "Telefon (opcionális)"
+
+msgid "PIN (4 digits)"
+msgstr "PIN (4 számjegy)"
+
+msgid "Confirm PIN"
+msgstr "PIN megerősítése"
+
+msgid "The PINs do not match."
+msgstr "A PIN nem egyezik."
+
+msgid "PIN must be exactly 4 digits."
+msgstr "A PIN pontosan 4 számjegy legyen."
+
+msgid "This email address is already registered."
+msgstr "Ez az e-mail cím már regisztrálva van."
+
+msgid "This phone number is already registered."
+msgstr "Ez a telefonszám már regisztrálva van."
+
+msgid "Email, phone or username"
+msgstr "E-mail, telefon vagy felhasználónév"
+
+msgid "PIN or password"
+msgstr "PIN vagy jelszó"
+
+# ---- Models: choices / verbose names ----
+msgid "Female"
+msgstr "Nő"
+
+msgid "Male"
+msgstr "Férfi"
+
+msgid "Not specified"
+msgstr "Nincs megadva"
+
+msgid "Beginner"
+msgstr "Kezdő"
+
+msgid "Intermediate"
+msgstr "Középhaladó"
+
+msgid "Advanced"
+msgstr "Haladó"
+
+msgid "Hypertrophy"
+msgstr "Izomtömeg"
+
+msgid "Fat loss"
+msgstr "Zsírégetés"
+
+msgid "General fitness"
+msgstr "Általános kondíció"
+
+msgid "Rehab / prevention"
+msgstr "Rehabilitáció / megelőzés"
+
+msgid "1–2 days"
+msgstr "1–2 nap"
+
+msgid "3–4 days"
+msgstr "3–4 nap"
+
+msgid "5–7 days"
+msgstr "5–7 nap"
+
+msgid "Avoid"
+msgstr "Kerülendő"
+
+msgid "Limit"
+msgstr "Korlátozás"
+
+msgid "Modify"
+msgstr "Módosítás"
+
+msgid "Note"
+msgstr "Megjegyzés"
+
+msgid "Full body"
+msgstr "Teljes test"
+
+msgctxt "body area"
+msgid "Back"
+msgstr "Hát"
+
+msgid "Chest"
+msgstr "Mell"
+
+msgid "Shoulders"
+msgstr "Váll"
+
+msgid "Arms"
+msgstr "Kar"
+
+msgid "Hips"
+msgstr "Csípő"
+
+msgid "Knees"
+msgstr "Térd"
+
+msgid "Ankles"
+msgstr "Boka"
+
+msgid "Core"
+msgstr "Törzs"
+
+msgid "Other"
+msgstr "Egyéb"
+
+msgid "Member profile"
+msgstr "Tag profil"
+
+msgid "Member profiles"
+msgstr "Tag profilok"
+
+msgid "Member restriction"
+msgstr "Tag korlátozás"
+
+msgid "Member restrictions"
+msgstr "Tag korlátozások"
+
+msgid "Uploaded workout plan"
+msgstr "Feltöltött edzésterv"
+
+msgid "Uploaded workout plans"
+msgstr "Feltöltött edzéstervek"
+
+msgid "Gym (single day)"
+msgstr "Konditerem (egy nap)"
+
+msgid "Low"
+msgstr "Alacsony"
+
+msgid "Medium"
+msgstr "Közepes"
+
+msgid "High"
+msgstr "Magas"
+
+msgid "None"
+msgstr "Nincs"
+
+msgid "Mild"
+msgstr "Enyhe"
+
+msgid "Moderate"
+msgstr "Közepes"
+
+msgid "Severe"
+msgstr "Erős"
+
+msgid "Main work"
+msgstr "Fő munka"
+
+msgid "Workout exercise"
+msgstr "Edzés gyakorlat"
+
+msgid "Workout exercises"
+msgstr "Edzés gyakorlatok"
+
+msgid "Workout feedback"
+msgstr "Edzés visszajelzés"
+
+msgid "Workout feedback entries"
+msgstr "Edzés visszajelzések"
+
+msgid "Workout plan question"
+msgstr "Edzésterv kérdés"
+
+msgid "Workout plan questions"
+msgstr "Edzésterv kérdések"
+
+msgid "User who created the plan (coach / staff)."
+msgstr "A tervet létrehozó felhasználó (edző / személyzet)."
+
+msgid "Available time for the workout in minutes."
+msgstr "Az edzésre fordítható idő percben."
+
+msgid "Planner engine log / debug context (filtered data only)."
+msgstr "A tervezőmotor által használt napló / hibakeresési kontextus (csak szűrt adat)."
+
+msgid "Full validated workout proposal (warm-up / main / accessory / cool-down). When set, this is the source of truth."
+msgstr "Teljes, érvényesített edzésjavaslat (bemelegítés / főblokk / kiegészítő / levezetés). Ha ki van töltve, ez az igazság forrása."
+
+msgid "Slugs of exercises in the plan in order (used for repetition control and fast counting)."
+msgstr "A tervben szereplő gyakorlatok slug-jai sorrendben (ismétlődés és gyors számlálás)."
+
+msgid "Display / execution order within the plan."
+msgstr "Megjelenítési / végrehajtási sorrend a terven belül."
+
+msgid "Reps (e.g. “8–12”, “10”, “time:45 s”)."
+msgstr "Ismétlések (pl. „8–12”, „10”, „idő:45 mp”)."
+
+msgid "Tempo (e.g. “2-0-2”)."
+msgstr "Tempó (pl. „2-0-2”)."
+
+msgid "Subjective difficulty (e.g. 1–10)."
+msgstr "Szubjektív nehézség (pl. 1–10)."
+
+msgid "Whether the member reported pain that should adjust the plan."
+msgstr "A tag fájdalmat jelzett-e, ami miatt módosítani kell a tervet."
+
+msgid "Optional link to the member's Django user."
+msgstr "Opcionális kapcsolat a tag Django-felhasználójához."
+
+msgid "Displayed phone number (member's own account or provided by the coach)."
+msgstr "Megjelenített telefonszám (tag saját fiókja vagy edző által megadva)."
+
+msgid "Digits only (for consistent search); empty when no phone is set."
+msgstr "Csak számjegyek (egységes kereséshez); üres, ha nincs telefon."
+
+msgid "Member age in years."
+msgstr "A tag életkora években."
+
+msgid "Height in centimeters."
+msgstr "Magasság centiméterben."
+
+msgid "Body weight in kilograms."
+msgstr "Testsúly kilogrammban."
+
+msgid "Preferred workout duration in minutes (planning signal)."
+msgstr "Preferált edzésidő percben (tervezési jelzés)."
+
+msgid "Weekly workout frequency (estimate)."
+msgstr "Heti edzésszám (becslés)."
+
+msgid "Higher-priority substitutions take precedence."
+msgstr "Magasabb prioritású helyettesítések előnyben."
+
+msgid "Exercise substitution"
+msgstr "Gyakorlat helyettesítés"
+
+msgid "Exercise substitutions"
+msgstr "Gyakorlat helyettesítések"
+
+msgid "Exercises"
+msgstr "Gyakorlatok"
+
+msgid "Barbell"
+msgstr "Rúd"
+
+msgid "Dumbbell"
+msgstr "Súlyzó"
+
+msgid "Kettlebell"
+msgstr "Kettlebell"
+
+msgid "Machine"
+msgstr "Gép"
+
+msgid "Cable"
+msgstr "Kábel"
+
+msgid "Resistance band"
+msgstr "Ellenállási szalag"
+
+msgid "Bodyweight"
+msgstr "Saját testsúly"
+
+msgid "Cardio machine"
+msgstr "Kardió gép"
+
+msgid "Biceps"
+msgstr "Bicepsz"
+
+msgid "Triceps"
+msgstr "Tricepsz"
+
+msgid "Quadriceps"
+msgstr "Combizom"
+
+msgid "Hamstrings"
+msgstr "Comhajlítók"
+
+msgid "Glutes"
+msgstr "Farizom"
+
+msgid "Calves"
+msgstr "Vádli"
+
+msgid "FitnessAI administration"
+msgstr "FitnessAI adminisztráció"
+
+msgid "Home"
+msgstr "Kezdőlap"
+
+# ---- View messages ----
+msgid "Registration successful."
+msgstr "Sikeres regisztráció."
+
+msgid "Too many failed attempts. Please try again later."
+msgstr "Túl sok sikertelen próbálkozás. Próbáld újra később."
+
+msgid "Signed in successfully."
+msgstr "Sikeres bejelentkezés."
+
+msgid "Invalid email/phone or PIN."
+msgstr "Hibás e-mail/telefon vagy PIN."
+
+msgid "You have been signed out."
+msgstr "Kijelentkeztél."
+
+msgid "No member profile is linked to this account."
+msgstr "Nincs tagprofil ehhez a fiókhoz."
+
+msgid "Profile saved."
+msgstr "Profil mentve."
+
+msgid "Equipment added to the available list."
+msgstr "Eszköz hozzáadva az elérhető listához."
+
+msgid "This equipment is already in the list."
+msgstr "Ez az eszköz már szerepel a listában."
+
+msgid "Equipment deleted."
+msgstr "Eszköz törölve."
+
+msgid "Exercise '%(name)s' created."
+msgstr "'%(name)s' gyakorlat létrehozva."
+
+msgid "Workout plan PDF uploaded."
+msgstr "PDF edzésterv feltöltve."
+
+msgid "Uploaded PDF deleted."
+msgstr "Feltöltött PDF törölve."
+
+msgid "Please fill in your profile before creating your first workout plan."
+msgstr "Először töltsd ki a profilodat az első edzésterv előtt."
+
+msgid "Please enter a valid question."
+msgstr "Kérlek, írj be egy érvényes kérdést."
+
+msgid "Answer is ready."
+msgstr "Válasz elkészült."
+
+msgid "The OpenAI API key is not configured in production, so a rule-based plan was created."
+msgstr "Az OpenAI API kulcs nincs beállítva a production környezetben, ezért szabályalapú terv készült."
+
+# ---- Session duration choices ----
+msgid "30 min"
+msgstr "30 perc"
+
+msgid "45 min"
+msgstr "45 perc"
+
+msgid "60 min"
+msgstr "60 perc"
+
+msgid "75 min"
+msgstr "75 perc"
+
+msgid "90 min"
+msgstr "90 perc"

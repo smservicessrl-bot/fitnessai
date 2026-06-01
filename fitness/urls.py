@@ -19,12 +19,13 @@ from django.http import HttpResponse
 from django.urls import include, path, re_path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.utils.translation import gettext_lazy as _
 
 from accounts import views as account_views
 
-admin.site.site_header = "FitnessAI adminisztráció"
+admin.site.site_header = _("FitnessAI administration")
 admin.site.site_title = "FitnessAI"
-admin.site.index_title = "Kezdőlap"
+admin.site.index_title = _("Home")
 
 
 def health_check(_request):
@@ -35,6 +36,8 @@ urlpatterns = [
     path("health/", health_check, name="health"),
     # Backward compatibility for previously configured health check path.
     re_path(r"^healthz/?$", health_check, name="healthz"),
+    # Django's set_language view (POST a `language` field + `next` URL).
+    path("i18n/", include("django.conf.urls.i18n")),
     path("", account_views.landing, name="home"),
     path("accounts/", include("accounts.urls")),
     path("app/", include("members.app_urls")),

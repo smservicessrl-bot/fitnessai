@@ -1,5 +1,6 @@
 from django import forms
 from django.utils.text import slugify
+from django.utils.translation import gettext_lazy as _
 
 from exercises.models import Exercise
 from members.models import GymEquipment, MemberProfile, MemberRestriction, UploadedWorkoutPlan
@@ -29,17 +30,17 @@ class MemberProfileForm(forms.ModelForm):
             "notes",
         ]
         labels = {
-            "full_name": "Teljes név",
-            "phone": "Telefon",
-            "age": "Életkor (év)",
-            "sex": "Nem",
-            "height_cm": "Magasság (cm)",
-            "weight_kg": "Testsúly (kg)",
-            "training_level": "Edzettségi szint",
-            "primary_goal": "Elsődleges cél",
-            "preferred_session_duration": "Preferált edzés hossza (perc)",
-            "weekly_workout_frequency": "Hetente hányszor edzel?",
-            "notes": "Megjegyzések",
+            "full_name": _("Full name"),
+            "phone": _("Phone"),
+            "age": _("Age (years)"),
+            "sex": _("Sex"),
+            "height_cm": _("Height (cm)"),
+            "weight_kg": _("Weight (kg)"),
+            "training_level": _("Training level"),
+            "primary_goal": _("Primary goal"),
+            "preferred_session_duration": _("Preferred workout duration (min)"),
+            "weekly_workout_frequency": _("How often do you train per week?"),
+            "notes": _("Notes"),
         }
         widgets = {
             "full_name": forms.TextInput(attrs={"class": "form-control", "autocomplete": "name"}),
@@ -64,7 +65,7 @@ class MemberProfileForm(forms.ModelForm):
             if self.instance and self.instance.pk:
                 qs = qs.exclude(pk=self.instance.pk)
             if qs.exists():
-                self.add_error("phone", "Ez a telefonszám már egy másik profilhoz tartozik.")
+                self.add_error("phone", _("This phone number already belongs to another profile."))
         return cleaned
 
 
@@ -79,10 +80,10 @@ class MemberRestrictionForm(forms.ModelForm):
         exclude = ["member", "created_at"]
         fields = ["restriction_type", "body_area", "description", "active"]
         labels = {
-            "restriction_type": "Korlátozás típusa",
-            "body_area": "Testtáj",
-            "description": "Leírás / megjegyzés",
-            "active": "Aktív",
+            "restriction_type": _("Restriction type"),
+            "body_area": _("Body area"),
+            "description": _("Description / note"),
+            "active": _("Active"),
         }
         widgets = {
             "restriction_type": forms.Select(attrs={"class": "form-control"}),
@@ -96,12 +97,12 @@ class EquipmentForm(forms.ModelForm):
     class Meta:
         model = GymEquipment
         fields = ["equipment"]
-        labels = {"equipment": "Új eszköz neve"}
+        labels = {"equipment": _("New equipment name")}
         widgets = {
             "equipment": forms.TextInput(
                 attrs={
                     "class": "form-control",
-                    "placeholder": "Pl.: TRX, battle rope, sled",
+                    "placeholder": _("E.g.: TRX, battle rope, sled"),
                 }
             )
         }
@@ -109,7 +110,7 @@ class EquipmentForm(forms.ModelForm):
     def clean_equipment(self):
         value = (self.cleaned_data.get("equipment") or "").strip()
         if not value:
-            raise forms.ValidationError("Adj meg egy eszköznevet.")
+            raise forms.ValidationError(_("Please provide an equipment name."))
         return " ".join(value.split())
 
 
@@ -128,15 +129,15 @@ class ExerciseCreateForm(forms.ModelForm):
             "active",
         ]
         labels = {
-            "name": "Gyakorlat neve",
-            "category": "Kategória",
-            "primary_muscle": "Elsődleges izomcsoport",
-            "secondary_muscles": "Másodlagos izomcsoportok (vesszővel elválasztva)",
-            "equipment": "Eszköz",
-            "difficulty": "Nehézség",
-            "contraindications": "Ellenjavallatok",
-            "instructions": "Végrehajtási instrukciók",
-            "active": "Aktív",
+            "name": _("Exercise name"),
+            "category": _("Category"),
+            "primary_muscle": _("Primary muscle group"),
+            "secondary_muscles": _("Secondary muscle groups (comma-separated)"),
+            "equipment": _("Equipment"),
+            "difficulty": _("Difficulty"),
+            "contraindications": _("Contraindications"),
+            "instructions": _("Execution instructions"),
+            "active": _("Active"),
         }
         widgets = {
             "name": forms.TextInput(attrs={"class": "form-control"}),
@@ -156,11 +157,11 @@ class ExerciseCreateForm(forms.ModelForm):
             return value
         if not value:
             return []
-        allowed = {choice for choice, _ in Exercise.MuscleGroup.choices}
+        allowed = {choice for choice, _label in Exercise.MuscleGroup.choices}
         parsed = [segment.strip() for segment in str(value).split(",") if segment.strip()]
         invalid = [item for item in parsed if item not in allowed]
         if invalid:
-            raise forms.ValidationError("Érvénytelen izomcsoport(ok): " + ", ".join(invalid))
+            raise forms.ValidationError(_("Invalid muscle group(s): %(items)s") % {"items": ", ".join(invalid)})
         return parsed
 
     def save(self, commit=True):
@@ -185,23 +186,22 @@ class UploadedWorkoutPlanForm(forms.ModelForm):
         model = UploadedWorkoutPlan
         fields = ["title", "source", "file"]
         labels = {
-            "title": "Terv címe",
-            "source": "Forrás (pl. sportoló neve)",
-            "file": "PDF fájl",
+            "title": _("Plan title"),
+            "source": _("Source (e.g. athlete's name)"),
+            "file": _("PDF file"),
         }
         widgets = {
-            "title": forms.TextInput(attrs={"class": "form-control", "placeholder": "Pl.: Arnold chest day"}),
-            "source": forms.TextInput(attrs={"class": "form-control", "placeholder": "Pl.: Arnold Schwarzenegger"}),
+            "title": forms.TextInput(attrs={"class": "form-control", "placeholder": _("E.g.: Arnold chest day")}),
+            "source": forms.TextInput(attrs={"class": "form-control", "placeholder": _("E.g.: Arnold Schwarzenegger")}),
             "file": forms.ClearableFileInput(attrs={"class": "form-control", "accept": "application/pdf"}),
         }
 
     def clean_file(self):
         f = self.cleaned_data.get("file")
         if not f:
-            raise forms.ValidationError("Válassz ki egy PDF fájlt.")
+            raise forms.ValidationError(_("Please select a PDF file."))
         name = (f.name or "").lower()
         content_type = (getattr(f, "content_type", "") or "").lower()
         if not name.endswith(".pdf") and content_type != "application/pdf":
-            raise forms.ValidationError("Csak PDF formátum tölthető fel.")
+            raise forms.ValidationError(_("Only PDF files can be uploaded."))
         return f
-

@@ -1,10 +1,11 @@
 {% extends "members/admin_base.html" %}
-{% block title %}Tagok{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Members" %}{% endblock %}
 
 {% block admin_content %}
   <div class="d-flex align-items-center justify-content-between mb-3">
-    <h1 class="h3 mb-0">Tagok</h1>
-    <a class="btn btn-primary btn-lg" href="{% url 'members:member_create' %}">+ Új tag</a>
+    <h1 class="h3 mb-0">{% trans "Members" %}</h1>
+    <a class="btn btn-primary btn-lg" href="{% url 'members:member_create' %}">+ {% trans "New member" %}</a>
   </div>
 
   {% if members %}
@@ -17,47 +18,47 @@
                 <div>
                   <div class="fs-4 fw-bold">{{ member.full_name }}</div>
                   <div class="text-muted">
-                    Életkor: {{ member.age }} &bull; Nem: {{ member.get_sex_display }} &bull; Szint: {{ member.get_training_level_display }}
+                    {% trans "Age:" %} {{ member.age }} &bull; {% trans "Sex:" %} {{ member.get_sex_display }} &bull; {% trans "Level:" %} {{ member.get_training_level_display }}
                   </div>
                   <div class="mt-2">
                     <span class="badge text-bg-secondary">{{ member.get_primary_goal_display }}</span>
-                    <span class="badge text-bg-light border ms-1">Preferált: {{ member.preferred_session_duration }} perc</span>
+                    <span class="badge text-bg-light border ms-1">{% trans "Preferred:" %} {{ member.preferred_session_duration }} {% trans "min" %}</span>
                   </div>
                 </div>
               </div>
 
               <div class="d-flex gap-2 flex-wrap mt-3">
-                <a class="btn btn-outline-primary btn-lg" href="{% url 'members:member_edit' member.pk %}">Szerkesztés</a>
+                <a class="btn btn-outline-primary btn-lg" href="{% url 'members:member_edit' member.pk %}">{% trans "Edit" %}</a>
                 <a
                   class="btn btn-outline-secondary btn-lg"
                   href="{% url 'workouts:workout_history' member_id=member.pk %}"
                 >
-                  Előzmények
+                  {% trans "History" %}
                 </a>
                 {% if member.latest_plan_id %}
                   <a
                     class="btn btn-outline-success btn-lg"
                     href="{% url 'workouts:workout_plan_download_pdf' member_id=member.pk plan_id=member.latest_plan_id %}"
                   >
-                    PDF export
+                    {% trans "Export PDF" %}
                   </a>
                   <a
                     class="btn btn-outline-dark btn-lg"
                     href="{% url 'workouts:workout_plan_download_word' member_id=member.pk plan_id=member.latest_plan_id %}"
                   >
-                    Word export
+                    {% trans "Export Word" %}
                   </a>
                 {% endif %}
                 <a
                   class="btn btn-success btn-lg"
                   href="{% url 'workouts:workout_session_input' member_id=member.pk %}"
                 >
-                  Edzés indítása
+                  {% trans "Start workout" %}
                 </a>
               </div>
 
               <div class="text-muted mt-3 small">
-                Létrehozva: {{ member.created_at|date:"Y-m-d" }}
+                {% trans "Created:" %} {{ member.created_at|date:"Y-m-d" }}
               </div>
             </div>
           </div>
@@ -66,7 +67,7 @@
     </div>
   {% else %}
     <div class="alert alert-info">
-      Még nincs tag. Hozz létre egyet az edzések indításához.
+      {% trans "No members yet. Create one to start workouts." %}
     </div>
   {% endif %}
 {% endblock %}

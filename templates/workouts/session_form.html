@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% block title %}Edzés{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Workout" %}{% endblock %}
 
 {% block content %}
   <style>
@@ -134,14 +135,14 @@
   >
     <div class="gym-loading-card">
       <div class="gym-loading-top">
-        <div class="gym-loading-title">Edzésterv készül</div>
-        <div class="gym-loading-badge">Folyamatban</div>
+        <div class="gym-loading-title">{% trans "Generating workout plan" %}</div>
+        <div class="gym-loading-badge">{% trans "In progress" %}</div>
       </div>
 
       <div class="gym-loading-row">
         <div style="display:flex; align-items:center; gap:0.9rem;">
           <div class="gym-spinner" aria-hidden="true"></div>
-          <div class="gym-loading-message" id="gym-loading-message">Állvány előkészítése…</div>
+          <div class="gym-loading-message" id="gym-loading-message">{% trans "Setting up the rack…" %}</div>
         </div>
       </div>
 
@@ -151,61 +152,245 @@
 
       <div class="gym-loading-meta">
         <div class="text-muted" id="gym-loading-subtext" style="color: rgba(234, 240, 255, 0.75) !important;">
-          Eszközök és sorrend előkészítése
+          {% trans "Preparing equipment and order" %}
         </div>
         <div class="gym-loading-percent" id="gym-loading-percent">0%</div>
       </div>
     </div>
   </div>
 
-  <div class="d-flex align-items-center justify-content-between mb-3">
-    <h1 class="h2 mb-0">Edzés indítása</h1>
-    {% if request.resolver_match.namespace == 'app_workouts' %}
-      <a class="btn btn-outline-secondary btn-lg" href="{% url 'app_workouts:workout_history' %}">Vissza</a>
-    {% else %}
-      <a class="btn btn-outline-secondary btn-lg" href="{% url 'workouts:workout_history' member_id=member.id %}">Vissza</a>
-    {% endif %}
-  </div>
-
-  <div class="card shadow-sm">
-    <div class="card-body">
-      <div class="mb-3">
-        <div class="fs-4 fw-bold">{{ member.full_name }}</div>
-        <div class="text-muted">Rendelkezésre álló idő: {{ member.preferred_session_duration }} perc (alapértelmezés)</div>
-      </div>
-
-      {% if form.non_field_errors %}
-        <div class="alert alert-danger">
-          {{ form.non_field_errors }}
+  <div class="session-builder">
+    <header class="session-hero">
+      <div class="session-hero__bg" aria-hidden="true"></div>
+      <div class="session-hero__content">
+        <div class="session-hero__top">
+          <span class="session-hero__eyebrow">{% trans "New workout" %}</span>
+          {% if request.resolver_match.namespace == 'app_workouts' %}
+            <a class="session-hero__back" href="{% url 'app_workouts:workout_history' %}">← {% trans "Back" %}</a>
+          {% else %}
+            <a class="session-hero__back" href="{% url 'workouts:workout_history' member_id=member.id %}">← {% trans "Back" %}</a>
+          {% endif %}
         </div>
-      {% endif %}
-
-      <form id="workout-session-form" method="post" novalidate>
-        {% csrf_token %}
-
-        {# session_type is hidden in the form for MVP #}
-        {{ form.session_type }}
-
-        <div class="row g-3">
-          {% for field in form.visible_fields %}
-            <div class="col-12">
-              <div class="field-label">{{ field.label }}</div>
-              {{ field }}
-              {% if field.help_text %}
-                <div class="form-text">{{ field.help_text }}</div>
-              {% endif %}
-              {% if field.errors %}
-                <div class="text-danger mt-1">{{ field.errors }}</div>
-              {% endif %}
+        <h1 class="session-hero__title">{% trans "Let's plan today's workout" %}</h1>
+        <p class="session-hero__subtitle">
+          {% trans "Set the focus, time, and intensity — leave the rest to us." %}
+        </p>
+        <div class="session-hero__member">
+          <div class="session-hero__avatar" aria-hidden="true">{{ member.full_name|slice:":1"|upper }}</div>
+          <div>
+            <div class="session-hero__member-name">{{ member.full_name }}</div>
+            <div class="session-hero__member-meta">
+              {% blocktrans with minutes=member.preferred_session_duration %}Default workout time: <strong>{{ minutes }} min</strong>{% endblocktrans %}
             </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger mt-3">
+        {{ form.non_field_errors }}
+      </div>
+    {% endif %}
+
+    <form id="workout-session-form" method="post" novalidate>
+      {% csrf_token %}
+
+      {{ form.session_type }}
+      {{ form.soreness_level }}
+
+        <section class="session-section" aria-labelledby="session-goal-heading">
+          <div class="session-section__header">
+            <div class="session-section__step">01</div>
+            <div>
+              <h2 class="session-section__title" id="session-goal-heading">{% trans "Workout goal" %}</h2>
+              <p class="session-section__lead">{% trans "What is the main focus of today's workout?" %}</p>
+            </div>
+          </div>
+        {% if form.goal.errors %}
+          <div class="text-danger mt-2">{{ form.goal.errors }}</div>
+        {% endif %}
+        <div class="session-goals" role="radiogroup" aria-label="{{ form.goal.label }}">
+          {% for radio in form.goal %}
+            {% with value=radio.data.value %}
+              <label class="session-goal session-goal--{{ value }}">
+                {{ radio.tag }}
+                <div class="session-goal__banner" aria-hidden="true">
+                  <span class="session-goal__icon">
+                    {% if value == "strength" %}🏋️
+                    {% elif value == "hypertrophy" %}💪
+                    {% elif value == "fat_loss" %}🔥
+                    {% elif value == "rehab_prevention" %}🧘
+                    {% else %}⚡{% endif %}
+                  </span>
+                  <span class="session-goal__check" aria-hidden="true">✓</span>
+                </div>
+                <div class="session-goal__body">
+                  <div class="session-goal__title">{{ radio.choice_label }}</div>
+                  <div class="session-goal__hint">
+                    {% if value == "strength" %}{% trans "Heavy compound lifts, longer rest" %}
+                    {% elif value == "hypertrophy" %}{% trans "Volume, muscle mass growth" %}
+                    {% elif value == "fat_loss" %}{% trans "Flow, short rests, high heart rate" %}
+                    {% elif value == "rehab_prevention" %}{% trans "Mobility, stability, safety" %}
+                    {% else %}{% trans "Balanced general progression" %}{% endif %}
+                  </div>
+                  <div class="session-goal__tags">
+                    {% if value == "strength" %}
+                      <span class="session-goal__tag">{% trans "Strength" %}</span><span class="session-goal__tag">{% trans "Compounds" %}</span>
+                    {% elif value == "hypertrophy" %}
+                      <span class="session-goal__tag">{% trans "Volume" %}</span><span class="session-goal__tag">{% trans "Form" %}</span>
+                    {% elif value == "fat_loss" %}
+                      <span class="session-goal__tag">{% trans "Cardio" %}</span><span class="session-goal__tag">{% trans "Burn" %}</span>
+                    {% elif value == "rehab_prevention" %}
+                      <span class="session-goal__tag">{% trans "Mobility" %}</span><span class="session-goal__tag">{% trans "Stability" %}</span>
+                    {% else %}
+                      <span class="session-goal__tag">{% trans "Mixed" %}</span><span class="session-goal__tag">{% trans "Balanced" %}</span>
+                    {% endif %}
+                  </div>
+                </div>
+              </label>
+            {% endwith %}
           {% endfor %}
         </div>
+      </section>
 
-        <div class="d-flex gap-2 mt-4 flex-wrap">
-          <button type="submit" class="btn btn-success btn-lg">Edzésterv generálása</button>
+        <section class="session-section" aria-labelledby="session-duration-heading">
+          <div class="session-section__header">
+            <div class="session-section__step">02</div>
+            <div>
+              <h2 class="session-section__title" id="session-duration-heading">{% trans "Duration" %}</h2>
+              <p class="session-section__lead">{% trans "How much time do you have for the workout today?" %}</p>
+            </div>
+          </div>
+        {% if form.available_time.errors %}
+          <div class="text-danger mt-2">{{ form.available_time.errors }}</div>
+        {% endif %}
+        <div class="session-duration" role="radiogroup" aria-label="{{ form.available_time.label }}">
+          {% for radio in form.available_time %}
+            {% with value=radio.data.value %}
+              <label class="session-duration__tile">
+                {{ radio.tag }}
+                <span class="session-duration__num">{{ value }}</span>
+                <span class="session-duration__unit">{% trans "min" %}</span>
+                <span class="session-duration__hint">
+                  {% if value == "30" %}{% trans "Quick, focused" %}
+                  {% elif value == "45" %}{% trans "Efficient" %}
+                  {% elif value == "60" %}{% trans "Classic" %}
+                  {% elif value == "75" %}{% trans "Detailed" %}
+                  {% else %}{% trans "Full program" %}{% endif %}
+                </span>
+              </label>
+            {% endwith %}
+          {% endfor %}
         </div>
-      </form>
-    </div>
+      </section>
+
+        <section class="session-section" aria-labelledby="session-intensity-heading">
+          <div class="session-section__header">
+            <div class="session-section__step">03</div>
+            <div>
+              <h2 class="session-section__title" id="session-intensity-heading">{% trans "Intensity" %}</h2>
+              <p class="session-section__lead">{% trans "How fresh do you feel today?" %}</p>
+            </div>
+          </div>
+        {% if form.energy_level.errors %}
+          <div class="text-danger mt-2">{{ form.energy_level.errors }}</div>
+        {% endif %}
+        <div class="session-intensity" role="radiogroup" aria-label="{{ form.energy_level.label }}">
+          {% for radio in form.energy_level %}
+            {% with value=radio.data.value %}
+              <label class="session-intensity__card session-intensity__card--{{ value }}">
+                {{ radio.tag }}
+                <div class="session-intensity__icon" aria-hidden="true">
+                  {% if value == "low" %}🌙{% elif value == "high" %}⚡{% else %}🔆{% endif %}
+                </div>
+                <div class="session-intensity__title">{{ radio.choice_label }}</div>
+                <div class="session-intensity__bars" aria-hidden="true">
+                  <span class="session-intensity__bar is-on"></span>
+                  <span class="session-intensity__bar{% if value == 'medium' or value == 'high' %} is-on{% endif %}"></span>
+                  <span class="session-intensity__bar{% if value == 'high' %} is-on{% endif %}"></span>
+                </div>
+                <div class="session-intensity__hint">
+                  {% if value == "low" %}{% trans "Lighter load, smaller volume" %}
+                  {% elif value == "high" %}{% trans "Full effort, high volume" %}
+                  {% else %}{% trans "Balanced, moderate load" %}{% endif %}
+                </div>
+              </label>
+            {% endwith %}
+          {% endfor %}
+        </div>
+      </section>
+
+        <section class="session-section" aria-labelledby="session-injuries-heading">
+          <div class="session-section__header">
+            <div class="session-section__step">04</div>
+            <div>
+              <h2 class="session-section__title" id="session-injuries-heading">{% trans "Injuries, pain" %}</h2>
+              <p class="session-section__lead">
+                {% if form.session_injuries.help_text %}{{ form.session_injuries.help_text }}{% else %}{% trans "Restrictions that apply to today's session only." %}{% endif %}
+              </p>
+            </div>
+          </div>
+        {% if form.session_injuries.errors %}
+          <div class="text-danger mt-2">{{ form.session_injuries.errors }}</div>
+        {% endif %}
+        <div class="session-injuries" role="group" aria-label="{{ form.session_injuries.label }}">
+          {% for checkbox in form.session_injuries %}
+            {% with value=checkbox.data.value %}
+              <label class="session-injury session-injury--{{ value }}">
+                {{ checkbox.tag }}
+                <span class="session-injury__dot" aria-hidden="true"></span>
+                <span class="session-injury__label">{{ checkbox.choice_label }}</span>
+                <span class="session-injury__check" aria-hidden="true">✓</span>
+              </label>
+            {% endwith %}
+          {% endfor %}
+        </div>
+      </section>
+
+        <section class="session-section session-section--optional">
+          <div class="session-section__header">
+            <div class="session-section__step session-section__step--muted">★</div>
+            <div>
+              <h2 class="session-section__title">{% trans "More settings" %}</h2>
+              <p class="session-section__lead">{% trans "Optional context for the planner." %}</p>
+            </div>
+          </div>
+        <div class="session-extras">
+          <div class="session-extras__field">
+            <label class="session-extras__label" for="{{ form.reference_workout_plan.id_for_label }}">
+              {{ form.reference_workout_plan.label }}
+            </label>
+            {{ form.reference_workout_plan }}
+            {% if form.reference_workout_plan.help_text %}
+              <div class="session-extras__help">{{ form.reference_workout_plan.help_text }}</div>
+            {% endif %}
+            {% if form.reference_workout_plan.errors %}
+              <div class="text-danger mt-1">{{ form.reference_workout_plan.errors }}</div>
+            {% endif %}
+          </div>
+          <div class="session-extras__field">
+            <label class="session-extras__label" for="{{ form.notes.id_for_label }}">
+              {{ form.notes.label }}
+            </label>
+            {{ form.notes }}
+            {% if form.notes.errors %}
+              <div class="text-danger mt-1">{{ form.notes.errors }}</div>
+            {% endif %}
+          </div>
+        </div>
+      </section>
+
+        <div class="session-submit">
+          <div class="session-submit__hint">
+            {% trans "Generation takes a few seconds; you'll see live status." %}
+          </div>
+          <button type="submit" class="session-submit__btn">
+            <span>{% trans "Generate workout plan" %}</span>
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
+    </form>
   </div>
 
   <script>
@@ -248,7 +433,6 @@
         if (lock) {
           document.body.style.pointerEvents = "none";
           document.body.setAttribute("aria-busy", "true");
-          // Stop keyboard input into any focused field.
           if (document.activeElement && typeof document.activeElement.blur === "function") {
             document.activeElement.blur();
           }
@@ -275,8 +459,6 @@
         if (isGenerating) return;
         isGenerating = true;
 
-        // Robust CSRF guard:
-        // Ensure the token input exists and is populated from `csrftoken` cookie.
         var csrfInput = form.querySelector('input[name="csrfmiddlewaretoken"]');
         var csrfFromCookie = getCookie("csrftoken");
         if (!csrfInput) {
@@ -293,22 +475,19 @@
         showOverlay();
         setLockUI(true);
 
-        // Simulated progress for the "feel" of generation (backend is synchronous).
-        // The redirect will stop everything once the response arrives.
         var progress = 2;
-        updateProgress(progress, "Állvány előkészítése…", "Eszközök és sorrend előkészítése");
+        updateProgress(progress, "{% trans 'Setting up the rack…' %}", "{% trans 'Preparing equipment and order' %}");
 
         var phases = [
-          { t: 18, msg: "Motor bemelegítése…", sub: "Edzés felépítésének kiszámítása" },
-          { t: 40, msg: "Mozgások kiválasztása…", sub: "Izomcsoportok és cél összhangja" },
-          { t: 63, msg: "Blokkok építése…", sub: "Bemelegítés, fő sorozat, levezetés" },
-          { t: 82, msg: "Sorozatok és ismétlések hangolása…", sub: "Pihenő és tempó beállítása" },
-          { t: 95, msg: "Terv véglegesítése…", sub: "Mentés — hamarosan kész" }
+          { t: 18, msg: "{% trans 'Warming up the engine…' %}", sub: "{% trans 'Calculating workout structure' %}" },
+          { t: 40, msg: "{% trans 'Selecting movements…' %}", sub: "{% trans 'Matching muscle groups to your goal' %}" },
+          { t: 63, msg: "{% trans 'Building blocks…' %}", sub: "{% trans 'Warm-up, main work, cool-down' %}" },
+          { t: 82, msg: "{% trans 'Tuning sets and reps…' %}", sub: "{% trans 'Adjusting rest and tempo' %}" },
+          { t: 95, msg: "{% trans 'Finalizing the plan…' %}", sub: "{% trans 'Saving — almost done' %}" }
         ];
 
         var phaseIndex = 0;
         var interval = window.setInterval(function () {
-          // Slow down as we approach the final stretch.
           var remaining = 95 - progress;
           var step = remaining > 40 ? 2.2 : remaining > 20 ? 1.6 : remaining > 8 ? 1.1 : 0.7;
           var jitter = Math.random() * 0.9;
@@ -323,11 +502,10 @@
 
           if (progress >= 95) {
             window.clearInterval(interval);
-            updateProgress(95, "Terv véglegesítése…", "Mentés — hamarosan kész");
+            updateProgress(95, "{% trans 'Finalizing the plan…' %}", "{% trans 'Saving — almost done' %}");
           }
         }, 120);
       });
     })();
   </script>
 {% endblock %}
-

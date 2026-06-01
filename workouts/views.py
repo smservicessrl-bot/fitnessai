@@ -8,6 +8,7 @@ from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.html import strip_tags
+from django.utils.translation import gettext as _
 from django.urls import reverse
 
 from ai_engine.services import answer_workout_plan_question, refine_workout_or_fallback_to_deterministic
@@ -42,8 +43,21 @@ def _humanize_ai_reason(reason: str) -> str:
         return ""
     low = raw.lower()
     if "openai_api_key is not set" in low or "openai_auth" in low:
-        return "Az OpenAI API kulcs nincs beallitva a production kornyezetben, ezert szabalyalapu terv keszult."
+        return str(_("The OpenAI API key is not configured in production, so a rule-based plan was created."))
     return raw
+
+
+def _restrictions_for_session(member: MemberProfile, session_injury_areas: list[str]) -> list[MemberRestriction]:
+    """Today's injury checkboxes define avoid-areas for this plan only."""
+    return [
+        MemberRestriction(
+            member=member,
+            restriction_type=MemberRestriction.RestrictionType.AVOID,
+            body_area=area,
+            active=True,
+        )
+        for area in session_injury_areas
+    ]
 
 
 @login_required
@@ -56,12 +70,12 @@ def workout_session_input(request, member_id: int):
     """
     assert_member_access(request, member_id)
     if request.session.get(ONBOARDING_SESSION_KEY):
-        messages.info(request, "Először töltsd ki a profilodat az első edzésterv előtt.")
+        messages.info(request, _("Please fill in your profile before creating your first workout plan."))
         return redirect(reverse("member_app:profile_edit"))
     member = get_object_or_404(MemberProfile, pk=member_id)
 
     if request.method == "POST":
-        form = WorkoutSessionInputForm(request.POST)
+        form = WorkoutSessionInputForm(request.POST, member=member)
         if form.is_valid():
             with transaction.atomic():
                 plan: WorkoutPlan = form.save(commit=False)
@@ -76,7 +90,8 @@ def workout_session_input(request, member_id: int):
                     available_time=plan.available_time,
                 )
 
-                active_restrictions = MemberRestriction.objects.filter(member=member, active=True)
+                session_injury_areas = form.cleaned_data.get("session_injuries") or []
+                active_restrictions = _restrictions_for_session(member, session_injury_areas)
                 available_exercises_qs = Exercise.objects.filter(active=True).order_by("slug")
                 available_exercises = list(available_exercises_qs)
 
@@ -145,6 +160,7 @@ def workout_session_input(request, member_id: int):
                     "deterministic_duration": deterministic.get("estimated_duration_minutes"),
                     "reference_template_title": reference_plan.title if reference_plan else "",
                     "reference_template_source": reference_plan.source if reference_plan else "",
+                    "session_injury_areas": session_injury_areas,
                     "ai_used": ai_used,
                     "ai_error": _humanize_ai_reason(ai_reason) if not ai_used else "",
                     "llm_provider": os.environ.get("LLM_PROVIDER", "openai"),
@@ -160,14 +176,23 @@ def workout_session_input(request, member_id: int):
             )
             return redirect(f"{hist}?plan_id={plan.id}")
     else:
+        preferred_duration = member.preferred_session_duration
+        duration_values = {
+            int(value)
+            for value, _ in WorkoutSessionInputForm.base_fields["available_time"].choices
+        }
+        if preferred_duration not in duration_values:
+            preferred_duration = 60
+
         form = WorkoutSessionInputForm(
             initial={
                 "session_type": WorkoutPlan.SessionType.ONE_DAY_GYM,
                 "goal": member.primary_goal,
-                "available_time": member.preferred_session_duration,
+                "available_time": preferred_duration,
                 "energy_level": WorkoutPlan.EnergyLevel.MEDIUM,
                 "soreness_level": WorkoutPlan.SorenessLevel.NONE,
-            }
+            },
+            member=member,
         )
 
     return render(
@@ -272,7 +297,7 @@ def workout_plan_ask(request, member_id: int, plan_id: int):
 
     form = WorkoutPlanQuestionForm(request.POST)
     if not form.is_valid():
-        messages.error(request, "Kérlek, írj be egy érvényes kérdést.")
+        messages.error(request, _("Please enter a valid question."))
         target = (
             reverse("app_workouts:workout_plan_detail", kwargs={"plan_id": plan_id})
             if getattr(request.resolver_match, "namespace", None) == "app_workouts"
@@ -308,7 +333,7 @@ def workout_plan_ask(request, member_id: int, plan_id: int):
         answer_text=answer_text,
         answer_source=source,
     )
-    messages.success(request, "Válasz elkészült.")
+    messages.success(request, _("Answer is ready."))
     target = (
         reverse("app_workouts:workout_plan_detail", kwargs={"plan_id": plan_id})
         if getattr(request.resolver_match, "namespace", None) == "app_workouts"

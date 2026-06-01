@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_http_methods, require_POST
 
 from accounts.forms import LoginForm, RegistrationForm
@@ -32,7 +33,7 @@ def register(request):
             user = form.save()
             login(request, user, backend=settings.AUTHENTICATION_BACKENDS[0])
             request.session[ONBOARDING_SESSION_KEY] = True
-            messages.success(request, "Sikeres regisztráció.")
+            messages.success(request, _("Registration successful."))
             return redirect(reverse("member_app:profile_edit"))
     else:
         form = RegistrationForm()
@@ -50,7 +51,7 @@ def login_view(request):
             if is_login_blocked(request, identifier):
                 messages.error(
                     request,
-                    "Túl sok sikertelen próbálkozás. Próbáld újra később.",
+                    _("Too many failed attempts. Please try again later."),
                 )
             else:
                 user = authenticate(
@@ -62,19 +63,19 @@ def login_view(request):
                     is_first_login = user.last_login is None
                     clear_login_failures(request, identifier)
                     login(request, user, backend=settings.AUTHENTICATION_BACKENDS[0])
-                    messages.success(request, "Sikeres bejelentkezés.")
+                    messages.success(request, _("Signed in successfully."))
                     if not user.is_staff and is_first_login and member_profile_for_user(user):
                         request.session[ONBOARDING_SESSION_KEY] = True
                         return redirect(reverse("member_app:profile_edit"))
                     next_url = request.GET.get("next") or reverse("home")
                     return redirect(next_url)
                 record_login_failure(request, identifier)
-                messages.error(request, "Hibás e-mail/telefon vagy PIN.")
+                messages.error(request, _("Invalid email/phone or PIN."))
         else:
             if identifier and is_login_blocked(request, identifier):
                 messages.error(
                     request,
-                    "Túl sok sikertelen próbálkozás. Próbáld újra később.",
+                    _("Too many failed attempts. Please try again later."),
                 )
     else:
         form = LoginForm()
@@ -85,5 +86,5 @@ def login_view(request):
 @login_required
 def logout_view(request):
     logout(request)
-    messages.info(request, "Kijelentkeztél.")
+    messages.info(request, _("You have been signed out."))
     return redirect(reverse("home"))

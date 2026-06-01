@@ -1,9 +1,14 @@
 {% extends "base.html" %}
-{% block title %}Bejelentkezés{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Sign in" %}{% endblock %}
 
 {% block content %}
+  <div class="d-flex justify-content-center mb-3">
+    {% include "_includes/language_switcher.html" with variant="large" %}
+  </div>
+
   <div class="mx-auto" style="max-width: 480px;">
-    <h1 class="h2 mb-4">Bejelentkezés</h1>
+    <h1 class="h2 mb-4">{% trans "Sign in" %}</h1>
     <div class="card shadow-sm border-0">
       <div class="card-body p-4">
         <form method="post" novalidate>
@@ -17,11 +22,11 @@
               {% endif %}
             </div>
           {% endfor %}
-          <button type="submit" class="btn btn-primary btn-lg w-100">Belépés</button>
+          <button type="submit" class="btn btn-primary btn-lg w-100">{% trans "Sign in" %}</button>
         </form>
         <p class="text-center text-muted mt-3 mb-0">
-          Nincs még fiókod?
-          <a href="{% url 'accounts:register' %}">Regisztráció</a>
+          {% trans "Don't have an account yet?" %}
+          <a href="{% url 'accounts:register' %}">{% trans "Register" %}</a>
         </p>
       </div>
     </div>

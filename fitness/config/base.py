@@ -99,6 +99,8 @@ MIDDLEWARE = [
     # WhiteNoise serves static files in production without requiring a separate server.
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    # LocaleMiddleware must come after Session/Cache and before Common.
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -118,6 +120,7 @@ TEMPLATES = [
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.request",
+                "django.template.context_processors.i18n",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
@@ -187,6 +190,19 @@ LANGUAGE_CODE = "hu"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
+
+# Languages the UI supports. The first one is the default fallback.
+LANGUAGES = [
+    ("hu", "Magyar"),
+    ("en", "English"),
+    ("ro", "Română"),
+]
+
+LOCALE_PATHS = [BASE_DIR / "locale"]
+
+# Persist the user's choice via a cookie so it survives logout/login.
+LANGUAGE_COOKIE_NAME = "fitnessai_language"
+LANGUAGE_COOKIE_AGE = 60 * 60 * 24 * 365  # 1 year
 
 
 # --------------------

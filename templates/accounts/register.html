@@ -1,9 +1,14 @@
 {% extends "base.html" %}
-{% block title %}Regisztráció{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Register" %}{% endblock %}
 
 {% block content %}
+  <div class="d-flex justify-content-center mb-3">
+    {% include "_includes/language_switcher.html" with variant="large" %}
+  </div>
+
   <div class="mx-auto" style="max-width: 520px;">
-    <h1 class="h2 mb-4">Regisztráció</h1>
+    <h1 class="h2 mb-4">{% trans "Register" %}</h1>
     <div class="card shadow-sm border-0">
       <div class="card-body p-4">
         {% if form.non_field_errors %}
@@ -20,11 +25,11 @@
               {% endif %}
             </div>
           {% endfor %}
-          <button type="submit" class="btn btn-primary btn-lg w-100">Fiók létrehozása</button>
+          <button type="submit" class="btn btn-primary btn-lg w-100">{% trans "Create account" %}</button>
         </form>
         <p class="text-center text-muted mt-3 mb-0">
-          Már van fiókod?
-          <a href="{% url 'accounts:login' %}">Bejelentkezés</a>
+          {% trans "Already have an account?" %}
+          <a href="{% url 'accounts:login' %}">{% trans "Sign in" %}</a>
         </p>
       </div>
     </div>

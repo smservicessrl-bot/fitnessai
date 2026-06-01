@@ -1,0 +1,1235 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: fitnessai\n"
+"Report-Msgid-Bugs-To: \n"
+"Language: ro\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < 20)) ? 1 : 2);\n"
+
+# ---- Navbar / auth ----
+msgid "Admin"
+msgstr "Admin"
+
+msgid "Administration"
+msgstr "Administrare"
+
+msgid "My profile"
+msgstr "Profilul meu"
+
+msgid "Sign out"
+msgstr "Deconectare"
+
+msgid "Sign in"
+msgstr "Conectare"
+
+msgid "Register"
+msgstr "Înregistrare"
+
+msgid "Close"
+msgstr "Închide"
+
+msgid "Language selector"
+msgstr "Selector de limbă"
+
+msgid "FitnessAI — Home"
+msgstr "FitnessAI — Acasă"
+
+msgid "Workout planning and member profile — choose how you'd like to continue."
+msgstr "Planificare antrenamente și profil de membru — alege cum dorești să continui."
+
+msgid "Email or phone and the 4-digit PIN — access your profile and workout plans."
+msgstr "Email sau telefon și PIN-ul din 4 cifre — accesează profilul și planurile tale."
+
+msgid "Name, email or phone, and create a PIN — new member account in seconds."
+msgstr "Nume, email sau telefon și creează un PIN — cont nou în câteva secunde."
+
+msgid "Coaches: access the member list from the admin panel or via a direct URL after signing in."
+msgstr "Antrenori: accesează lista membrilor din panoul de administrare sau printr-o adresă directă după autentificare."
+
+msgid "Don't have an account yet?"
+msgstr "Nu ai încă un cont?"
+
+msgid "Already have an account?"
+msgstr "Ai deja un cont?"
+
+msgid "Create account"
+msgstr "Creează cont"
+
+# ---- Workout history / detail / print / session ----
+msgid "Workout history"
+msgstr "Istoricul antrenamentelor"
+
+msgid "Member:"
+msgstr "Membru:"
+
+msgid "Back to profile"
+msgstr "Înapoi la profil"
+
+msgid "Start new workout"
+msgstr "Începe un antrenament nou"
+
+msgid "Back to member"
+msgstr "Înapoi la membru"
+
+msgid "Plan:"
+msgstr "Plan:"
+
+msgid "Goal:"
+msgstr "Obiectiv:"
+
+msgid "Time:"
+msgstr "Timp:"
+
+msgid "Date:"
+msgstr "Data:"
+
+msgid "Energy:"
+msgstr "Energie:"
+
+msgid "Soreness:"
+msgstr "Febră musculară:"
+
+msgid "min"
+msgstr "min"
+
+msgid "AI assisted"
+msgstr "Asistat de AI"
+
+msgid "Rule-based only"
+msgstr "Doar pe bază de reguli"
+
+msgid "AI error:"
+msgstr "Eroare AI:"
+
+msgid "Details"
+msgstr "Detalii"
+
+msgid "Download PDF"
+msgstr "Descarcă PDF"
+
+msgid "Download Word"
+msgstr "Descarcă Word"
+
+msgid "New plan"
+msgstr "Plan nou"
+
+msgid "Open PDF via QR code"
+msgstr "Deschide PDF prin cod QR"
+
+msgid "Scan with your camera, then choose “Save as PDF”."
+msgstr "Scanează cu camera, apoi alege „Salvează ca PDF”."
+
+msgid "QR code to the workout PDF"
+msgstr "Cod QR către PDF-ul antrenamentului"
+
+msgid "Coach notes"
+msgstr "Note ale antrenorului"
+
+msgid "Selected exercises: %(count)s"
+msgid_plural "Selected exercises: %(count)s"
+msgstr[0] "Exerciții selectate: %(count)s"
+msgstr[1] "Exerciții selectate: %(count)s"
+msgstr[2] "Exerciții selectate: %(count)s"
+
+msgid "No exercises were saved for this plan."
+msgstr "Nu au fost salvate exerciții pentru acest plan."
+
+msgid "No workout plans yet. Start a workout to create your first plan."
+msgstr "Niciun plan încă. Începe un antrenament pentru a crea primul tău plan."
+
+msgid "Workout plan details"
+msgstr "Detaliile planului de antrenament"
+
+msgid "Printer friendly"
+msgstr "Versiune pentru imprimare"
+
+msgid "Back to history"
+msgstr "Înapoi la istoric"
+
+msgid "Open on your phone"
+msgstr "Deschide pe telefon"
+
+msgid "Scan the QR code to open this workout plan on your phone."
+msgstr "Scanează codul QR pentru a deschide planul pe telefon."
+
+msgid "Open PDF"
+msgstr "Deschide PDF"
+
+msgid "Duration:"
+msgstr "Durată:"
+
+msgid "AI assist:"
+msgstr "Asistență AI:"
+
+msgid "Yes"
+msgstr "Da"
+
+msgid "No"
+msgstr "Nu"
+
+msgid "Exercises:"
+msgstr "Exerciții:"
+
+msgid "Coach notes:"
+msgstr "Note ale antrenorului:"
+
+msgid "Ask about the workout plan"
+msgstr "Întreabă despre planul de antrenament"
+
+msgid "Dictate question (microphone)"
+msgstr "Dictează întrebarea (microfon)"
+
+msgid "Dictate question using the microphone"
+msgstr "Dictează întrebarea folosind microfonul"
+
+msgid "Dictate"
+msgstr "Dictează"
+
+msgid "Your browser does not support speech recognition on this page. Try <strong>Chrome</strong> or <strong>Edge</strong> (desktop or Android), allow microphone access, and use <strong>https</strong> or <strong>localhost</strong>. In the meantime, type your question with the keyboard."
+msgstr "Browserul tău nu acceptă recunoașterea vocală pe această pagină. Încearcă <strong>Chrome</strong> sau <strong>Edge</strong> (desktop sau Android), permite accesul la microfon și folosește <strong>https</strong> sau <strong>localhost</strong>. Între timp, scrie întrebarea cu tastatura."
+
+msgid "Submit question"
+msgstr "Trimite întrebarea"
+
+msgid "Safety notice: for injury-related questions, always consult a trainer or a doctor."
+msgstr "Notă de siguranță: pentru întrebări legate de accidentări, consultă întotdeauna un antrenor sau un medic."
+
+msgid "Question and answer history"
+msgstr "Istoricul întrebărilor și răspunsurilor"
+
+msgid "Q:"
+msgstr "Î:"
+
+msgid "A:"
+msgstr "R:"
+
+msgid "source:"
+msgstr "sursă:"
+
+msgid "unknown"
+msgstr "necunoscut"
+
+msgid "Read-aloud controls"
+msgstr "Controale pentru citire cu voce tare"
+
+msgid "Previous / Play / Next exercise."
+msgstr "Anterior / Redă / Următorul exercițiu."
+
+msgid "Previous exercise"
+msgstr "Exercițiul anterior"
+
+msgid "Play or stop"
+msgstr "Redă sau oprește"
+
+msgid "Play"
+msgstr "Redă"
+
+msgid "Stop"
+msgstr "Oprește"
+
+msgid "Next exercise"
+msgstr "Exercițiul următor"
+
+msgid "Previous"
+msgstr "Anterior"
+
+msgid "Next"
+msgstr "Următor"
+
+msgid "Warm-up"
+msgstr "Încălzire"
+
+msgid "Exercise"
+msgstr "Exercițiu"
+
+msgid "Sets"
+msgstr "Seturi"
+
+msgid "Reps"
+msgstr "Repetări"
+
+msgid "Rest"
+msgstr "Pauză"
+
+msgid "Tempo"
+msgstr "Tempo"
+
+msgid "Audio"
+msgstr "Audio"
+
+msgid "s"
+msgstr "s"
+
+msgid "Warm-up."
+msgstr "Încălzire."
+
+msgid "sets,"
+msgstr "seturi,"
+
+msgid "reps,"
+msgstr "repetări,"
+
+msgid "seconds of rest."
+msgstr "secunde de pauză."
+
+msgid "Tempo:"
+msgstr "Tempo:"
+
+msgid "not set"
+msgstr "nesetat"
+
+msgid "Read this row aloud"
+msgstr "Citește acest rând cu voce tare"
+
+msgid "Main block + accessory"
+msgstr "Bloc principal + accesoriu"
+
+msgid "Notes"
+msgstr "Note"
+
+msgid "Main block."
+msgstr "Bloc principal."
+
+msgid "Note:"
+msgstr "Notă:"
+
+msgid "none"
+msgstr "niciuna"
+
+msgid "Cool-down"
+msgstr "Revenire"
+
+msgid "Cool-down."
+msgstr "Revenire."
+
+msgid "There are no saved exercises for this plan."
+msgstr "Nu există exerciții salvate pentru acest plan."
+
+msgid "Listening… speak now."
+msgstr "Te ascult… vorbește acum."
+
+msgid "Could not start the microphone."
+msgstr "Microfonul nu a putut fi pornit."
+
+msgid "This browser does not support speech recognition. Use Chrome or Edge, or type your question."
+msgstr "Acest browser nu acceptă recunoașterea vocală. Folosește Chrome sau Edge, sau scrie întrebarea."
+
+msgid "Error:"
+msgstr "Eroare:"
+
+msgid "Workout"
+msgstr "Antrenament"
+
+msgid "Generating workout plan"
+msgstr "Se generează planul de antrenament"
+
+msgid "In progress"
+msgstr "În curs"
+
+msgid "Setting up the rack…"
+msgstr "Se pregătește standul…"
+
+msgid "Preparing equipment and order"
+msgstr "Se pregătesc echipamentele și ordinea"
+
+msgid "New workout"
+msgstr "Antrenament nou"
+
+msgid "Back"
+msgstr "Înapoi"
+
+msgid "Let's plan today's workout"
+msgstr "Hai să planificăm antrenamentul de astăzi"
+
+msgid "Set the focus, time, and intensity — leave the rest to us."
+msgstr "Stabilește focusul, timpul și intensitatea — restul îl facem noi."
+
+msgid "Default workout time: <strong>%(minutes)s min</strong>"
+msgstr "Durată implicită a antrenamentului: <strong>%(minutes)s min</strong>"
+
+msgid "Workout goal"
+msgstr "Obiectivul antrenamentului"
+
+msgid "What is the main focus of today's workout?"
+msgstr "Care este focusul principal al antrenamentului de astăzi?"
+
+msgid "Heavy compound lifts, longer rest"
+msgstr "Mișcări compuse grele, pauze mai lungi"
+
+msgid "Volume, muscle mass growth"
+msgstr "Volum, creșterea masei musculare"
+
+msgid "Flow, short rests, high heart rate"
+msgstr "Fluiditate, pauze scurte, puls ridicat"
+
+msgid "Mobility, stability, safety"
+msgstr "Mobilitate, stabilitate, siguranță"
+
+msgid "Balanced general progression"
+msgstr "Progres general echilibrat"
+
+msgid "Strength"
+msgstr "Forță"
+
+msgid "Compounds"
+msgstr "Compuse"
+
+msgid "Volume"
+msgstr "Volum"
+
+msgid "Form"
+msgstr "Formă"
+
+msgid "Cardio"
+msgstr "Cardio"
+
+msgid "Burn"
+msgstr "Ardere"
+
+msgid "Mobility"
+msgstr "Mobilitate"
+
+msgid "Stability"
+msgstr "Stabilitate"
+
+msgid "Mixed"
+msgstr "Mixt"
+
+msgid "Balanced"
+msgstr "Echilibrat"
+
+msgid "Duration"
+msgstr "Durată"
+
+msgid "How much time do you have for the workout today?"
+msgstr "Cât timp ai pentru antrenament astăzi?"
+
+msgid "Quick, focused"
+msgstr "Rapid, focusat"
+
+msgid "Efficient"
+msgstr "Eficient"
+
+msgid "Classic"
+msgstr "Clasic"
+
+msgid "Detailed"
+msgstr "Detaliat"
+
+msgid "Full program"
+msgstr "Program complet"
+
+msgid "Intensity"
+msgstr "Intensitate"
+
+msgid "How fresh do you feel today?"
+msgstr "Cât de proaspăt te simți astăzi?"
+
+msgid "Lighter load, smaller volume"
+msgstr "Încărcare mai ușoară, volum mai mic"
+
+msgid "Full effort, high volume"
+msgstr "Efort maxim, volum mare"
+
+msgid "Balanced, moderate load"
+msgstr "Echilibrat, încărcare moderată"
+
+msgid "Injuries, pain"
+msgstr "Accidentări, durere"
+
+msgid "Restrictions that apply to today's session only."
+msgstr "Restricții care se aplică doar la sesiunea de astăzi."
+
+msgid "More settings"
+msgstr "Mai multe setări"
+
+msgid "Optional context for the planner."
+msgstr "Context opțional pentru planificator."
+
+msgid "Generation takes a few seconds; you'll see live status."
+msgstr "Generarea durează câteva secunde; vei vedea starea în timp real."
+
+msgid "Generate workout plan"
+msgstr "Generează planul de antrenament"
+
+msgid "Warming up the engine…"
+msgstr "Se încălzește motorul…"
+
+msgid "Calculating workout structure"
+msgstr "Se calculează structura antrenamentului"
+
+msgid "Selecting movements…"
+msgstr "Se aleg mișcările…"
+
+msgid "Matching muscle groups to your goal"
+msgstr "Se potrivesc grupele musculare cu obiectivul tău"
+
+msgid "Building blocks…"
+msgstr "Se construiesc blocurile…"
+
+msgid "Warm-up, main work, cool-down"
+msgstr "Încălzire, lucru principal, revenire"
+
+msgid "Tuning sets and reps…"
+msgstr "Se ajustează seturile și repetările…"
+
+msgid "Adjusting rest and tempo"
+msgstr "Se ajustează pauza și tempoul"
+
+msgid "Finalizing the plan…"
+msgstr "Se finalizează planul…"
+
+msgid "Saving — almost done"
+msgstr "Se salvează — aproape gata"
+
+msgid "Workout plan print — %(name)s"
+msgstr "Imprimare plan de antrenament — %(name)s"
+
+msgid "Print"
+msgstr "Imprimă"
+
+msgid "Back to details"
+msgstr "Înapoi la detalii"
+
+msgid "Workout plan"
+msgstr "Plan de antrenament"
+
+msgid "Plan ID"
+msgstr "ID plan"
+
+# ---- Member dashboard ----
+msgid "Welcome, %(name)s!"
+msgstr "Bun venit, %(name)s!"
+
+msgid "Phone:"
+msgstr "Telefon:"
+
+msgid "Email:"
+msgstr "Email:"
+
+msgid "Edit profile"
+msgstr "Editează profilul"
+
+msgid "New workout plan"
+msgstr "Plan de antrenament nou"
+
+msgid "Profile summary"
+msgstr "Rezumat profil"
+
+msgid "Age:"
+msgstr "Vârstă:"
+
+msgid "years"
+msgstr "ani"
+
+msgid "Level:"
+msgstr "Nivel:"
+
+msgid "Workouts per week:"
+msgstr "Antrenamente pe săptămână:"
+
+msgid "Preferred time:"
+msgstr "Timp preferat:"
+
+msgid "Workout plans"
+msgstr "Planuri de antrenament"
+
+msgid "AI"
+msgstr "AI"
+
+msgid "All history and PDFs"
+msgstr "Tot istoricul și PDF-urile"
+
+msgid "No workout plans yet. Click the “New workout plan” button to get started."
+msgstr "Niciun plan încă. Apasă pe butonul „Plan de antrenament nou” pentru a începe."
+
+# ---- Member list ----
+msgid "Members"
+msgstr "Membri"
+
+msgid "New member"
+msgstr "Membru nou"
+
+msgid "Sex:"
+msgstr "Sex:"
+
+msgid "Preferred:"
+msgstr "Preferat:"
+
+msgid "Edit"
+msgstr "Editează"
+
+msgid "History"
+msgstr "Istoric"
+
+msgid "Export PDF"
+msgstr "Export PDF"
+
+msgid "Export Word"
+msgstr "Export Word"
+
+msgid "Start workout"
+msgstr "Începe antrenamentul"
+
+msgid "Created:"
+msgstr "Creat:"
+
+msgid "No members yet. Create one to start workouts."
+msgstr "Niciun membru încă. Creează unul pentru a începe antrenamentele."
+
+# ---- Equipment list ----
+msgid "Equipment"
+msgstr "Echipament"
+
+msgid "Gym equipment"
+msgstr "Echipament de sală"
+
+msgid "Add new equipment"
+msgstr "Adaugă echipament nou"
+
+msgid "Any new equipment name can be added — not only those from the predefined list."
+msgstr "Orice denumire nouă poate fi adăugată — nu doar cele din lista predefinită."
+
+msgid "Add"
+msgstr "Adaugă"
+
+msgid "Available equipment"
+msgstr "Echipament disponibil"
+
+msgid "Delete"
+msgstr "Șterge"
+
+msgid "No equipment added yet."
+msgstr "Niciun echipament adăugat încă."
+
+# ---- Uploaded plans ----
+msgid "Uploaded plans"
+msgstr "Planuri încărcate"
+
+msgid "External workout plans (PDF)"
+msgstr "Planuri externe de antrenament (PDF)"
+
+msgid "Upload new PDF"
+msgstr "Încarcă PDF nou"
+
+msgid "Upload PDF"
+msgstr "Încarcă PDF"
+
+msgid "Uploaded files"
+msgstr "Fișiere încărcate"
+
+msgid "Source:"
+msgstr "Sursă:"
+
+msgid "Uploaded:"
+msgstr "Încărcat:"
+
+msgid "Open"
+msgstr "Deschide"
+
+msgid "No uploaded PDFs yet."
+msgstr "Niciun PDF încărcat încă."
+
+# ---- Admin dashboard ----
+msgid "Admin dashboard"
+msgstr "Panou administrare"
+
+msgid "Dashboard"
+msgstr "Panou"
+
+msgid "Total members"
+msgstr "Total membri"
+
+msgid "+%(n)s in the last 30 days"
+msgstr "+%(n)s în ultimele 30 de zile"
+
+msgid "Total workout plans"
+msgstr "Total planuri de antrenament"
+
+msgid "+%(n)s in the last 7 days"
+msgstr "+%(n)s în ultimele 7 zile"
+
+msgid "Active exercises"
+msgstr "Exerciții active"
+
+msgid "Library size"
+msgstr "Dimensiunea bibliotecii"
+
+msgid "Registered equipment"
+msgstr "Echipamente înregistrate"
+
+msgid "Uploaded PDF plans"
+msgstr "Planuri PDF încărcate"
+
+msgid "Recent members"
+msgstr "Membri recenți"
+
+msgid "No members yet."
+msgstr "Niciun membru încă."
+
+msgid "Recent plans"
+msgstr "Planuri recente"
+
+msgid "No plans yet."
+msgstr "Niciun plan încă."
+
+# ---- Exercise form ----
+msgid "New exercise"
+msgstr "Exercițiu nou"
+
+msgid "Add exercise"
+msgstr "Adaugă exercițiu"
+
+msgid "Save"
+msgstr "Salvează"
+
+msgid "Recently added exercises"
+msgstr "Exerciții adăugate recent"
+
+msgid "No exercises recorded yet."
+msgstr "Niciun exercițiu înregistrat încă."
+
+# ---- Member form ----
+msgid "Member"
+msgstr "Membru"
+
+msgid "Edit member"
+msgstr "Editează membrul"
+
+msgid "Restrictions"
+msgstr "Restricții"
+
+msgid "Add conditions that should be taken into account when generating workout plans."
+msgstr "Adaugă condițiile care trebuie luate în considerare la generarea planurilor."
+
+msgid "Optional"
+msgstr "Opțional"
+
+msgid "Saved restriction"
+msgstr "Restricție salvată"
+
+msgid "New restriction"
+msgstr "Restricție nouă"
+
+msgid "Delete restriction"
+msgstr "Șterge restricția"
+
+msgid "Save member"
+msgstr "Salvează membrul"
+
+msgid "Cancel"
+msgstr "Anulează"
+
+msgid "Add medical or movement-related factors to consider when generating workouts."
+msgstr "Adaugă factori medicali sau de mișcare care trebuie luați în considerare la generarea antrenamentelor."
+
+msgid "Add new restriction"
+msgstr "Adaugă o restricție nouă"
+
+# ---- Forms (labels / help_text) ----
+msgid "Workout duration"
+msgstr "Durata antrenamentului"
+
+msgid "Today's injuries / painful areas"
+msgstr "Accidentări / zone dureroase astăzi"
+
+msgid "Applies to today's session only. Restrictions saved on your profile are pre-selected by default."
+msgstr "Se aplică doar la sesiunea de astăzi. Restricțiile salvate pe profil sunt preselectate implicit."
+
+msgid "External plan inspiration (optional)"
+msgstr "Inspirație plan extern (opțional)"
+
+msgid "None selected"
+msgstr "Niciuna selectată"
+
+msgid "The system uses this as style inspiration but tailors the plan to your profile and today's parameters."
+msgstr "Sistemul îl folosește ca inspirație de stil, dar adaptează planul la profilul tău și la parametrii de astăzi."
+
+msgid "Workout type"
+msgstr "Tipul antrenamentului"
+
+msgid "Soreness / fatigue"
+msgstr "Febră musculară / oboseală"
+
+msgid "Workout notes"
+msgstr "Note despre antrenament"
+
+msgid "Completed?"
+msgstr "Finalizat?"
+
+msgid "Difficulty (1–10)"
+msgstr "Dificultate (1–10)"
+
+msgid "Energy after the workout"
+msgstr "Energie după antrenament"
+
+msgid "Any pain today?"
+msgstr "Vreo durere astăzi?"
+
+msgid "Feedback notes"
+msgstr "Note de feedback"
+
+msgid "Question about the workout plan"
+msgstr "Întrebare despre planul de antrenament"
+
+msgid "E.g.: Can I do the second exercise if I had a leg injury 2 weeks ago?"
+msgstr "Ex.: Pot face al doilea exercițiu dacă acum 2 săptămâni am avut o accidentare la picior?"
+
+msgid "Full name"
+msgstr "Nume complet"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Age (years)"
+msgstr "Vârstă (ani)"
+
+msgid "Sex"
+msgstr "Sex"
+
+msgid "Height (cm)"
+msgstr "Înălțime (cm)"
+
+msgid "Weight (kg)"
+msgstr "Greutate (kg)"
+
+msgid "Training level"
+msgstr "Nivel de antrenament"
+
+msgid "Primary goal"
+msgstr "Obiectiv principal"
+
+msgid "Preferred workout duration (min)"
+msgstr "Durata preferată a antrenamentului (min)"
+
+msgid "How often do you train per week?"
+msgstr "De câte ori te antrenezi pe săptămână?"
+
+msgid "This phone number already belongs to another profile."
+msgstr "Acest număr de telefon aparține deja altui profil."
+
+msgid "Restriction type"
+msgstr "Tipul restricției"
+
+msgid "Body area"
+msgstr "Zona corpului"
+
+msgid "Description / note"
+msgstr "Descriere / notă"
+
+msgid "Active"
+msgstr "Activ"
+
+msgid "New equipment name"
+msgstr "Nume echipament nou"
+
+msgid "E.g.: TRX, battle rope, sled"
+msgstr "Ex.: TRX, battle rope, sanie"
+
+msgid "Please provide an equipment name."
+msgstr "Te rog introdu un nume pentru echipament."
+
+msgid "Exercise name"
+msgstr "Nume exercițiu"
+
+msgid "Category"
+msgstr "Categorie"
+
+msgid "Primary muscle group"
+msgstr "Grupa musculară principală"
+
+msgid "Secondary muscle groups (comma-separated)"
+msgstr "Grupe musculare secundare (separate prin virgulă)"
+
+msgid "Difficulty"
+msgstr "Dificultate"
+
+msgid "Contraindications"
+msgstr "Contraindicații"
+
+msgid "Execution instructions"
+msgstr "Instrucțiuni de execuție"
+
+msgid "Invalid muscle group(s): %(items)s"
+msgstr "Grupă/grupe musculare invalidă/e: %(items)s"
+
+msgid "Plan title"
+msgstr "Titlu plan"
+
+msgid "Source (e.g. athlete's name)"
+msgstr "Sursă (ex.: numele sportivului)"
+
+msgid "PDF file"
+msgstr "Fișier PDF"
+
+msgid "E.g.: Arnold chest day"
+msgstr "Ex.: Arnold chest day"
+
+msgid "E.g.: Arnold Schwarzenegger"
+msgstr "Ex.: Arnold Schwarzenegger"
+
+msgid "Please select a PDF file."
+msgstr "Te rog selectează un fișier PDF."
+
+msgid "Only PDF files can be uploaded."
+msgstr "Doar fișiere PDF pot fi încărcate."
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Phone (optional)"
+msgstr "Telefon (opțional)"
+
+msgid "PIN (4 digits)"
+msgstr "PIN (4 cifre)"
+
+msgid "Confirm PIN"
+msgstr "Confirmă PIN-ul"
+
+msgid "The PINs do not match."
+msgstr "PIN-urile nu se potrivesc."
+
+msgid "PIN must be exactly 4 digits."
+msgstr "PIN-ul trebuie să aibă exact 4 cifre."
+
+msgid "This email address is already registered."
+msgstr "Această adresă de email este deja înregistrată."
+
+msgid "This phone number is already registered."
+msgstr "Acest număr de telefon este deja înregistrat."
+
+msgid "Email, phone or username"
+msgstr "Email, telefon sau nume utilizator"
+
+msgid "PIN or password"
+msgstr "PIN sau parolă"
+
+# ---- Models: choices / verbose names ----
+msgid "Female"
+msgstr "Femeie"
+
+msgid "Male"
+msgstr "Bărbat"
+
+msgid "Not specified"
+msgstr "Nespecificat"
+
+msgid "Beginner"
+msgstr "Începător"
+
+msgid "Intermediate"
+msgstr "Intermediar"
+
+msgid "Advanced"
+msgstr "Avansat"
+
+msgid "Hypertrophy"
+msgstr "Hipertrofie"
+
+msgid "Fat loss"
+msgstr "Pierdere în greutate"
+
+msgid "General fitness"
+msgstr "Condiție fizică generală"
+
+msgid "Rehab / prevention"
+msgstr "Recuperare / prevenție"
+
+msgid "1–2 days"
+msgstr "1–2 zile"
+
+msgid "3–4 days"
+msgstr "3–4 zile"
+
+msgid "5–7 days"
+msgstr "5–7 zile"
+
+msgid "Avoid"
+msgstr "Evită"
+
+msgid "Limit"
+msgstr "Limitează"
+
+msgid "Modify"
+msgstr "Modifică"
+
+msgid "Note"
+msgstr "Notă"
+
+msgid "Full body"
+msgstr "Tot corpul"
+
+msgctxt "body area"
+msgid "Back"
+msgstr "Spate"
+
+msgid "Chest"
+msgstr "Piept"
+
+msgid "Shoulders"
+msgstr "Umeri"
+
+msgid "Arms"
+msgstr "Brațe"
+
+msgid "Hips"
+msgstr "Șolduri"
+
+msgid "Knees"
+msgstr "Genunchi"
+
+msgid "Ankles"
+msgstr "Glezne"
+
+msgid "Core"
+msgstr "Trunchi"
+
+msgid "Other"
+msgstr "Altele"
+
+msgid "Member profile"
+msgstr "Profil membru"
+
+msgid "Member profiles"
+msgstr "Profiluri membri"
+
+msgid "Member restriction"
+msgstr "Restricție membru"
+
+msgid "Member restrictions"
+msgstr "Restricții membri"
+
+msgid "Uploaded workout plan"
+msgstr "Plan de antrenament încărcat"
+
+msgid "Uploaded workout plans"
+msgstr "Planuri de antrenament încărcate"
+
+msgid "Gym (single day)"
+msgstr "Sală (o singură zi)"
+
+msgid "Low"
+msgstr "Scăzut"
+
+msgid "Medium"
+msgstr "Mediu"
+
+msgid "High"
+msgstr "Ridicat"
+
+msgid "None"
+msgstr "Niciuna"
+
+msgid "Mild"
+msgstr "Ușoară"
+
+msgid "Moderate"
+msgstr "Moderată"
+
+msgid "Severe"
+msgstr "Severă"
+
+msgid "Main work"
+msgstr "Lucru principal"
+
+msgid "Workout exercise"
+msgstr "Exercițiu de antrenament"
+
+msgid "Workout exercises"
+msgstr "Exerciții de antrenament"
+
+msgid "Workout feedback"
+msgstr "Feedback antrenament"
+
+msgid "Workout feedback entries"
+msgstr "Înregistrări feedback antrenament"
+
+msgid "Workout plan question"
+msgstr "Întrebare despre planul de antrenament"
+
+msgid "Workout plan questions"
+msgstr "Întrebări despre planul de antrenament"
+
+msgid "User who created the plan (coach / staff)."
+msgstr "Utilizator care a creat planul (antrenor / personal)."
+
+msgid "Available time for the workout in minutes."
+msgstr "Timpul disponibil pentru antrenament, în minute."
+
+msgid "Planner engine log / debug context (filtered data only)."
+msgstr "Jurnal / context de depanare al motorului (doar date filtrate)."
+
+msgid "Full validated workout proposal (warm-up / main / accessory / cool-down). When set, this is the source of truth."
+msgstr "Propunere completă validată (încălzire / principal / accesoriu / revenire). Când este setată, este sursa de adevăr."
+
+msgid "Slugs of exercises in the plan in order (used for repetition control and fast counting)."
+msgstr "Sluguri ale exercițiilor în ordine (control de repetare și numărare rapidă)."
+
+msgid "Display / execution order within the plan."
+msgstr "Ordinea de afișare / execuție în cadrul planului."
+
+msgid "Reps (e.g. “8–12”, “10”, “time:45 s”)."
+msgstr "Repetări (ex. „8–12”, „10”, „timp:45 s”)."
+
+msgid "Tempo (e.g. “2-0-2”)."
+msgstr "Tempo (ex. „2-0-2”)."
+
+msgid "Subjective difficulty (e.g. 1–10)."
+msgstr "Dificultate subiectivă (ex. 1–10)."
+
+msgid "Whether the member reported pain that should adjust the plan."
+msgstr "Dacă membrul a semnalat o durere care necesită ajustarea planului."
+
+msgid "Optional link to the member's Django user."
+msgstr "Legătură opțională către utilizatorul Django al membrului."
+
+msgid "Displayed phone number (member's own account or provided by the coach)."
+msgstr "Număr de telefon afișat (contul propriu al membrului sau furnizat de antrenor)."
+
+msgid "Digits only (for consistent search); empty when no phone is set."
+msgstr "Doar cifre (pentru căutare consistentă); gol dacă nu este telefon."
+
+msgid "Member age in years."
+msgstr "Vârsta membrului în ani."
+
+msgid "Height in centimeters."
+msgstr "Înălțime în centimetri."
+
+msgid "Body weight in kilograms."
+msgstr "Greutate corporală în kilograme."
+
+msgid "Preferred workout duration in minutes (planning signal)."
+msgstr "Durată preferată de antrenament în minute (semnal pentru planificare)."
+
+msgid "Weekly workout frequency (estimate)."
+msgstr "Frecvența săptămânală a antrenamentelor (estimare)."
+
+msgid "Higher-priority substitutions take precedence."
+msgstr "Substituirile cu prioritate mai mare au întâietate."
+
+msgid "Exercise substitution"
+msgstr "Substituire exercițiu"
+
+msgid "Exercise substitutions"
+msgstr "Substituiri exerciții"
+
+msgid "Exercises"
+msgstr "Exerciții"
+
+msgid "Barbell"
+msgstr "Bară"
+
+msgid "Dumbbell"
+msgstr "Gantere"
+
+msgid "Kettlebell"
+msgstr "Kettlebell"
+
+msgid "Machine"
+msgstr "Mașină"
+
+msgid "Cable"
+msgstr "Cablu"
+
+msgid "Resistance band"
+msgstr "Bandă elastică"
+
+msgid "Bodyweight"
+msgstr "Greutate proprie"
+
+msgid "Cardio machine"
+msgstr "Mașină cardio"
+
+msgid "Biceps"
+msgstr "Biceps"
+
+msgid "Triceps"
+msgstr "Triceps"
+
+msgid "Quadriceps"
+msgstr "Cvadriceps"
+
+msgid "Hamstrings"
+msgstr "Ischiogambieri"
+
+msgid "Glutes"
+msgstr "Fesieri"
+
+msgid "Calves"
+msgstr "Gambe"
+
+msgid "FitnessAI administration"
+msgstr "Administrare FitnessAI"
+
+msgid "Home"
+msgstr "Acasă"
+
+# ---- View messages ----
+msgid "Registration successful."
+msgstr "Înregistrare reușită."
+
+msgid "Too many failed attempts. Please try again later."
+msgstr "Prea multe încercări eșuate. Te rog încearcă mai târziu."
+
+msgid "Signed in successfully."
+msgstr "Conectat cu succes."
+
+msgid "Invalid email/phone or PIN."
+msgstr "Email/telefon sau PIN incorect."
+
+msgid "You have been signed out."
+msgstr "Te-ai deconectat."
+
+msgid "No member profile is linked to this account."
+msgstr "Niciun profil de membru nu este asociat acestui cont."
+
+msgid "Profile saved."
+msgstr "Profil salvat."
+
+msgid "Equipment added to the available list."
+msgstr "Echipament adăugat la lista disponibilă."
+
+msgid "This equipment is already in the list."
+msgstr "Acest echipament este deja în listă."
+
+msgid "Equipment deleted."
+msgstr "Echipament șters."
+
+msgid "Exercise '%(name)s' created."
+msgstr "Exercițiul '%(name)s' a fost creat."
+
+msgid "Workout plan PDF uploaded."
+msgstr "PDF cu planul de antrenament încărcat."
+
+msgid "Uploaded PDF deleted."
+msgstr "PDF încărcat șters."
+
+msgid "Please fill in your profile before creating your first workout plan."
+msgstr "Te rog completează-ți profilul înainte de a crea primul plan de antrenament."
+
+msgid "Please enter a valid question."
+msgstr "Te rog introdu o întrebare validă."
+
+msgid "Answer is ready."
+msgstr "Răspunsul este gata."
+
+msgid "The OpenAI API key is not configured in production, so a rule-based plan was created."
+msgstr "Cheia OpenAI API nu este configurată în producție, așa că s-a creat un plan bazat pe reguli."
+
+# ---- Session duration choices ----
+msgid "30 min"
+msgstr "30 min"
+
+msgid "45 min"
+msgstr "45 min"
+
+msgid "60 min"
+msgstr "60 min"
+
+msgid "75 min"
+msgstr "75 min"
+
+msgid "90 min"
+msgstr "90 min"

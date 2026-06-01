@@ -1,10 +1,11 @@
 {% extends "members/admin_base.html" %}
-{% block title %}Tag{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Member" %}{% endblock %}
 
 {% block admin_content %}
   <div class="d-flex align-items-center justify-content-between mb-3">
-    <h1 class="h2 mb-0">{% if member %}Tag szerkesztése{% else %}Új tag{% endif %}</h1>
-    <a class="btn btn-outline-secondary btn-lg" href="{% url 'members:members_list' %}">Vissza</a>
+    <h1 class="h2 mb-0">{% if member %}{% trans "Edit member" %}{% else %}{% trans "New member" %}{% endif %}</h1>
+    <a class="btn btn-outline-secondary btn-lg" href="{% url 'members:members_list' %}">{% trans "Back" %}</a>
   </div>
 
   <div class="card shadow-sm">
@@ -34,12 +35,12 @@
 
         <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
           <div>
-            <h2 class="h4 mb-1">Korlátozások</h2>
+            <h2 class="h4 mb-1">{% trans "Restrictions" %}</h2>
             <p class="text-muted mb-0">
-              Add meg azokat az állapotokat, amelyeket az edzésterv készítésekor figyelembe kell venni.
+              {% trans "Add conditions that should be taken into account when generating workout plans." %}
             </p>
           </div>
-          <span class="badge text-bg-light border">Opcionális</span>
+          <span class="badge text-bg-light border">{% trans "Optional" %}</span>
         </div>
 
         {{ restrictions_formset.management_form }}
@@ -53,9 +54,9 @@
               <div class="card border-0 shadow-sm bg-body-tertiary">
                 <div class="card-body">
                   {% if rform.instance.pk %}
-                    <div class="text-muted small mb-2">Mentett korlátozás</div>
+                    <div class="text-muted small mb-2">{% trans "Saved restriction" %}</div>
                   {% else %}
-                    <div class="text-muted small mb-2">Új korlátozás</div>
+                    <div class="text-muted small mb-2">{% trans "New restriction" %}</div>
                   {% endif %}
 
                   {% for rf in rform.visible_fields %}
@@ -72,7 +73,7 @@
                     {% if rform.fields.DELETE %}
                       <div class="form-check mt-2">
                         {{ rform.DELETE }}
-                        <label class="form-check-label" for="{{ rform.DELETE.id_for_label }}">Korlátozás törlése</label>
+                        <label class="form-check-label" for="{{ rform.DELETE.id_for_label }}">{% trans "Delete restriction" %}</label>
                       </div>
                     {% endif %}
                   {% endif %}
@@ -83,9 +84,9 @@
         </div>
 
         <div class="d-flex gap-2 mt-4 flex-wrap">
-          <button type="submit" class="btn btn-primary btn-lg">Tag mentése</button>
+          <button type="submit" class="btn btn-primary btn-lg">{% trans "Save member" %}</button>
           {% if member %}
-            <a class="btn btn-outline-danger btn-lg" href="{% url 'members:members_list' %}">Mégse</a>
+            <a class="btn btn-outline-danger btn-lg" href="{% url 'members:members_list' %}">{% trans "Cancel" %}</a>
           {% endif %}
         </div>
       </form>

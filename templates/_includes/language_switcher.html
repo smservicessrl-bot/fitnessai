@@ -1,0 +1,43 @@
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+
+{% comment %}
+  Compact, dark-themed language switcher.
+  Variants:
+    - default (small pill, used in navbar)
+    - large (bigger pills with native names, used on login/register/landing)
+  Usage:
+    include this partial with no args for the small variant,
+    or with variant="large" for the large variant.
+{% endcomment %}
+
+<form
+  method="post"
+  action="{% url 'set_language' %}"
+  class="lang-switcher {% if variant == 'large' %}lang-switcher--large{% endif %}"
+  aria-label="{% trans 'Language selector' %}"
+>
+  {% csrf_token %}
+  <input type="hidden" name="next" value="{{ request.get_full_path }}" />
+  <div class="lang-switcher__group" role="group">
+    {% for lang_code, lang_name in LANGUAGES %}
+      <button
+        type="submit"
+        name="language"
+        value="{{ lang_code }}"
+        class="lang-switcher__option {% if LANGUAGE_CODE == lang_code %}is-active{% endif %}"
+        aria-pressed="{% if LANGUAGE_CODE == lang_code %}true{% else %}false{% endif %}"
+        title="{{ lang_name }}"
+      >
+        <span class="lang-switcher__flag" aria-hidden="true">
+          {% if lang_code == 'hu' %}🇭🇺{% elif lang_code == 'en' %}🇬🇧{% elif lang_code == 'ro' %}🇷🇴{% else %}🌐{% endif %}
+        </span>
+        <span class="lang-switcher__code">{{ lang_code|upper }}</span>
+        {% if variant == 'large' %}
+          <span class="lang-switcher__name">{{ lang_name }}</span>
+        {% endif %}
+      </button>
+    {% endfor %}
+  </div>
+</form>

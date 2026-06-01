@@ -1,6 +1,7 @@
-{% load static %}
+{% load static i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 <!doctype html>
-<html lang="hu">
+<html lang="{{ LANGUAGE_CODE|default:'hu' }}">
   <head>
     <meta charset="utf-8" />
     <meta
@@ -17,7 +18,7 @@
       crossorigin="anonymous"
     />
 
-    <link rel="stylesheet" href="{% static 'css/fitnessai.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/fitnessai.css' %}?v=20260601-i18n-final" />
   </head>
   <body>
     <nav class="navbar navbar-expand-lg fitnessai-navbar">
@@ -26,18 +27,18 @@
         <div class="d-flex gap-2 align-items-center flex-wrap">
           {% if user.is_authenticated %}
             {% if user.is_staff %}
-              <a class="btn btn-outline-light btn-lg" href="{% url 'members:dashboard' %}">Admin</a>
-              <a class="btn btn-outline-light btn-lg" href="{% url 'admin:index' %}">Adminisztráció</a>
+              <a class="btn btn-outline-light btn-lg" href="{% url 'members:dashboard' %}">{% trans "Admin" %}</a>
+              <a class="btn btn-outline-light btn-lg" href="{% url 'admin:index' %}">{% trans "Administration" %}</a>
             {% else %}
-              <a class="btn btn-outline-light btn-lg" href="{% url 'member_app:dashboard' %}">Profilom</a>
+              <a class="btn btn-outline-light btn-lg" href="{% url 'member_app:dashboard' %}">{% trans "My profile" %}</a>
             {% endif %}
             <form method="post" action="{% url 'accounts:logout' %}" class="d-inline">
               {% csrf_token %}
-              <button type="submit" class="btn btn-outline-light btn-lg">Kijelentkezés</button>
+              <button type="submit" class="btn btn-outline-light btn-lg">{% trans "Sign out" %}</button>
             </form>
           {% else %}
-            <a class="btn btn-outline-light btn-lg" href="{% url 'accounts:login' %}">Bejelentkezés</a>
-            <a class="btn btn-light btn-lg text-dark" href="{% url 'accounts:register' %}">Regisztráció</a>
+            <a class="btn btn-outline-light btn-lg" href="{% url 'accounts:login' %}">{% trans "Sign in" %}</a>
+            <a class="btn btn-light btn-lg text-dark" href="{% url 'accounts:register' %}">{% trans "Register" %}</a>
           {% endif %}
         </div>
       </div>
@@ -49,7 +50,7 @@
         {% for message in messages %}
         <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
           {{ message }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Bezárás"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{% trans 'Close' %}"></button>
         </div>
         {% endfor %}
       </div>

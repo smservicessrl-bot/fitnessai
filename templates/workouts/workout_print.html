@@ -1,9 +1,11 @@
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 <!doctype html>
-<html lang="hu">
+<html lang="{{ LANGUAGE_CODE|default:'hu' }}">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Edzésterv nyomtatás — {{ member.full_name }}</title>
+    <title>{% blocktrans with name=member.full_name %}Workout plan print — {{ name }}{% endblocktrans %}</title>
     <style>
       :root {
         color-scheme: light;
@@ -89,40 +91,40 @@
   </head>
   <body>
     <div class="toolbar">
-      <button class="btn" onclick="window.print()">Nyomtatás</button>
+      <button class="btn" onclick="window.print()">{% trans "Print" %}</button>
       {% if request.resolver_match.namespace == 'app_workouts' %}
-        <a class="btn" href="{% url 'app_workouts:workout_plan_detail' plan_id=plan.id %}">Vissza a részletekhez</a>
+        <a class="btn" href="{% url 'app_workouts:workout_plan_detail' plan_id=plan.id %}">{% trans "Back to details" %}</a>
       {% else %}
-        <a class="btn" href="{% url 'workouts:workout_plan_detail' member_id=member.id plan_id=plan.id %}">Vissza a részletekhez</a>
+        <a class="btn" href="{% url 'workouts:workout_plan_detail' member_id=member.id plan_id=plan.id %}">{% trans "Back to details" %}</a>
       {% endif %}
     </div>
 
-    <h1>Edzésterv</h1>
+    <h1>{% trans "Workout plan" %}</h1>
     <div class="meta">
-      <div><strong>Tag:</strong> {{ member.full_name }}</div>
-      <div><strong>Dátum:</strong> {{ plan.created_at|date:"Y-m-d H:i" }}</div>
+      <div><strong>{% trans "Member:" %}</strong> {{ member.full_name }}</div>
+      <div><strong>{% trans "Date:" %}</strong> {{ plan.created_at|date:"Y-m-d H:i" }}</div>
       <div>
-        <strong>Cél:</strong> {{ plan.get_goal_display }} |
-        <strong>Idő:</strong> {{ plan.available_time }} perc |
-        <strong>Energia:</strong> {{ plan.get_energy_level_display }} |
-        <strong>Izomláz:</strong> {{ plan.get_soreness_level_display }}
+        <strong>{% trans "Goal:" %}</strong> {{ plan.get_goal_display }} |
+        <strong>{% trans "Time:" %}</strong> {{ plan.available_time }} {% trans "min" %} |
+        <strong>{% trans "Energy:" %}</strong> {{ plan.get_energy_level_display }} |
+        <strong>{% trans "Soreness:" %}</strong> {{ plan.get_soreness_level_display }}
       </div>
-      <div><strong>MI segítség:</strong> {% if plan.ai_generated %}Igen{% else %}Nem{% endif %}</div>
+      <div><strong>{% trans "AI assist:" %}</strong> {% if plan.ai_generated %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}</div>
     </div>
 
     {% if warmup %}
       <div class="section">
-        <div class="section-title">Bemelegítés</div>
+        <div class="section-title">{% trans "Warm-up" %}</div>
         <table>
           <thead>
             <tr>
               <th>#</th>
-              <th>Gyakorlat</th>
-              <th>Sorozatok</th>
-              <th>Ismétlések</th>
-              <th>Pihenő</th>
-              <th>Tempó</th>
-              <th>Megjegyzés</th>
+              <th>{% trans "Exercise" %}</th>
+              <th>{% trans "Sets" %}</th>
+              <th>{% trans "Reps" %}</th>
+              <th>{% trans "Rest" %}</th>
+              <th>{% trans "Tempo" %}</th>
+              <th>{% trans "Notes" %}</th>
             </tr>
           </thead>
           <tbody>
@@ -132,7 +134,7 @@
                 <td>{{ item.exercise.name }}</td>
                 <td>{{ item.sets }}</td>
                 <td>{{ item.reps }}</td>
-                <td>{{ item.rest_seconds }} mp</td>
+                <td>{{ item.rest_seconds }} {% trans "s" %}</td>
                 <td>{{ item.tempo|default:"—" }}</td>
                 <td>{{ item.notes|default:"—" }}</td>
               </tr>
@@ -144,17 +146,17 @@
 
     {% if main_work %}
       <div class="section">
-        <div class="section-title">Fő blokk + kiegészítő</div>
+        <div class="section-title">{% trans "Main block + accessory" %}</div>
         <table>
           <thead>
             <tr>
               <th>#</th>
-              <th>Gyakorlat</th>
-              <th>Sorozatok</th>
-              <th>Ismétlések</th>
-              <th>Pihenő</th>
-              <th>Tempó</th>
-              <th>Megjegyzés</th>
+              <th>{% trans "Exercise" %}</th>
+              <th>{% trans "Sets" %}</th>
+              <th>{% trans "Reps" %}</th>
+              <th>{% trans "Rest" %}</th>
+              <th>{% trans "Tempo" %}</th>
+              <th>{% trans "Notes" %}</th>
             </tr>
           </thead>
           <tbody>
@@ -164,7 +166,7 @@
                 <td>{{ item.exercise.name }}</td>
                 <td>{{ item.sets }}</td>
                 <td>{{ item.reps }}</td>
-                <td>{{ item.rest_seconds }} mp</td>
+                <td>{{ item.rest_seconds }} {% trans "s" %}</td>
                 <td>{{ item.tempo|default:"—" }}</td>
                 <td>{{ item.notes|default:"—" }}</td>
               </tr>
@@ -176,17 +178,17 @@
 
     {% if cooldown %}
       <div class="section">
-        <div class="section-title">Levezetés</div>
+        <div class="section-title">{% trans "Cool-down" %}</div>
         <table>
           <thead>
             <tr>
               <th>#</th>
-              <th>Gyakorlat</th>
-              <th>Sorozatok</th>
-              <th>Ismétlések</th>
-              <th>Pihenő</th>
-              <th>Tempó</th>
-              <th>Megjegyzés</th>
+              <th>{% trans "Exercise" %}</th>
+              <th>{% trans "Sets" %}</th>
+              <th>{% trans "Reps" %}</th>
+              <th>{% trans "Rest" %}</th>
+              <th>{% trans "Tempo" %}</th>
+              <th>{% trans "Notes" %}</th>
             </tr>
           </thead>
           <tbody>
@@ -196,7 +198,7 @@
                 <td>{{ item.exercise.name }}</td>
                 <td>{{ item.sets }}</td>
                 <td>{{ item.reps }}</td>
-                <td>{{ item.rest_seconds }} mp</td>
+                <td>{{ item.rest_seconds }} {% trans "s" %}</td>
                 <td>{{ item.tempo|default:"—" }}</td>
                 <td>{{ item.notes|default:"—" }}</td>
               </tr>
@@ -208,18 +210,18 @@
 
     {% if plan.notes %}
       <div class="section">
-        <div class="section-title">Edzői megjegyzések</div>
+        <div class="section-title">{% trans "Coach notes" %}</div>
         <div class="notes">{{ plan.notes }}</div>
       </div>
     {% endif %}
 
     <div class="section small">
-      FitnessAI MVP • Terv azonosító {{ plan.id }}
+      FitnessAI MVP • {% trans "Plan ID" %} {{ plan.id }}
     </div>
 
     {% if auto_print %}
       <script>
-        // Nyomtatási párbeszédablak — PDF mentéshez a böngészőben.
+        // Print dialog — for saving as PDF from the browser.
         window.addEventListener("load", function () {
           window.print();
         });

@@ -1,44 +1,45 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _, pgettext_lazy
 
 
 class Exercise(models.Model):
     class Category(models.TextChoices):
-        STRENGTH = "strength", "Erő"
-        HYPERTROPHY = "hypertrophy", "Izomtömeg"
-        MOBILITY = "mobility", "Mobilitás"
-        CORE = "core", "Törzs"
-        CARDIO = "cardio", "Kardió"
-        REHAB = "rehab", "Rehabilitáció / megelőzés"
+        STRENGTH = "strength", _("Strength")
+        HYPERTROPHY = "hypertrophy", _("Hypertrophy")
+        MOBILITY = "mobility", _("Mobility")
+        CORE = "core", _("Core")
+        CARDIO = "cardio", _("Cardio")
+        REHAB = "rehab", _("Rehab / prevention")
 
     class Difficulty(models.TextChoices):
-        BEGINNER = "beginner", "Kezdő"
-        INTERMEDIATE = "intermediate", "Középhaladó"
-        ADVANCED = "advanced", "Haladó"
+        BEGINNER = "beginner", _("Beginner")
+        INTERMEDIATE = "intermediate", _("Intermediate")
+        ADVANCED = "advanced", _("Advanced")
 
     class Equipment(models.TextChoices):
-        BARBELL = "barbell", "Rúd"
-        DUMBBELL = "dumbbell", "Súlyzó"
-        KETTLEBELL = "kettlebell", "Kettlebell"
-        MACHINE = "machine", "Gép"
-        CABLE = "cable", "Kábel"
-        BAND = "band", "Ellenállási szalag"
-        BODYWEIGHT = "bodyweight", "Saját testsúly"
-        CARDIO_MACHINE = "cardio_machine", "Kardió gép"
-        OTHER = "other", "Egyéb"
+        BARBELL = "barbell", _("Barbell")
+        DUMBBELL = "dumbbell", _("Dumbbell")
+        KETTLEBELL = "kettlebell", _("Kettlebell")
+        MACHINE = "machine", _("Machine")
+        CABLE = "cable", _("Cable")
+        BAND = "band", _("Resistance band")
+        BODYWEIGHT = "bodyweight", _("Bodyweight")
+        CARDIO_MACHINE = "cardio_machine", _("Cardio machine")
+        OTHER = "other", _("Other")
 
     class MuscleGroup(models.TextChoices):
-        FULL_BODY = "full_body", "Teljes test"
-        CHEST = "chest", "Mell"
-        BACK = "back", "Hát"
-        SHOULDERS = "shoulders", "Váll"
-        BICEPS = "biceps", "Bicepsz"
-        TRICEPS = "triceps", "Tricepsz"
-        QUADRICEPS = "quadriceps", "Combizom"
-        HAMSTRINGS = "hamstrings", "Comhajlítók"
-        GLUTES = "glutes", "Farizom"
-        CALVES = "calves", "Vádli"
-        CORE = "core", "Törzs"
-        OTHER = "other", "Egyéb"
+        FULL_BODY = "full_body", _("Full body")
+        CHEST = "chest", _("Chest")
+        BACK = "back", pgettext_lazy("body area", "Back")
+        SHOULDERS = "shoulders", _("Shoulders")
+        BICEPS = "biceps", _("Biceps")
+        TRICEPS = "triceps", _("Triceps")
+        QUADRICEPS = "quadriceps", _("Quadriceps")
+        HAMSTRINGS = "hamstrings", _("Hamstrings")
+        GLUTES = "glutes", _("Glutes")
+        CALVES = "calves", _("Calves")
+        CORE = "core", _("Core")
+        OTHER = "other", _("Other")
 
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=140, unique=True)
@@ -60,9 +61,6 @@ class Exercise(models.Model):
     difficulty = models.CharField(max_length=30, choices=Difficulty.choices, db_index=True, default=Difficulty.BEGINNER)
 
     # For MVP, store contraindications as searchable free-text notes.
-    # Example entries:
-    # - "knee pain: avoid deep flexion"
-    # - "shoulder impingement: avoid overhead press"
     contraindications = models.TextField(blank=True, default="")
 
     instructions = models.TextField(blank=True, default="")
@@ -73,8 +71,8 @@ class Exercise(models.Model):
 
     class Meta:
         ordering = ["-active", "name"]
-        verbose_name = "Gyakorlat"
-        verbose_name_plural = "Gyakorlatok"
+        verbose_name = _("Exercise")
+        verbose_name_plural = _("Exercises")
 
     def __str__(self) -> str:
         return self.name
@@ -99,7 +97,7 @@ class ExerciseSubstitution(models.Model):
     )
 
     reason = models.CharField(max_length=255, blank=True, default="")
-    priority = models.IntegerField(default=0, help_text="Magasabb prioritású helyettesítések előnyben.")
+    priority = models.IntegerField(default=0, help_text=_("Higher-priority substitutions take precedence."))
     active = models.BooleanField(default=True, db_index=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -112,9 +110,8 @@ class ExerciseSubstitution(models.Model):
                 name="unique_exercise_substitution_pair",
             )
         ]
-        verbose_name = "Gyakorlat helyettesítés"
-        verbose_name_plural = "Gyakorlat helyettesítések"
+        verbose_name = _("Exercise substitution")
+        verbose_name_plural = _("Exercise substitutions")
 
     def __str__(self) -> str:
         return f"{self.from_exercise.name} -> {self.to_exercise.name}"
-

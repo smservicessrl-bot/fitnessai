@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db import transaction
 from django.db.models import OuterRef, Subquery
 from django.utils import timezone
+from django.utils.translation import gettext as _
 from django.forms import inlineformset_factory
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -138,7 +139,7 @@ def member_dashboard(request):
         return redirect(reverse("members:dashboard"))
     member = member_profile_for_user(request.user)
     if member is None:
-        messages.info(request, "Nincs tagprofil ehhez a fiókhoz.")
+        messages.info(request, _("No member profile is linked to this account."))
         return redirect(reverse("home"))
     plans = WorkoutPlan.objects.filter(member=member).order_by("-created_at")[:100]
     em = (request.user.email or "").strip()
@@ -167,7 +168,7 @@ def member_profile_edit(request):
                 restrictions_formset.save()
                 if onboarding_required:
                     request.session.pop(ONBOARDING_SESSION_KEY, None)
-            messages.success(request, "Profil mentve.")
+            messages.success(request, _("Profile saved."))
             if onboarding_required:
                 return redirect(reverse("app_workouts:workout_session_input"))
             return redirect(reverse("member_app:dashboard"))
@@ -201,9 +202,9 @@ def equipment_list(request):
             else:
                 created = False
             if created:
-                messages.success(request, "Eszköz hozzáadva az elérhető listához.")
+                messages.success(request, _("Equipment added to the available list."))
             else:
-                messages.info(request, "Ez az eszköz már szerepel a listában.")
+                messages.info(request, _("This equipment is already in the list."))
             return redirect(reverse("members:equipment_list"))
     else:
         form = EquipmentForm()
@@ -226,7 +227,7 @@ def equipment_delete(request, pk: int):
     equipment = get_object_or_404(GymEquipment, pk=pk)
     if request.method == "POST":
         equipment.delete()
-        messages.success(request, "Eszköz törölve.")
+        messages.success(request, _("Equipment deleted."))
     return redirect(reverse("members:equipment_list"))
 
 
@@ -237,7 +238,7 @@ def exercise_create(request):
         form = ExerciseCreateForm(request.POST)
         if form.is_valid():
             exercise = form.save()
-            messages.success(request, f"'{exercise.name}' gyakorlat létrehozva.")
+            messages.success(request, _("Exercise '%(name)s' created.") % {"name": exercise.name})
             return redirect(reverse("members:exercise_create"))
     else:
         form = ExerciseCreateForm()
@@ -263,7 +264,7 @@ def uploaded_workout_plan_list(request):
             item = upload_form.save(commit=False)
             item.uploaded_by = request.user
             item.save()
-            messages.success(request, "PDF edzésterv feltöltve.")
+            messages.success(request, _("Workout plan PDF uploaded."))
             return redirect(reverse("members:uploaded_workout_plan_list"))
     else:
         upload_form = UploadedWorkoutPlanForm()
@@ -288,5 +289,5 @@ def uploaded_workout_plan_delete(request, pk: int):
         if item.file:
             item.file.delete(save=False)
         item.delete()
-        messages.success(request, "Feltöltött PDF törölve.")
+        messages.success(request, _("Uploaded PDF deleted."))
     return redirect(reverse("members:uploaded_workout_plan_list"))

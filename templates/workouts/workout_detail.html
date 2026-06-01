@@ -1,29 +1,30 @@
 {% extends "base.html" %}
-{% block title %}Edzésterv részletei{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Workout plan details" %}{% endblock %}
 
 {% block content %}
   <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
     <div>
-      <h1 class="h2 mb-0">Edzésterv részletei</h1>
+      <h1 class="h2 mb-0">{% trans "Workout plan details" %}</h1>
       <div class="text-muted">
-        Tag: <span class="fw-semibold">{{ member.full_name }}</span>
-        &bull; Dátum: {{ plan.created_at|date:"Y-m-d" }}
+        {% trans "Member:" %} <span class="fw-semibold">{{ member.full_name }}</span>
+        &bull; {% trans "Date:" %} {{ plan.created_at|date:"Y-m-d" }}
       </div>
     </div>
     <div class="d-flex gap-2 flex-wrap">
       {% if request.resolver_match.namespace == 'app_workouts' %}
-        <a class="btn btn-outline-primary btn-lg" href="{% url 'app_workouts:workout_plan_print' plan_id=plan.id %}">Nyomtatóbarát</a>
-        <a class="btn btn-outline-success btn-lg" href="{% url 'app_workouts:workout_plan_download_pdf' plan_id=plan.id %}">PDF letöltése</a>
-        <a class="btn btn-outline-secondary btn-lg" href="{% url 'app_workouts:workout_history' %}">Vissza az előzményekhez</a>
+        <a class="btn btn-outline-primary btn-lg" href="{% url 'app_workouts:workout_plan_print' plan_id=plan.id %}">{% trans "Printer friendly" %}</a>
+        <a class="btn btn-outline-success btn-lg" href="{% url 'app_workouts:workout_plan_download_pdf' plan_id=plan.id %}">{% trans "Download PDF" %}</a>
+        <a class="btn btn-outline-secondary btn-lg" href="{% url 'app_workouts:workout_history' %}">{% trans "Back to history" %}</a>
       {% else %}
         <a class="btn btn-outline-primary btn-lg" href="{% url 'workouts:workout_plan_print' member_id=member.id plan_id=plan.id %}">
-          Nyomtatóbarát
+          {% trans "Printer friendly" %}
         </a>
         <a class="btn btn-outline-success btn-lg" href="{% url 'workouts:workout_plan_download_pdf' member_id=member.id plan_id=plan.id %}">
-          PDF letöltése
+          {% trans "Download PDF" %}
         </a>
         <a class="btn btn-outline-secondary btn-lg" href="{% url 'workouts:workout_history' member_id=member.id %}">
-          Vissza az előzményekhez
+          {% trans "Back to history" %}
         </a>
       {% endif %}
     </div>
@@ -33,9 +34,9 @@
     <div class="card-body">
       <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap">
         <div>
-          <div class="field-label">Megnyitás telefonon</div>
+          <div class="field-label">{% trans "Open on your phone" %}</div>
           <div class="text-muted">
-            Olvasd be a QR-kódot, hogy megnyisd ezt az edzéstervet a telefonodon.
+            {% trans "Scan the QR code to open this workout plan on your phone." %}
           </div>
         </div>
         <div class="text-center">
@@ -43,11 +44,11 @@
             id="workout-qr-img"
             width="132"
             height="132"
-            alt="QR-kód az edzés PDF-hez"
-            aria-label="QR-kód az edzés PDF-hez"
+            alt="{% trans 'QR code to the workout PDF' %}"
+            aria-label="{% trans 'QR code to the workout PDF' %}"
             src="{% if request.resolver_match.namespace == 'app_workouts' %}{% url 'app_workouts:workout_plan_qr_png' plan_id=plan.id %}{% else %}{% url 'workouts:workout_plan_qr_png' member_id=member.id plan_id=plan.id %}{% endif %}"
           />
-          <div class="text-muted" style="font-size: 0.9rem; margin-top: 0.35rem;">PDF megnyitása</div>
+          <div class="text-muted" style="font-size: 0.9rem; margin-top: 0.35rem;">{% trans "Open PDF" %}</div>
         </div>
       </div>
     </div>
@@ -56,22 +57,22 @@
   <div class="card shadow-sm mb-3">
     <div class="card-body">
       <div class="row g-2">
-        <div class="col-12 col-md-4"><strong>Cél:</strong> {{ plan.get_goal_display }}</div>
-        <div class="col-12 col-md-4"><strong>Időtartam:</strong> {{ plan.available_time }} perc</div>
-        <div class="col-12 col-md-4"><strong>Energia:</strong> {{ plan.get_energy_level_display }}</div>
-        <div class="col-12 col-md-4"><strong>Izomláz:</strong> {{ plan.get_soreness_level_display }}</div>
-        <div class="col-12 col-md-4"><strong>MI segítség:</strong> {% if plan.ai_generated %}Igen{% else %}Nem{% endif %}</div>
-        <div class="col-12 col-md-4"><strong>Gyakorlatok:</strong> {{ plan.exercise_count }}</div>
+        <div class="col-12 col-md-4"><strong>{% trans "Goal:" %}</strong> {{ plan.get_goal_display }}</div>
+        <div class="col-12 col-md-4"><strong>{% trans "Duration:" %}</strong> {{ plan.available_time }} {% trans "min" %}</div>
+        <div class="col-12 col-md-4"><strong>{% trans "Energy:" %}</strong> {{ plan.get_energy_level_display }}</div>
+        <div class="col-12 col-md-4"><strong>{% trans "Soreness:" %}</strong> {{ plan.get_soreness_level_display }}</div>
+        <div class="col-12 col-md-4"><strong>{% trans "AI assist:" %}</strong> {% if plan.ai_generated %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}</div>
+        <div class="col-12 col-md-4"><strong>{% trans "Exercises:" %}</strong> {{ plan.exercise_count }}</div>
       </div>
       {% if plan.notes %}
         <hr />
-        <div><strong>Edzői megjegyzések:</strong> {{ plan.notes }}</div>
+        <div><strong>{% trans "Coach notes:" %}</strong> {{ plan.notes }}</div>
       {% endif %}
     </div>
   </div>
 
   <div class="card shadow-sm mb-3" id="plan-qa">
-    <div class="card-header bg-light"><strong>Kérdezz az edzéstervről</strong></div>
+    <div class="card-header bg-light"><strong>{% trans "Ask about the workout plan" %}</strong></div>
     <div class="card-body">
       <form
         method="post"
@@ -89,10 +90,10 @@
                 type="button"
                 class="btn btn-outline-secondary btn-lg workout-qa-mic-btn"
                 id="workout-qa-mic-btn"
-                title="Kérdés diktálása (mikrofon)"
-                aria-label="Kérdés diktálása mikrofonnal"
+                title="{% trans 'Dictate question (microphone)' %}"
+                aria-label="{% trans 'Dictate question using the microphone' %}"
               >
-                🎤 Diktálás
+                🎤 {% trans "Dictate" %}
               </button>
               <span class="text-muted small d-none" id="workout-qa-mic-status" role="status"></span>
             </div>
@@ -101,27 +102,27 @@
             <div class="text-danger mt-1">{{ question_form.question.errors }}</div>
           {% endif %}
           <p class="text-muted small mb-0 mt-1 d-none" id="workout-qa-mic-unsupported">
-            A böngésző nem támogatja a beszédfelismerést ezen az oldalon. Próbáld <strong>Chrome</strong> vagy <strong>Edge</strong> böngészőt (asztali vagy Android), engedélyezd a mikrofont, és használj <strong>https</strong> vagy <strong>localhost</strong> címet. Addig írd be a kérdést billentyűzettel.
+            {% blocktrans %}Your browser does not support speech recognition on this page. Try <strong>Chrome</strong> or <strong>Edge</strong> (desktop or Android), allow microphone access, and use <strong>https</strong> or <strong>localhost</strong>. In the meantime, type your question with the keyboard.{% endblocktrans %}
           </p>
         </div>
-        <button type="submit" class="btn btn-primary btn-lg">Kérdés küldése</button>
+        <button type="submit" class="btn btn-primary btn-lg">{% trans "Submit question" %}</button>
       </form>
       <div class="text-muted mt-2" style="font-size: 0.92rem;">
-        Biztonsági figyelmeztetés: sérüléssel kapcsolatos kérdésnél mindig egyeztess edzővel vagy orvossal.
+        {% trans "Safety notice: for injury-related questions, always consult a trainer or a doctor." %}
       </div>
     </div>
   </div>
 
   {% if qa_history %}
     <div class="card shadow-sm mb-3">
-      <div class="card-header bg-light"><strong>Kérdés-válasz előzmények</strong></div>
+      <div class="card-header bg-light"><strong>{% trans "Question and answer history" %}</strong></div>
       <div class="card-body">
         {% for qa in qa_history %}
           <div class="mb-3 {% if not forloop.last %}border-bottom pb-3{% endif %}">
-            <div class="fw-semibold">K: {{ qa.question_text }}</div>
-            <div class="mt-2">V: {{ qa.answer_text }}</div>
+            <div class="fw-semibold">{% trans "Q:" %} {{ qa.question_text }}</div>
+            <div class="mt-2">{% trans "A:" %} {{ qa.answer_text }}</div>
             <div class="text-muted mt-1" style="font-size: 0.85rem;">
-              {{ qa.created_at|date:"Y-m-d H:i" }} • forrás: {{ qa.answer_source|default:"ismeretlen" }}
+              {{ qa.created_at|date:"Y-m-d H:i" }} • {% trans "source:" %} {{ qa.answer_source|default:_("unknown") }}
             </div>
           </div>
         {% endfor %}
@@ -132,18 +133,18 @@
   <div class="card shadow-sm mb-3 tts-control-panel">
     <div class="card-body d-flex align-items-center justify-content-between gap-3 flex-wrap">
       <div>
-        <div class="field-label mb-0">Felolvasás vezérlés</div>
-        <div class="text-muted" style="font-size: 0.95rem;">Előző / Lejátszás / Következő gyakorlat.</div>
+        <div class="field-label mb-0">{% trans "Read-aloud controls" %}</div>
+        <div class="text-muted" style="font-size: 0.95rem;">{% trans "Previous / Play / Next exercise." %}</div>
       </div>
       <div class="d-flex gap-2">
-        <button type="button" class="btn btn-outline-secondary btn-lg" id="tts-prev-btn" aria-label="Előző gyakorlat">
-          ◀ Előző
+        <button type="button" class="btn btn-outline-secondary btn-lg" id="tts-prev-btn" aria-label="{% trans 'Previous exercise' %}">
+          ◀ {% trans "Previous" %}
         </button>
-        <button type="button" class="btn btn-primary btn-lg" id="tts-play-btn" aria-label="Lejátszás vagy megállítás">
-          ▶ Lejátszás
+        <button type="button" class="btn btn-primary btn-lg" id="tts-play-btn" aria-label="{% trans 'Play or stop' %}">
+          ▶ {% trans "Play" %}
         </button>
-        <button type="button" class="btn btn-outline-secondary btn-lg" id="tts-next-btn" aria-label="Következő gyakorlat">
-          Következő ▶
+        <button type="button" class="btn btn-outline-secondary btn-lg" id="tts-next-btn" aria-label="{% trans 'Next exercise' %}">
+          {% trans "Next" %} ▶
         </button>
       </div>
     </div>
@@ -151,18 +152,18 @@
 
   {% if warmup %}
     <div class="card shadow-sm mb-3">
-      <div class="card-header bg-light"><strong>Bemelegítés</strong></div>
+      <div class="card-header bg-light"><strong>{% trans "Warm-up" %}</strong></div>
       <div class="table-responsive">
         <table class="table table-striped table-hover mb-0 align-middle">
           <thead>
             <tr>
               <th>#</th>
-              <th>Gyakorlat</th>
-              <th>Sorozatok</th>
-              <th>Ismétlések</th>
-              <th>Pihenő</th>
-              <th>Tempó</th>
-              <th>Hang</th>
+              <th>{% trans "Exercise" %}</th>
+              <th>{% trans "Sets" %}</th>
+              <th>{% trans "Reps" %}</th>
+              <th>{% trans "Rest" %}</th>
+              <th>{% trans "Tempo" %}</th>
+              <th>{% trans "Audio" %}</th>
             </tr>
           </thead>
           <tbody>
@@ -172,14 +173,14 @@
                 <td>{{ item.exercise.name }}</td>
                 <td>{{ item.sets }}</td>
                 <td>{{ item.reps }}</td>
-                <td>{{ item.rest_seconds }} mp</td>
+                <td>{{ item.rest_seconds }} {% trans "s" %}</td>
                 <td>{{ item.tempo|default:"—" }}</td>
                 <td>
                   <button
                     type="button"
                     class="btn btn-outline-secondary btn-sm workout-tts-btn"
-                    data-tts-text="Bemelegítés. {{ item.exercise.name }}. {{ item.sets }} sorozat, {{ item.reps }} ismétlés, {{ item.rest_seconds }} másodperc pihenő. Tempó: {{ item.tempo|default:'nincs megadva' }}."
-                    aria-label="Sor felolvasása"
+                    data-tts-text="{% trans 'Warm-up.' %} {{ item.exercise.name }}. {{ item.sets }} {% trans 'sets,' %} {{ item.reps }} {% trans 'reps,' %} {{ item.rest_seconds }} {% trans 'seconds of rest.' %} {% trans 'Tempo:' %} {{ item.tempo|default:_('not set') }}."
+                    aria-label="{% trans 'Read this row aloud' %}"
                   >
                     ▶
                   </button>
@@ -194,19 +195,19 @@
 
   {% if main_work %}
     <div class="card shadow-sm mb-3">
-      <div class="card-header bg-light"><strong>Fő blokk + kiegészítő</strong></div>
+      <div class="card-header bg-light"><strong>{% trans "Main block + accessory" %}</strong></div>
       <div class="table-responsive">
         <table class="table table-striped table-hover mb-0 align-middle">
           <thead>
             <tr>
               <th>#</th>
-              <th>Gyakorlat</th>
-              <th>Sorozatok</th>
-              <th>Ismétlések</th>
-              <th>Pihenő</th>
-              <th>Tempó</th>
-              <th>Megjegyzés</th>
-              <th>Hang</th>
+              <th>{% trans "Exercise" %}</th>
+              <th>{% trans "Sets" %}</th>
+              <th>{% trans "Reps" %}</th>
+              <th>{% trans "Rest" %}</th>
+              <th>{% trans "Tempo" %}</th>
+              <th>{% trans "Notes" %}</th>
+              <th>{% trans "Audio" %}</th>
             </tr>
           </thead>
           <tbody>
@@ -216,15 +217,15 @@
                 <td>{{ item.exercise.name }}</td>
                 <td>{{ item.sets }}</td>
                 <td>{{ item.reps }}</td>
-                <td>{{ item.rest_seconds }} mp</td>
+                <td>{{ item.rest_seconds }} {% trans "s" %}</td>
                 <td>{{ item.tempo|default:"—" }}</td>
                 <td>{{ item.notes|default:"—" }}</td>
                 <td>
                   <button
                     type="button"
                     class="btn btn-outline-secondary btn-sm workout-tts-btn"
-                    data-tts-text="Fő blokk. {{ item.exercise.name }}. {{ item.sets }} sorozat, {{ item.reps }} ismétlés, {{ item.rest_seconds }} másodperc pihenő. Tempó: {{ item.tempo|default:'nincs megadva' }}. Megjegyzés: {{ item.notes|default:'nincs' }}."
-                    aria-label="Sor felolvasása"
+                    data-tts-text="{% trans 'Main block.' %} {{ item.exercise.name }}. {{ item.sets }} {% trans 'sets,' %} {{ item.reps }} {% trans 'reps,' %} {{ item.rest_seconds }} {% trans 'seconds of rest.' %} {% trans 'Tempo:' %} {{ item.tempo|default:_('not set') }}. {% trans 'Note:' %} {{ item.notes|default:_('none') }}."
+                    aria-label="{% trans 'Read this row aloud' %}"
                   >
                     ▶
                   </button>
@@ -239,18 +240,18 @@
 
   {% if cooldown %}
     <div class="card shadow-sm mb-3">
-      <div class="card-header bg-light"><strong>Levezetés</strong></div>
+      <div class="card-header bg-light"><strong>{% trans "Cool-down" %}</strong></div>
       <div class="table-responsive">
         <table class="table table-striped table-hover mb-0 align-middle">
           <thead>
             <tr>
               <th>#</th>
-              <th>Gyakorlat</th>
-              <th>Sorozatok</th>
-              <th>Ismétlések</th>
-              <th>Pihenő</th>
-              <th>Tempó</th>
-              <th>Hang</th>
+              <th>{% trans "Exercise" %}</th>
+              <th>{% trans "Sets" %}</th>
+              <th>{% trans "Reps" %}</th>
+              <th>{% trans "Rest" %}</th>
+              <th>{% trans "Tempo" %}</th>
+              <th>{% trans "Audio" %}</th>
             </tr>
           </thead>
           <tbody>
@@ -260,14 +261,14 @@
                 <td>{{ item.exercise.name }}</td>
                 <td>{{ item.sets }}</td>
                 <td>{{ item.reps }}</td>
-                <td>{{ item.rest_seconds }} mp</td>
+                <td>{{ item.rest_seconds }} {% trans "s" %}</td>
                 <td>{{ item.tempo|default:"—" }}</td>
                 <td>
                   <button
                     type="button"
                     class="btn btn-outline-secondary btn-sm workout-tts-btn"
-                    data-tts-text="Levezetés. {{ item.exercise.name }}. {{ item.sets }} sorozat, {{ item.reps }} ismétlés, {{ item.rest_seconds }} másodperc pihenő. Tempó: {{ item.tempo|default:'nincs megadva' }}."
-                    aria-label="Sor felolvasása"
+                    data-tts-text="{% trans 'Cool-down.' %} {{ item.exercise.name }}. {{ item.sets }} {% trans 'sets,' %} {{ item.reps }} {% trans 'reps,' %} {{ item.rest_seconds }} {% trans 'seconds of rest.' %} {% trans 'Tempo:' %} {{ item.tempo|default:_('not set') }}."
+                    aria-label="{% trans 'Read this row aloud' %}"
                   >
                     ▶
                   </button>
@@ -282,15 +283,32 @@
 
   {% if not plan.exercise_count %}
     <div class="alert alert-warning">
-      Ehhez a tervhez nincsenek mentett gyakorlatok.
+      {% trans "There are no saved exercises for this plan." %}
     </div>
   {% endif %}
+
+  <script>
+    // Localized strings made available to the script below.
+    window.FITNESSAI_TTS_I18N = {
+      play: "{% trans 'Play' %}",
+      stop: "{% trans 'Stop' %}",
+      pause: "{% trans 'Stop' %}",
+      sttListening: "{% trans 'Listening… speak now.' %}",
+      sttFailedStart: "{% trans 'Could not start the microphone.' %}",
+      sttUnsupported: "{% trans 'This browser does not support speech recognition. Use Chrome or Edge, or type your question.' %}",
+      sttError: "{% trans 'Error:' %}",
+      sttUnknown: "{% trans 'unknown' %}",
+      ttsLangTag: "{% get_current_language as cur %}{{ cur|default:'hu' }}-{{ cur|default:'hu'|upper }}"
+    };
+  </script>
 
   <script>
     (function () {
       if (!("speechSynthesis" in window)) {
         return;
       }
+
+      const I18N = window.FITNESSAI_TTS_I18N || {};
 
       let activeButton = null;
       const rowButtons = Array.from(document.querySelectorAll(".workout-tts-btn"));
@@ -308,7 +326,7 @@
 
       function setMainPlayState(isPlaying) {
         if (!playBtn) return;
-        playBtn.textContent = isPlaying ? "■ Megállítás" : "▶ Lejátszás";
+        playBtn.textContent = isPlaying ? "■ " + (I18N.stop || "Stop") : "▶ " + (I18N.play || "Play");
       }
 
       function setControlAvailability() {
@@ -318,9 +336,9 @@
         if (nextBtn) nextBtn.disabled = !hasRows;
       }
 
-      function pickVoice(voices) {
+      function pickVoice(voices, langPrefix) {
         return (
-          voices.find((v) => v.lang && v.lang.toLowerCase().startsWith("hu")) ||
+          voices.find((v) => v.lang && v.lang.toLowerCase().startsWith(langPrefix)) ||
           voices.find((v) => v.default) ||
           null
         );
@@ -334,11 +352,12 @@
         currentIndex = rowButtons.indexOf(btn);
         setMainPlayState(true);
 
+        const tag = (I18N.ttsLangTag || "hu-HU").toLowerCase();
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = "hu-HU";
+        utterance.lang = tag.split("-")[0] + "-" + tag.split("-")[0].toUpperCase();
         utterance.rate = 0.95;
 
-        const voice = pickVoice(window.speechSynthesis.getVoices());
+        const voice = pickVoice(window.speechSynthesis.getVoices(), tag.split("-")[0]);
         if (voice) {
           utterance.voice = voice;
         }
@@ -419,7 +438,6 @@
 
       if (typeof window.speechSynthesis.onvoiceschanged !== "undefined") {
         window.speechSynthesis.onvoiceschanged = function () {
-          // Warm up voice list on some browsers.
           window.speechSynthesis.getVoices();
         };
       }
@@ -428,6 +446,7 @@
 
   <script>
     (function () {
+      const I18N = window.FITNESSAI_TTS_I18N || {};
       function getSpeechRecognition() {
         return window.SpeechRecognition || window.webkitSpeechRecognition || null;
       }
@@ -443,16 +462,16 @@
         micBtn.addEventListener("click", function () {
           if (unsupportedEl) unsupportedEl.classList.remove("d-none");
           if (statusEl) {
-            statusEl.textContent =
-              "Ez a böngésző nem ad beszédfelismerést. Használj Chrome-ot vagy Edge-et, vagy írj gépeléssel.";
+            statusEl.textContent = I18N.sttUnsupported || "Speech recognition is not supported.";
             statusEl.classList.remove("d-none");
           }
         });
         return;
       }
 
+      const tag = (I18N.ttsLangTag || "hu-HU").toLowerCase();
       const recognition = new SpeechRecognitionCtor();
-      recognition.lang = "hu-HU";
+      recognition.lang = tag.split("-")[0] + "-" + tag.split("-")[0].toUpperCase();
       recognition.interimResults = false;
       recognition.continuous = false;
 
@@ -485,9 +504,9 @@
           listening = true;
           micBtn.classList.remove("btn-outline-secondary");
           micBtn.classList.add("btn-danger");
-          setStatus("Hallgatlak… beszélj most.");
+          setStatus(I18N.sttListening || "");
         } catch (e) {
-          setStatus("Nem sikerült elindítani a mikrofont.");
+          setStatus(I18N.sttFailedStart || "");
         }
       });
 
@@ -502,7 +521,7 @@
       };
 
       recognition.onerror = function (event) {
-        setStatus("Hiba: " + (event.error || "ismeretlen"));
+        setStatus((I18N.sttError || "Error:") + " " + (event.error || (I18N.sttUnknown || "unknown")));
         listening = false;
         micBtn.classList.remove("btn-danger");
         micBtn.classList.add("btn-outline-secondary");

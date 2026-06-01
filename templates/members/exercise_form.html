@@ -1,9 +1,10 @@
 {% extends "members/admin_base.html" %}
-{% block title %}Új gyakorlat{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "New exercise" %}{% endblock %}
 
 {% block admin_content %}
   <div class="d-flex align-items-center justify-content-between mb-3">
-    <h1 class="h3 mb-0">Gyakorlat hozzáadása</h1>
+    <h1 class="h3 mb-0">{% trans "Add exercise" %}</h1>
   </div>
 
   <div class="card shadow-sm border-0 mb-4">
@@ -22,7 +23,7 @@
           {% endfor %}
         </div>
         <div class="mt-4">
-          <button class="btn btn-primary btn-lg" type="submit">Mentés</button>
+          <button class="btn btn-primary btn-lg" type="submit">{% trans "Save" %}</button>
         </div>
       </form>
     </div>
@@ -30,7 +31,7 @@
 
   <div class="card shadow-sm border-0">
     <div class="card-body">
-      <h2 class="h5 mb-3">Legutóbb hozzáadott gyakorlatok</h2>
+      <h2 class="h5 mb-3">{% trans "Recently added exercises" %}</h2>
       {% if recent_exercises %}
         <ul class="list-group">
           {% for exercise in recent_exercises %}
@@ -41,7 +42,7 @@
           {% endfor %}
         </ul>
       {% else %}
-        <div class="alert alert-info mb-0">Még nincs rögzített gyakorlat.</div>
+        <div class="alert alert-info mb-0">{% trans "No exercises recorded yet." %}</div>
       {% endif %}
     </div>
   </div>

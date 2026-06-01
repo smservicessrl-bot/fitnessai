@@ -4,6 +4,7 @@ import uuid
 from django import forms
 from django.contrib.auth import get_user_model
 from django.db import transaction
+from django.utils.translation import gettext_lazy as _
 
 from members.models import MemberProfile
 from members.phone import normalize_phone
@@ -15,17 +16,17 @@ _PIN_RE = re.compile(r"^\d{4}$")
 
 class RegistrationForm(forms.Form):
     full_name = forms.CharField(
-        label="Teljes név",
+        label=_("Full name"),
         max_length=150,
         widget=forms.TextInput(attrs={"class": "form-control form-control-lg", "autocomplete": "name"}),
     )
     email = forms.EmailField(
-        label="E-mail",
+        label=_("Email"),
         required=True,
         widget=forms.EmailInput(attrs={"class": "form-control form-control-lg", "autocomplete": "email"}),
     )
     phone = forms.CharField(
-        label="Telefon (opcionális)",
+        label=_("Phone (optional)"),
         required=False,
         max_length=32,
         widget=forms.TextInput(
@@ -33,7 +34,7 @@ class RegistrationForm(forms.Form):
         ),
     )
     pin = forms.CharField(
-        label="PIN (4 számjegy)",
+        label=_("PIN (4 digits)"),
         min_length=4,
         max_length=4,
         widget=forms.TextInput(
@@ -47,7 +48,7 @@ class RegistrationForm(forms.Form):
         ),
     )
     pin_confirm = forms.CharField(
-        label="PIN megerősítése",
+        label=_("Confirm PIN"),
         min_length=4,
         max_length=4,
         widget=forms.TextInput(
@@ -76,19 +77,19 @@ class RegistrationForm(forms.Form):
         pin = cleaned.get("pin")
         pin_confirm = cleaned.get("pin_confirm")
         if pin and pin_confirm and pin != pin_confirm:
-            self.add_error("pin_confirm", "A PIN nem egyezik.")
+            self.add_error("pin_confirm", _("The PINs do not match."))
         if pin and not _PIN_RE.match(pin):
-            self.add_error("pin", "A PIN pontosan 4 számjegy legyen.")
+            self.add_error("pin", _("PIN must be exactly 4 digits."))
         if email and User.objects.filter(email__iexact=email).exists():
-            self.add_error("email", "Ez az e-mail cím már regisztrálva van.")
+            self.add_error("email", _("This email address is already registered."))
         if phone_n and MemberProfile.objects.filter(phone_normalized=phone_n).exists():
-            self.add_error("phone", "Ez a telefonszám már regisztrálva van.")
+            self.add_error("phone", _("This phone number is already registered."))
         return cleaned
 
     def clean_pin(self):
         pin = self.cleaned_data.get("pin") or ""
         if pin and not _PIN_RE.match(pin):
-            raise forms.ValidationError("A PIN pontosan 4 számjegy legyen.")
+            raise forms.ValidationError(_("PIN must be exactly 4 digits."))
         return pin
 
     def clean_pin_confirm(self):
@@ -119,7 +120,7 @@ class RegistrationForm(forms.Form):
 
 class LoginForm(forms.Form):
     identifier = forms.CharField(
-        label="E-mail, telefon vagy felhasználónév",
+        label=_("Email, phone or username"),
         widget=forms.TextInput(
             attrs={
                 "class": "form-control form-control-lg",
@@ -129,7 +130,7 @@ class LoginForm(forms.Form):
         ),
     )
     password = forms.CharField(
-        label="PIN vagy jelszó",
+        label=_("PIN or password"),
         max_length=128,
         widget=forms.PasswordInput(
             attrs={

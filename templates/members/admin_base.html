@@ -8,15 +8,16 @@
     .members-admin-sidebar {
       height: 100%;
       border-radius: 1rem;
-      border: 1px solid #e8edf4;
-      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-      box-shadow: 0 8px 26px rgba(16, 24, 40, 0.07);
+      border: 1px solid var(--fitness-border);
+      background: linear-gradient(180deg, var(--fitness-surface) 0%, var(--fitness-bg-2) 100%);
+      box-shadow: 0 14px 36px rgba(2, 6, 23, 0.35);
       overflow: hidden;
     }
     .members-admin-sidebar-header {
       padding: 1rem 1rem 0.85rem;
-      border-bottom: 1px solid #edf2f7;
-      background: #f8fafc;
+      border-bottom: 1px solid var(--fitness-border);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--fitness-text);
     }
     .members-admin-nav {
       padding: 0.65rem;
@@ -28,19 +29,19 @@
       width: 100%;
       padding: 0.75rem 0.8rem;
       border-radius: 0.7rem;
-      color: #334155;
+      color: var(--fitness-muted);
       text-decoration: none;
       font-weight: 600;
       transition: all 0.16s ease;
     }
     .members-admin-link:hover {
-      background: #f1f5f9;
-      color: #0f172a;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--fitness-text-strong);
     }
     .members-admin-link.active {
-      background: #0d6efd;
-      color: #fff;
-      box-shadow: 0 6px 16px rgba(13, 110, 253, 0.32);
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.20), rgba(34, 197, 94, 0.06));
+      color: #d1fae5;
+      box-shadow: inset 0 0 0 1px rgba(34, 197, 94, 0.45), 0 8px 18px rgba(34, 197, 94, 0.18);
     }
     .members-admin-link svg {
       width: 1.05rem;
